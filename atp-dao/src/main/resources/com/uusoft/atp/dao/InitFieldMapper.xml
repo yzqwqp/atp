@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace="com.uusoft.atp.dao.InitFieldMapper">
+	<resultMap id="BaseResultMap" type="com.uusoft.atp.model.InitFieldInfo" >
+	    <result column="PARA_ID" property="para_id" jdbcType="INTEGER" />
+	    <result column="FIELD_NO" property="field_no" jdbcType="INTEGER" />
+	    <result column="FIELD_NAME" property="field_name" jdbcType="VARCHAR" />
+	    <result column="FIELD_TYPE" property="field_type" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="Base_Column_List" >
+    	PARA_ID, FIELD_NO, FIELD_NAME, FIELD_TYPE
+  	</sql>
+	
+	<insert id="insert" parameterType="com.uusoft.atp.model.InitFieldInfo">
+		insert into INIT_FIELD (PARA_ID, FIELD_NO, FIELD_NAME, FIELD_TYPE)  values (#{para_id}, #{field_no}, #{field_name}, #{field_type})
+	</insert>
+	
+	<select id="selectAll" resultMap="BaseResultMap">
+		select 
+    	<include refid="Base_Column_List" />
+   		from INIT_FIELD
+	</select>
+		
+	<select id="selectById" resultMap="BaseResultMap">
+		select 
+    	<include refid="Base_Column_List" />
+   		from INIT_FIELD
+   		<where>
+   			<if test="para_id != null">
+   				PARA_ID = #{para_id,jdbcType=INTEGER}
+   			</if>
+   		</where>
+	</select>
+	
+	<update id="updateById" parameterType="com.uusoft.atp.model.InitFieldInfo">
+		update INIT_FIELD
+        set PARA_ID = #{para_id,jdbcType=INTEGER},
+        	FIELD_NO = #{field_no,jdbcType=VARCHAR},
+        	FIELD_NAME = #{field_name,jdbcType=VARCHAR},
+        	FIELD_TYPE = #{field_type,jdbcType=VARCHAR}
+        where PARA_ID = #{para_id,jdbcType=INTEGER}
+	</update>
+		
+	<delete id="deledteinitfield">
+		delete from INIT_FIELD
+	</delete>
+</mapper>

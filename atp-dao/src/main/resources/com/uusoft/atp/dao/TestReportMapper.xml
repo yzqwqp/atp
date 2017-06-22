@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace="com.uusoft.atp.dao.TestReportMapper">
+	<resultMap id="BaseResultMap" type="com.uusoft.atp.model.TestReportInfo" >
+	    <result column="REPORT_ID" property="report_id" jdbcType="INTEGER" />
+	    <result column="SERVICE_ID" property="service_id" jdbcType="INTEGER" />
+	    <result column="CASE_ID" property="case_id" jdbcType="INTEGER" />
+	    <result column="METHOD_ID" property="method_id" jdbcType="INTEGER" />
+	    <result column="DATA_ID" property="data_id" jdbcType="INTEGER" />
+	    <result column="REPORT_DATA" property="report_data" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="Base_Column_List" >
+    	REPORT_ID, SERVICE_ID, CASE_ID, METHOD_ID, DATE_ID,REPORT_DATA
+  	</sql>
+	
+	<insert id="insert" parameterType="com.uusoft.atp.model.TestServiceInfo">
+		insert into TEST_REPORT (SERVICE_ID, CASE_ID, METHOD_ID, DATA_ID,REPORT_DATA)  values (#{service_id,jdbcType=INTEGER},#{case_id,jdbcType=INTEGER},#{method_id,jdbcType=INTEGER}, #{data_id,jdbcType=INTEGER},#{report_data,jdbcType=VARCHAR})
+	</insert>
+
+</mapper>

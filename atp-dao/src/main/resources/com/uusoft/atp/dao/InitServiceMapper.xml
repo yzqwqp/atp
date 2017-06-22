@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace="com.uusoft.atp.dao.InitServiceMapper">
+	<resultMap id="BaseResultMap" type="com.uusoft.atp.model.InitServiceInfo" >
+	    <result column="METHOD_ID" property="method_id" jdbcType="INTEGER" />
+	    <result column="SERVICE_NAME" property="service_name" jdbcType="VARCHAR" />
+	    <result column="METHOD_NAME" property="method_name" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="Base_Column_List" >
+    	METHOD_ID, SERVICE_NAME, METHOD_NAME
+  	</sql>
+	
+	<insert id="insert" parameterType="com.uusoft.atp.model.InitServiceInfo" useGeneratedKeys="true" keyProperty="method_id">
+		insert into INIT_SERVICE (SERVICE_NAME, METHOD_NAME)  values (#{service_name}, #{method_name})
+	</insert>
+	
+	<select id="selectAll" resultMap="BaseResultMap">
+		select 
+    	<include refid="Base_Column_List" />
+   		from INIT_SERVICE
+	</select>
+	
+	<select id="selectAllService" resultMap="BaseResultMap">
+		select distinct SERVICE_NAME
+   		from INIT_SERVICE
+	</select>
+		
+	<select id="selectByName" resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List" /> 
+		from INIT_SERVICE where SERVICE_NAME = #{service_name,jdbcType=VARCHAR}
+	</select>
+		
+	<select id="selectById" resultMap="BaseResultMap">
+		select 
+    	<include refid="Base_Column_List" />
+   		from INIT_SERVICE
+   		<where>
+   			<if test="method_id != null">
+   				METHOD_ID = #{method_id,jdbcType=INTEGER}
+   			</if>
+   		</where>
+	</select>
+	
+	<update id="updateById" parameterType="com.uusoft.atp.model.InitServiceInfo">
+		update INIT_SERVICE
+        set SERVICE_NAME = #{service_name,jdbcType=VARCHAR},
+        	METHOD_NAME = #{method_name,jdbcType=VARCHAR}
+        where METHOD_ID = #{method_id,jdbcType=INTEGER}
+	</update>
+	
+	<select id="selectMethodIdByNameAndService"  resultType="int">
+		select METHOD_ID
+   		from INIT_SERVICE
+   		<where>
+   			METHOD_NAME = #{methodName,jdbcType=VARCHAR}
+   		and SERVICE_NAME= #{serviceName,jdbcType=VARCHAR}
+   		</where>
+	</select>
+	
+	<delete id="deledteinitservice">
+		delete from INIT_SERVICE
+	</delete>
+	
+	<select id="getmethodname" resultType="String" >
+		select DISTINCT method_name from init_service 
+		where SERVICE_NAME = #{service_name,jdbcType=VARCHAR} 
+	</select>
+	
+	<select id="selectallname" resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List" /> 
+		from INIT_SERVICE  
+		<where> 
+		<if test="serviceName!=null and serviceName != '' ">
+        SERVICE_NAME = #{serviceName,jdbcType=VARCHAR}
+       </if>
+       <if test="serviceName!=null and methodName != '' ">
+        and METHOD_NAME = #{methodName,jdbcType=VARCHAR}
+       </if>
+        </where>
+	</select>
+</mapper>

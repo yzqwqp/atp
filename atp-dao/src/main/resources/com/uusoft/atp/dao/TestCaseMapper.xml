@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace="com.uusoft.atp.dao.TestCaseMapper">
+	<resultMap id="BaseResultMap" type="com.uusoft.atp.model.TestCaseInfo" >
+	    <result column="METHOD_ID" property="method_id" jdbcType="INTEGER" />
+	    <result column="CASE_ID" property="case_id" jdbcType="INTEGER" />
+	    <result column="CASE_DES" property="case_des" jdbcType="VARCHAR" />
+	    <result column="CASE_DATA" property="case_data" jdbcType="VARCHAR" />
+	    <result column="CASE_ASSERT_TYPE" property="case_assert_type" jdbcType="VARCHAR" />
+	    <result column="CASE_ASSERT_VALUE" property="case_assert_value" jdbcType="VARCHAR" />
+	    <result column="IS_RUN" property="is_run" jdbcType="INTEGER" />
+	    <result column="IS_DEL" property="is_del" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<resultMap id="CaseDetailsMap" type="com.uusoft.atp.model.TestCaseVo" >
+		<result column="SERVICE_ID" property="service_id" jdbcType="INTEGER" />
+	    <result column="SERVICE_NAME" property="service_name" jdbcType="VARCHAR" />
+	    <result column="SERVICE_DES" property="service_des" jdbcType="VARCHAR" />
+	    <result column="METHOD_ID" property="method_id" jdbcType="INTEGER" />
+	    <result column="METHOD_NAME" property="method_name" jdbcType="VARCHAR" />
+	    <result column="METHOD_DES" property="method_des" jdbcType="VARCHAR" />
+	    <result column="CASE_ID" property="case_id" jdbcType="INTEGER" />
+	    <result column="CASE_DES" property="case_des" jdbcType="VARCHAR" />
+	    <result column="CASE_DATA" property="case_data" jdbcType="VARCHAR" />
+	    <result column="CASE_ASSERT_TYPE" property="case_assert_type" jdbcType="VARCHAR" />
+	    <result column="CASE_ASSERT_VALUE" property="case_assert_value" jdbcType="VARCHAR" />
+	    <result column="IS_RUN" property="is_run" jdbcType="INTEGER" />
+	    <result column="IS_DEL" property="is_del" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<sql id="Base_Column_List" >
+    	METHOD_ID, CASE_ID, CASE_DES, CASE_DATA, CASE_ASSERT_TYPE, CASE_ASSERT_VALUE, IS_RUN, IS_DEL
+  	</sql>
+	
+	<insert id="insert" parameterType="com.uusoft.atp.model.TestCaseInfo">
+		insert into TEST_CASE (METHOD_ID, CASE_DES, CASE_DATA, CASE_ASSERT_TYPE, CASE_ASSERT_VALUE, IS_RUN, IS_DEL)  values (#{method_id}, #{case_des}, #{case_data}, #{case_assert_type}, #{case_assert_value}, #{is_run}, 0)
+	</insert>
+	
+	<select id="selectAll" resultMap="BaseResultMap">
+		select 
+    	<include refid="Base_Column_List" />
+   		from TEST_CASE
+   		where IS_DEL = 0
+	</select>
+		
+	<select id="selectById" resultMap="BaseResultMap">
+		select 
+    	<include refid="Base_Column_List" />
+   		from TEST_CASE
+   		<where>
+   			<if test="case_id != null">
+   				CASE_ID = #{case_id,jdbcType=INTEGER}
+   			</if>
+   			and IS_DEL = 0
+   		</where>
+	</select>
+	
+	<select id="selectByMethodId" resultMap="BaseResultMap">
+		select 
+    	<include refid="Base_Column_List" />
+   		from TEST_CASE
+   		<where>
+   			<if test="method_id != null">
+   				METHOD_ID = #{method_id,jdbcType=INTEGER}
+   			</if>
+   			and IS_DEL = 0
+   		</where>
+	</select>
+	
+	<update id="update" parameterType="com.uusoft.atp.model.TestCaseInfo">
+		update TEST_CASE
+        set METHOD_ID = #{method_id,jdbcType=INTEGER},
+        	CASE_DES = #{case_des,jdbcType=VARCHAR},
+        	CASE_DATA = #{case_data,jdbcType=VARCHAR},
+        	CASE_ASSERT_TYPE = #{case_assert_type,jdbcType=VARCHAR},
+        	CASE_ASSERT_VALUE = #{case_assert_value,jdbcType=VARCHAR},
+        	IS_RUN = #{is_run,jdbcType=INTEGER}
+        where CASE_ID = #{case_id,jdbcType=INTEGER}
+	</update>
+	
+	<select id ="selectDatasByMethodId"  resultType="java.lang.String">
+		select CASE_DATA from TEST_CASE
+		<where>
+   			<if test="method_id != null">
+   				METHOD_ID = #{method_id,jdbcType=INTEGER}
+   			</if>
+   			and IS_DEL = 0
+   		</where>
+	</select>
+	
+	<select id ="selectDataById"  resultType="string">
+		select CASE_DATA from TEST_CASE
+		<where>
+   			<if test="case_id != null">
+   				CASE_ID = #{case_id,jdbcType=INTEGER}
+   			</if>
+   			and IS_DEL = 0
+   		</where>
+	</select>
+	
+	<select id ="selectByCaseId"  resultMap="CaseDetailsMap">
+		SELECT s.service_id,s.service_name,s.service_des,m.method_id,m.method_name,m.method_des,c.case_id,c.case_des,c.case_data,c.case_assert_value,c.case_assert_type from 
+		test_service s,
+		test_method m,
+		test_case c
+		<where>
+			m.service_id  = s.service_id
+			and m.method_id = c.method_id
+   			<if test="case_id != null">
+   			and c.CASE_ID = #{case_id,jdbcType=INTEGER}
+   			</if>
+   			and c.IS_DEL = 0
+   		</where>
+	</select>
+		
+	<update id="deleteById">
+		update TEST_CASE
+        set IS_DEL = 1
+        where CASE_ID = #{case_id,jdbcType=INTEGER}
+	</update>
+	
+</mapper>

@@ -1,0 +1,17 @@
+app.name  = ${app.name}
+app.owner = ${app.owner}
+
+dubbo.registry.address  = ${dubbo.registry.address}
+dubbo.version			= ${dubbo.version}
+dubbo.timeout			= ${dubbo.timeout}
+dubbo.protocol.name     = ${dubbo.protocol.name}
+dubbo.provider.executes	=${dubbo.provider.executes}
+
+trs.version             = ${trs.version}
+prd.version             = ${prd.version}
+pay.version             = ${pay.version}
+cif.version             = ${cif.version}
+cfg.version             = ${cfg.version}
+simlate.version			= ${simlate.version}
+fundbase.version		= ${fundbase.version}
+meepo.version			= ${meepo.version}

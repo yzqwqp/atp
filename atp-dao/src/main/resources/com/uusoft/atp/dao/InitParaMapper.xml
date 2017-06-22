@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace="com.uusoft.atp.dao.InitParaMapper">
+	<resultMap id="BaseResultMap" type="com.uusoft.atp.model.InitParaInfo" >
+	    <result column="PARA_ID" property="para_id" jdbcType="INTEGER" />
+	    <result column="METHOD_ID" property="method_id" jdbcType="INTEGER" />
+	    <result column="PARA_NAME" property="para_name" jdbcType="VARCHAR" />
+	    <result column="PARA_TYPE" property="para_type" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<resultMap id="ParaLinkedHashMap" type="java.util.LinkedHashMap" >
+	    <result column="PARA_NAME" property="para_name" jdbcType="VARCHAR" />
+	    <result column="PARA_TYPE" property="para_type" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="Base_Column_List" >
+    	PARA_ID, METHOD_ID, PARA_NAME, PARA_TYPE
+  	</sql>
+	
+	<insert id="insert" parameterType="com.uusoft.atp.model.InitParaInfo">
+		insert into INIT_PARA (METHOD_ID, PARA_NAME, PARA_TYPE)  values (#{method_id}, #{para_name}, #{para_type})
+	</insert>
+	
+	<select id="selectAll" resultMap="BaseResultMap">
+		select 
+    	<include refid="Base_Column_List" />
+   		from INIT_PARA
+	</select>
+		
+	<select id="selectById" resultMap="BaseResultMap">
+		select 
+    	<include refid="Base_Column_List" />
+   		from INIT_PARA
+   		<where>
+   			<if test="para_id != null">
+   				PARA_ID = #{para_id,jdbcType=INTEGER}
+   			</if>
+   		</where>
+	</select>
+	
+	<update id="updateById" parameterType="com.uusoft.atp.model.InitParaInfo">
+		update INIT_PARA
+        set METHOD_ID = #{method_id,jdbcType=INTEGER},
+        	PARA_NAME = #{para_name,jdbcType=VARCHAR},
+        	PARA_TYPE = #{para_type,jdbcType=VARCHAR}
+        where PARA_ID = #{para_id,jdbcType=INTEGER}
+	</update>
+	
+	<select id="selectParaTypesByMethId" resultType ="java.lang.String">
+		select PARA_TYPE
+   		from INIT_PARA
+   		<where>
+   			<if test="methodId != null">
+   				METHOD_ID = #{methodId,jdbcType=INTEGER}
+   			</if>
+   		</where>
+	</select>
+	
+	<select id="selectParaid" resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List" />
+		 from INIT_PARA where METHOD_ID = #{0} and PARA_TYPE = #{1} 
+	</select>
+	
+	<select id="selectParaByMethId" resultMap ="BaseResultMap">
+		select 
+		<include refid="Base_Column_List" />
+   		from INIT_PARA
+   		<where>
+   			<if test="methodId != null">
+   				METHOD_ID = #{methodId,jdbcType=INTEGER} order by PARA_ID
+   			</if>
+   		</where>
+	</select>
+	
+	<select id="selectParaLinkedHashMap" resultMap="ParaLinkedHashMap">
+		select PARA_NAME,PARA_TYPE
+   		from INIT_PARA
+   		<where>
+   			<if test="methodId != null">
+   				METHOD_ID = #{methodId,jdbcType=INTEGER}
+   			</if>
+   		</where>
+	</select>
+	
+	<delete id="deledteinitpara">
+		delete from INIT_PARA
+	</delete>
+	
+</mapper>

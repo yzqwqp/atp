@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace="com.uusoft.atp.dao.InitConsumerMapper">
+	<resultMap id="BaseResultMap" type="com.uusoft.atp.model.InitConsumerInfo" >
+	    <result column="CONSUMERID" property="consumerid" jdbcType="INTEGER" />
+	    <result column="SERVERNAME" property="servername" jdbcType="VARCHAR" />
+	    <result column="INTERFACENAME" property="interfacename" jdbcType="VARCHAR" />
+	    <result column="VERSION" property="version" jdbcType="VARCHAR" />
+	    <result column="GENERIC" property="generic" jdbcType="VARCHAR" />
+	    <result column="OWNER" property="owner" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="Base_Column_List" >
+    	CONSUMERID,SERVERNAME,INTERFACENAME,VERSION,GENERIC,OWNER
+  	</sql>
+	
+	<insert id="insert" parameterType="com.uusoft.atp.model.InitConsumerInfo">
+		insert into INIT_CONSUMER (SERVERNAME,INTERFACENAME,VERSION,GENERIC,OWNER)  values (#{servername}, #{interfacename}, #{version}, #{generic},#{owner})
+	</insert>
+	
+	<select id="selectAll" resultMap="BaseResultMap">
+		select 
+    	<include refid="Base_Column_List" />
+   		from INIT_CONSUMER
+	</select>
+		
+	<select id="selectById" resultMap="BaseResultMap">
+		select 
+    	<include refid="Base_Column_List" />
+   		from INIT_CONSUMER
+   		<where>
+   			<if test="CONSUMERID != null">
+   				CONSUMERID = #{consumerid,jdbcType=INTEGER}
+   			</if>
+   		</where>
+	</select>
+	
+	<update id="updateById" parameterType="com.uusoft.atp.model.InitConsumerInfo">
+		update INIT_CONSUMER
+        set SERVERNAME = #{servername,jdbcType=VARCHAR},
+        	INTERFACENAME = #{interfacename,jdbcType=VARCHAR},
+        	VERSION = #{version,jdbcType=VARCHAR},
+        	GENERIC = #{generic,jdbcType=VARCHAR},
+        	OWNER = #{owner,jdbcType=VARCHAR}
+        where CONSUMERID = #{consumerid,jdbcType=INTEGER}
+	</update>
+	
+</mapper>

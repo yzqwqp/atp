@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace="com.uusoft.atp.dao.TestDataMapper">
+	<resultMap id="BaseResultMap" type="com.uusoft.atp.model.TestDataInfo" >
+	    <result column="CASE_ID" property="case_id" jdbcType="INTEGER" />
+	    <result column="DATA_ID" property="data_id" jdbcType="INTEGER" />
+	    <result column="PARA_NAME" property="para_name" jdbcType="VARCHAR" />
+	    <result column="PARA_TYPE" property="para_type" jdbcType="VARCHAR" />
+	    <result column="FIELD_NAME" property="field_name" jdbcType="VARCHAR" />
+	    <result column="FIELD_TYPE" property="field_type" jdbcType="VARCHAR" />
+	    <result column="VALUE_DATA" property="value_data" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="Base_Column_List" >
+    	CASE_ID, DATA_ID, PARA_NAME, PARA_TYPE, FIELD_NAME,FIELD_TYPE,VALUE_DATA
+  	</sql>
+	
+	<insert id="insert" parameterType="com.uusoft.atp.model.TestDataInfo">
+		insert into TEST_DATA (CASE_ID, PARA_NAME, PARA_TYPE, FIELD_NAME,FIELD_TYPE,VALUE_DATA)  values (#{case_id}, #{para_name}, #{para_type}, #{field_name},#{field_type},#{value_data})
+	</insert>
+	
+	<select id="selectAll" resultMap="BaseResultMap">
+		select 
+    	<include refid="Base_Column_List" />
+   		from TEST_DATA
+	</select>
+		
+	<select id="selectById" resultMap="BaseResultMap">
+		select 
+    	<include refid="Base_Column_List" />
+   		from TEST_DATA
+   		<where>
+   			<if test="case_id != null">
+   				CASE_ID = #{case_id,jdbcType=INTEGER}
+   			</if>
+   		</where>
+	</select>
+	
+	<update id="updateById" parameterType="com.uusoft.atp.model.TestDataInfo">
+		update TEST_DATA
+        set CASE_ID = #{case_id,jdbcType=INTEGER},
+        	PARA_NAME = #{para_name,jdbcType=VARCHAR},
+        	PARA_TYPE = #{para_type,jdbcType=VARCHAR},
+        	FIELD_NAME = #{field_name,jdbcType=VARCHAR},
+        	FIELD_TYPE = #{field_type,jdbcType=VARCHAR}
+        	VALUE_DATA = #{value_data,jdbcType=VARCHAR}
+        where DATA_ID = #{data_id,jdbcType=INTEGER}
+	</update>
+	
+	<select id="selectCaseValue" resultMap="BaseResultMap">
+   		select *
+		from TEST_DATA
+		where CASE_ID = #{case_id,jdbcType=INTEGER} ;
+	</select>
+	
+	<insert id="insertInitTestData" >
+		insert into test_data(case_id,para_name,para_type,field_name,field_type) 
+		select  #{case_id},a.para_name,a.para_type,b.field_name,b.field_type
+		from init_para a  LEFT JOIN init_field b
+		on a.para_id =b.para_id ,
+		init_service c
+		where c.service_name = #{service_name}
+		and c.method_name = #{method_name}
+		and a.method_id = c.method_id
+		ORDER BY a.para_id
+	</insert>
+	
+	<update id="updateMap2">
+	  	<foreach collection="map.keys" item ="key" open="begin" close="end;" separator="">
+  		UPDATE TEST_DATA SET VALUE_DATA=#{map[${key}],jdbcType=VARCHAR} WHERE DATA_ID=#{key,jdbcType=INTEGER}
+	  	</foreach>
+  	</update>
+	
+	<update id="updateMap">
+	      <foreach collection="dataMap.keys" item="key" index="index" open="" close="" separator=";">
+				UPDATE TEST_DATA 
+				<set>
+				  VALUE_DATA = #{dataMap[${key}],jdbcType=VARCHAR}
+				</set>
+				WHERE DATA_ID = #{key,jdbcType=VARCHAR}
+		 </foreach>
+    </update>
+	
+</mapper>

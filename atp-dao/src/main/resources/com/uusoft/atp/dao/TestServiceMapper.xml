@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace="com.uusoft.atp.dao.TestServiceMapper">
+	<resultMap id="BaseResultMap" type="com.uusoft.atp.model.TestServiceInfo" >
+	    <result column="SERVICE_ID" property="service_id" jdbcType="INTEGER" />
+	    <result column="SERVICE_NAME" property="service_name" jdbcType="VARCHAR" />
+	    <result column="SERVICE_DES" property="service_des" jdbcType="VARCHAR" />
+	    <result column="IS_RUN" property="is_run" jdbcType="INTEGER" />
+	    <result column="IS_DEL" property="is_del" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<sql id="Base_Column_List" >
+    	SERVICE_ID, SERVICE_NAME, SERVICE_DES, IS_RUN, IS_DEL
+  	</sql>
+	
+	<insert id="insert" parameterType="com.uusoft.atp.model.TestServiceInfo">
+		insert into TEST_SERVICE (SERVICE_NAME, SERVICE_DES, IS_RUN, IS_DEL)  values (#{service_name,jdbcType=VARCHAR},#{service_des,jdbcType=VARCHAR},#{is_run,jdbcType=VARCHAR}, 0)
+	</insert>
+	
+	<select id="selectAll" resultMap="BaseResultMap">
+		select 
+    	<include refid="Base_Column_List" />
+   		from TEST_SERVICE
+   		where IS_DEL = 0
+	</select>
+		
+	<select id="selectById" resultMap="BaseResultMap">
+		select 
+    	<include refid="Base_Column_List" />
+   		from TEST_SERVICE
+   		<where>
+   			<if test="service_id != null">
+   				SERVICE_ID = #{service_id,jdbcType=INTEGER}
+   			</if>
+   			and IS_DEL = 0
+   		</where>
+	</select>
+	
+	<select id="selectUnCreateService" resultType ="String" >
+		SELECT DISTINCT SERVICE_NAME from INIT_SERVICE  where SERVICE_NAME  not in (select SERVICE_NAME from TEST_SERVICE)
+	</select>
+	
+	<update id="updateById" parameterType="com.uusoft.atp.model.TestServiceInfo">
+		update TEST_SERVICE
+        set SERVICE_DES = #{service_des,jdbcType=VARCHAR},
+        	IS_RUN = #{is_run,jdbcType=INTEGER}
+        where SERVICE_ID = #{service_id,jdbcType=INTEGER}
+	</update>
+	
+	<update id="deleteById">
+		update TEST_SERVICE
+        set IS_DEL = 1
+        where SERVICE_ID = #{service_id,jdbcType=INTEGER}
+	</update>
+	
+	<select id="selectSeviceIdByName" resultType ="int" parameterType="java.lang.String">
+	select SERVICE_ID
+   		from TEST_SERVICE
+   		<where>
+   			<if test="service_name != null">
+   				SERVICE_NAME = #{service_name,jdbcType=VARCHAR}
+   			</if>
+   			and IS_DEL = 0
+   		</where>
+	</select>
+</mapper>
