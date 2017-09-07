@@ -3,11 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>atp-parent</artifactId>
   <packaging>pom</packaging>
+  <version>0.0.1-SNAPSHOT</version>
+  <groupId>com.uusoft</groupId>
   
   <parent>
-    <groupId>com.uusoft</groupId>
+    <groupId>com.cedaotech</groupId>
     <artifactId>common-public</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
   </parent>
   
   <modules>
