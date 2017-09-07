@@ -8,11 +8,11 @@
     
 	  <dubbo:consumer check="false"/>
 	
-	  <dubbo:reference id="meepoService" interface="com.uusoft.meepo.service.IFofTransService" version="${meepo.version}" generic="true"/>
+	  <!-- <dubbo:reference id="meepoService" interface="com.uusoft.meepo.service.IFofTransService" version="${meepo.version}" generic="true"/>
 	  	
       <dubbo:reference id="trsAppService" interface="com.uusoft.trs.service.TrsAppService" version="${trs.version}" generic="true"/> 
 	  <dubbo:reference id="riskAssessmentService"
-                     interface="com.uusoft.cfg.service.RiskAssessmentService" version="${cif.version}" generic="true"/> 
+                     interface="com.uusoft.cfg.service.RiskAssessmentService" version="${cif.version}" generic="true"/>  -->
 	
 	<!--   <dubbo:reference id="fundAccoService" interface="com.uusoft.cif.service.FundAccoService" version="${cif.version}" generic="true"/> 
 

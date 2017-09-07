@@ -18,7 +18,7 @@
 		<artifactId>atp-dao</artifactId>
 		<version>${project.version}</version>
 	</dependency>
-	<dependency>
+	<!-- <dependency>
             <groupId>com.uusoft</groupId>
             <artifactId>clr-service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
@@ -59,24 +59,24 @@
 			<artifactId>productcenter-service</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		<!-- 虚拟盘交易 -->
+		虚拟盘交易
 		<dependency>
 			<groupId>com.uusoft</groupId>
 			<artifactId>simlate-model</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		<!-- FOF 产品信息 -->
+		FOF 产品信息
 		<dependency>
             <groupId>com.uusoft</groupId>
             <artifactId>meepo-service</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
-        <!-- 非标消费接口 -->
+        非标消费接口
 		<dependency>
 		  <groupId>com.uusoft</groupId>
 		  <artifactId>nonstandard-service</artifactId>
 		  <version>1.2.0</version>
-		</dependency>
+		</dependency> -->
     <dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-context</artifactId>
