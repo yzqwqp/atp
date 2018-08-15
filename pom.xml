@@ -18,7 +18,7 @@
     <module>atp-web</module>
   </modules>
   
-  <!-- Maven插件  -->
+  <!-- Maven插件  配置 -->
   <build>
 	<plugins>
 		<plugin>
