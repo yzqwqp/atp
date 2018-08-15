@@ -6,11 +6,10 @@
   <version>0.0.1-SNAPSHOT</version>
   <groupId>com.uusoft</groupId>
   
-  <parent>
-    <groupId>com.cedaotech</groupId>
-    <artifactId>common-public</artifactId>
-    <version>1.0.1</version>
-  </parent>
+  <properties>
+		<spring.version>3.2.14.RELEASE</spring.version>
+		<slf4j.api.version>1.7.12</slf4j.api.version>
+  </properties>
   
   <modules>
   	<module>atp-model</module>
@@ -19,9 +18,9 @@
     <module>atp-web</module>
   </modules>
   
+  <!-- Maven插件 配置 -->
   <build>
 	<plugins>
-		<!-- Maven插件 配置 -->
 		<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-compiler-plugin</artifactId>

@@ -19,10 +19,12 @@
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-webmvc</artifactId>
+		<version>${spring.version}</version>
 	</dependency>
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-web</artifactId>
+		<version>${spring.version}</version>
 	</dependency>
 	<dependency>
 		<groupId>javax.servlet.jsp</groupId>
@@ -35,35 +37,47 @@
 		<groupId>javax.servlet</groupId>
 		<artifactId>jstl</artifactId>
 		<scope>runtime</scope>
+		<version>1.1.2</version>
 	</dependency>
 	<dependency>
 		<groupId>javax.servlet</groupId>
 		<artifactId>servlet-api</artifactId>
 		<scope>provided</scope>
+		<version>2.5</version>
 	</dependency>
 	<dependency>
 		<groupId>taglibs</groupId>
 		<artifactId>standard</artifactId>
+		<version>1.1.2</version>
 	</dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
     <!-- 格式化对象，方便输出日志 -->  
 	<dependency>  
 		<groupId>com.alibaba</groupId>  
-		<artifactId>fastjson</artifactId>  
+		<artifactId>fastjson</artifactId>
+		<version>1.2.0</version>
 	</dependency>
 	<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>1.9.4</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-		</dependency>
+		<groupId>org.codehaus.jackson</groupId>
+		<artifactId>jackson-mapper-asl</artifactId>
+		<version>1.9.4</version>
+	</dependency>
+	<dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-databind</artifactId>
+		<version>2.4.4</version>
+	</dependency>
+	<dependency>
+		<groupId>junit</groupId>
+		<artifactId>junit</artifactId>
+		<scope>test</scope>
+		<version>4.11</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-test</artifactId>
+		<version>${spring.version}</version>
+		<scope>test</scope>
+	</dependency>
   </dependencies>
   
   <build>
