@@ -128,5 +128,13 @@ public  final class JsonUtil {
 		return obj;
 	}
 	
+	/*
+	 * String和Json 之间的转换  ：  String --> Json TODO
+	 */
+	public static Map<String, String> json2Map(String json){
+		JSONObject jsonobj = JSONObject.parseObject(json);
+		return  (Map)jsonobj;
+	}
+	
 
 }

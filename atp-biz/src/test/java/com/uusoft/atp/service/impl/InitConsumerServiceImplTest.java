@@ -44,7 +44,7 @@ public class InitConsumerServiceImplTest {
 	@Resource
 	private InitConsumerMapper consumermapper;
 	@Resource
-	private initConsumerServiceImpl impl;
+//	private initConsumerServiceImpl impl;
 	
 	InitConsumerInfo info = new InitConsumerInfo();
 
@@ -55,6 +55,6 @@ public class InitConsumerServiceImplTest {
 		info.setOwner("trs111");
 		info.setServername("2");
 		info.setVersion("${trs.version}");
-		System.out.println(impl.insertxml(info));
+//		System.out.println(impl.insertxml(info));
 	}
 }

@@ -45,9 +45,9 @@ import com.uusoft.atp.service.TestServiceService;
 import com.uusoft.atp.service.impl.InitServiceServiceImpl;
 import com.uusoft.atp.utils.JsonUtil;
 import com.uusoft.atp.utils.SpringUtil;
-import com.uusoft.trs.service.SpecialTradeService;
-import com.uusoft.trs.service.TrsAppService;
-import com.uusoft.meepo.service.IFofProductinfoService;
+//import com.uusoft.trs.service.SpecialTradeService;
+//import com.uusoft.trs.service.TrsAppService;
+//import com.uusoft.meepo.service.IFofProductinfoService;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/spring-application.xml")
 public class InitServiceServiceImplTest {
@@ -76,22 +76,22 @@ public class InitServiceServiceImplTest {
 		LOGGER.info("###########################");
 	}
 	
-	@Test
-	public void test002(){
-		Method[] declaredMethods = IFofProductinfoService.class.getMethods();
-		for (final Method method : declaredMethods){
-			System.out.println("%%%%%%%%%%%%");
-			System.out.println(method.getName());	
-			System.out.println("%%%%%%%%%%%%");
-			Parameter[] parameters = method.getParameters();
-			for (Parameter parameter : parameters){
-				System.out.println("********************************");
-				System.out.println("parameterName="+parameter.getName());
-				System.out.println("type="+parameter.getType().getName());
-				System.out.println("********************************");
-			}
-		}
-	}
+//	@Test
+//	public void test002(){
+//		Method[] declaredMethods = IFofProductinfoService.class.getMethods();
+//		for (final Method method : declaredMethods){
+//			System.out.println("%%%%%%%%%%%%");
+//			System.out.println(method.getName());	
+//			System.out.println("%%%%%%%%%%%%");
+//			Parameter[] parameters = method.getParameters();
+//			for (Parameter parameter : parameters){
+//				System.out.println("********************************");
+//				System.out.println("parameterName="+parameter.getName());
+//				System.out.println("type="+parameter.getType().getName());
+//				System.out.println("********************************");
+//			}
+//		}
+//	}
 	
 	@Test
 	public void test003(){
