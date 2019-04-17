@@ -25,13 +25,13 @@ import redis.clients.jedis.JedisPoolConfig;
 public class RedisUtil {
 	
 //Redis服务器IP
-	private static String ADDR = "121.40.235.92";//智能推荐--测试环境
-//	private static String ADDR = "121.41.66.71";//智能推荐--生产环境
+//	private static String ADDR = "121.40.235.92";//智能推荐--测试环境
+	private static String ADDR = "121.41.66.71";//智能推荐--生产环境
 	//Redis的端口号
 	private static int PORT = 6379;
 	//访问密码
-	private static String AUTH = "rdsqazxsw123";//智能推荐--测试环境
-//	private static String AUTH = "rdsqazxsw123real";//智能推荐--生产环境
+//	private static String AUTH = "rdsqazxsw123";//智能推荐--测试环境
+	private static String AUTH = "rdsqazxsw123real";//智能推荐--生产环境
 	//可用连接实例的最大数目，默认值为8；
 	//如果赋值为-1，则表示不限制；如果pool已经分配了maxActive个jedis实例，则此时pool的状态为exhausted(耗尽)。
 	private static int MAX_ACTIVE = 600;
@@ -56,10 +56,11 @@ public class RedisUtil {
 	 */
 	public static void main(String[] args) {
 		
-		updaeRedisTime(key1);
+//		updaeRedisTime(key1);
 //		selectRedisUser();
 		selectRedisList();
 		
+		RedisUtil.expire(key2);
 		RedisUtil.expire(key3);
 		RedisUtil.expire(key4);
 		RedisUtil.expire(key5);
