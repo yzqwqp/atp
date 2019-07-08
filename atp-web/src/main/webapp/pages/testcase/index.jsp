@@ -26,7 +26,8 @@
 <link rel="stylesheet" href="<%=path%>/css/xenon-core.css">
 <link rel="stylesheet" href="<%=path%>/css/animation.css">
 <link rel="stylesheet" href="<%=path%>/css/tou-style.css">
-<script src="<%=path%>/js/jquery-1.11.1.min.js"></script>
+<script src="<%=path%>/js/j
+-1.11.1.min.js"></script>
 <script type="text/javascript" src="<%=path%>/js/common/page.js"></script>
 <script type="text/javascript">
 	var path='<%=path%>';

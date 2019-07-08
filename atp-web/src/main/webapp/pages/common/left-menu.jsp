@@ -48,6 +48,7 @@
 										<li><a href="<%=path%>/testservice/index.do"><span class="title">被测服务</span></a></li>
 										<li><a href="<%=path%>/testmethod/index.do"><span class="title">被测方法</span></a></li>
 										<li><a href="<%=path%>/testcase/index.do"><span class="title">测试用例</span></a></li>
+										<li><a href="<%=path%>/jsoneditor/index.do"><span class="title">josn编辑页面</span></a></li>
 									</ul>
 								</li>
 								<li><a href="#"><i class="linecons-desktop"><img src="<%=path%>/img/icon06.png" /></i><span class="title">测试常量</span></a>
