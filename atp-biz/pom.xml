@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.uusoft</groupId>
@@ -104,19 +104,7 @@
         <artifactId>dom4j</artifactId>
         <version>1.6.1</version>
     </dependency> 
-	<!-- 日志文件管理包 -->  
-	<!-- log start -->  
-	<dependency>  
-	    <groupId>log4j</groupId>  
-	    <artifactId>log4j</artifactId>
-	    <version>1.2.17</version>  
-	</dependency>
-	<!-- slf4j -->
-	<dependency>
-		<groupId>org.slf4j</groupId>
-		<artifactId>slf4j-api</artifactId>
-		<version>${slf4j.api.version}</version>
-	</dependency>
+	
     <dependency>
 		<groupId>com.alibaba</groupId>
 		<artifactId>dubbo</artifactId>
@@ -159,5 +147,32 @@
       <scope>test</scope>
       <version>4.11</version>
     </dependency>
+	<dependency>
+	    <groupId>commons-httpclient</groupId>
+	    <artifactId>commons-httpclient</artifactId>
+	    <version>3.1</version>
+	</dependency>
+	<dependency>
+	    <groupId>com.thoughtworks.xstream</groupId>
+	    <artifactId>xstream</artifactId>
+	    <version>1.4.11</version>
+	</dependency>
+	<dependency>
+	    <groupId>com.fasterxml.jackson.core</groupId>
+	    <artifactId>jackson-databind</artifactId>
+	    <version>2.9.9</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.codehaus.jackson</groupId>
+	    <artifactId>jackson-mapper-asl</artifactId>
+	    <version>1.9.13</version>
+	</dependency>
+	<dependency>
+	  <groupId>org.slf4j</groupId>
+	  <artifactId>slf4j-log4j12</artifactId>
+	  <version>1.7.21</version>
+	</dependency>
+
+
   </dependencies>
 </project>

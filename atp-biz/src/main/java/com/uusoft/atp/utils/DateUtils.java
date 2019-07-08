@@ -1,3 +1,4 @@
+
 package com.uusoft.atp.utils;
 
 import java.text.ParseException;
@@ -73,4 +74,17 @@ public class DateUtils {
 	 	public static long dateToLong(Date date) {
 	 		return date.getTime();
 	 	}
+	 	
+	 	private static final String FORMAT_DATE = "yyyyMMdd";
+		private static final String FORMAT_TIME = "HHmmss";
+
+		public static String getDate() {
+			SimpleDateFormat formatter = new SimpleDateFormat(FORMAT_DATE);
+			return formatter.format(new Date());
+		}
+		
+		public static String getTime() {
+			SimpleDateFormat formatter = new SimpleDateFormat(FORMAT_TIME);
+			return formatter.format(new Date());
+		}
 }

@@ -1,0 +1,7 @@
+.project
+.settings
+.git/
+#.atp-biz/target
+#.atp-dao/target
+#.atp-web/target
+#.atp-model/target

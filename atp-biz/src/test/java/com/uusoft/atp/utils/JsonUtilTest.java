@@ -34,6 +34,11 @@ import com.uusoft.atp.service.impl.TestCaseServiceImpl;
 public class JsonUtilTest {
 	private static final  Logger LOGGER = LoggerFactory.getLogger(JsonUtilTest.class);
 	
+	@Test
+	public void test(){
+		LOGGER.info("test");	
+	}
+	
 	@Resource
 	private TestCaseServiceImpl testCaseServiceImpl;
 
