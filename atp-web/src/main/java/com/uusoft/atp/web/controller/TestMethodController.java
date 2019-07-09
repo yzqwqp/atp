@@ -9,8 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.uusoft.atp.model.InitServiceInfo;
 import com.uusoft.atp.model.TestMethodInfo;
@@ -38,12 +41,33 @@ public class TestMethodController {
 	@RequestMapping("/index")
 	public String index(HttpServletRequest request) {
 		LOGGER.info("******TestMethod  index   begin******");
-		List<TestServiceInfo> allData = testServiceService.selectAll();
-		List<TestMethodInfo> methodData = testMethodService.selectAll();
+		List<TestServiceInfo> initServiceList = testServiceService.selectAll();
+		List<TestMethodInfo> methodData = null;
+		List<TestMethodInfo> initMethodList = null;
+		String sid = request.getParameter("initserviceselect");
+		if (!StringUtils.isEmpty(sid))
+		{
+			ResultTool<List<TestMethodInfo>> res = testMethodService.createdMethod(Integer.parseInt(sid));
+			if (res.isSuccess())
+			{
+				initMethodList = res.getObj();
+			}
+		}
+		
+		String initmethodselect = request.getParameter("initmethodselect");
+		if (!StringUtils.isEmpty(initmethodselect))
+		{
+			methodData = testMethodService.selectById(Integer.parseInt(initmethodselect));
+		}
+		else
+		{
+			methodData = testMethodService.selectAll();
+		}
+		
 //		List<InitServiceInfo> initData = initServiceService.selectAllService();
-		request.setAttribute("serviceList", allData);//筛选列的[服务名称]数据
-//		request.setAttribute("initServiceList", initData);//筛选列的[服务名称]数据
-//		request.setAttribute("initMethodList", initData);//筛选列的[方法名称]数据
+//		request.setAttribute("serviceList", allData);//筛选列的[服务名称]数据
+		request.setAttribute("initServiceList", initServiceList);//筛选列的[服务名称]数据
+		request.setAttribute("initMethodList", initMethodList);//筛选列的[方法名称]数据
 		request.setAttribute("methodList", methodData);//查询结果列的数据
 		return "testmethod/index";
 	}
@@ -69,20 +93,33 @@ public class TestMethodController {
 	
 	@RequestMapping("/selectById")
     @ResponseBody
-    public ResultTool<TestMethodInfo> selectById(int sid){
-		LOGGER.info("******开始查询methodId :" +sid+" *****");
-		ResultTool<TestMethodInfo> result = testMethodService.selectById(sid);
-        return result;
-    }
+	public TestMethodInfo selectById(Integer sid) {
+		if (sid != null) {
+			LOGGER.info("******开始查询methodId :" + sid + " *****");
+			List<TestMethodInfo> result = testMethodService.selectById(sid);
+			if (result != null && !result.isEmpty()) {
+				return result.get(0);
+			}
+		}
+		return null;
+	}
+	
+//	@RequestMapping("/selectByServiceId")
+//    @ResponseBody
+//    public List<TestMethodInfo> selectByServiceId(int sid){
+//		LOGGER.info("******开始查询methodId :" +sid+" *****");
+//		List<TestMethodInfo> result = testMethodService.selectByServiceId(sid);
+//        return result;
+//    }
 	
 	@RequestMapping("/add")
 	@ResponseBody
     public ResultTool<String> add(TestMethodInfo testMethodInfo) {
         int i = testMethodService.insert(testMethodInfo);
 		if (i>0) {
-			result.setObj("【"+testMethodInfo.getService_name()+"的"+testMethodInfo.getMethod_name()+"】新增成功");;
+			result.setObj("【"+testMethodInfo.getMethod_name()+"】新增成功");;
 		} else {
-			result.setObj("【"+testMethodInfo.getService_name()+"的"+testMethodInfo.getMethod_name()+"】新增失败");;
+			result.setObj("【"+testMethodInfo.getMethod_name()+"】新增失败");;
 		}
         return result;
     }
@@ -116,9 +153,10 @@ public class TestMethodController {
 	
 	@RequestMapping("/addBefore")
 	@ResponseBody
-    public ResultTool<List<String>> addBefore() {
+    public List<TestServiceInfo> addBefore() {
         LOGGER.info("******开始addBefore*****");
-        return testServiceService.selectCreateService();
+        List<TestServiceInfo> result = testServiceService.selectAll();
+        return result;
     }
 	
 	@RequestMapping("/unCreateMethod")
@@ -128,13 +166,21 @@ public class TestMethodController {
         return testMethodService.unCreateMethod(sname);
     }
 	
-	@RequestMapping("/createdMethod")
+	@RequestMapping("/selectMethodsByServiceId")
     @ResponseBody
-    public ResultTool<List<String>> createdMethod(String sname){
-		LOGGER.info("******开始查询serviceName :" +sname+" 对应的method *****");
-		ResultTool<List<String>> result = testMethodService.createdMethod(sname);
-        return result;
+    public List<TestMethodInfo> selectMethodsByServiceId(int sid){
+		LOGGER.info("******开始查询serviceid :" +sid+" 对应的method *****");
+		List<TestMethodInfo> methodData = testMethodService.selectByServiceId(sid);
+        return methodData;
     }
+	
+	@RequestMapping("/createdMethod")
+	@ResponseBody
+	public ResultTool<List<TestMethodInfo>> createdMethod(int sid){
+		LOGGER.info("******开始查询serviceName :" +sid+" 对应的method *****");
+		ResultTool<List<TestMethodInfo>> result = testMethodService.createdMethod(sid);
+        return result;
+	}
 	
 	@RequestMapping("/selectByServiceNameAndMethodName")
     @ResponseBody

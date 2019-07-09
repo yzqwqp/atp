@@ -11,7 +11,7 @@ public interface TestMethodService {
 	
 	List<TestMethodInfo> selectAll();
 	
-	ResultTool<TestMethodInfo> selectById(int method_id);
+	List<TestMethodInfo> selectById(int method_id);
 	
 	ResultTool<TestMethodInfo> selectByServiceNameAndMethodName(String service_name, String method_name);
 	
@@ -23,7 +23,10 @@ public interface TestMethodService {
 	
 	ResultTool<List<String>> unCreateMethod(String service_name);
 	
-	ResultTool<List<String>> createdMethod(String service_name);
+	List<TestMethodInfo> selectMethodsByServiceId(int service_id);
+
+	ResultTool<List<TestMethodInfo>> createdMethod(int serviceId);
+	
 	
 	
 }

@@ -29,11 +29,11 @@
 	</appender>
 	
 	<logger name="com.uusoft"  additivity="true">
-		<level value="DEBUG" />
+		<level value="INFO" />
 	</logger>
 	
 	<root>
-		<level value="DEBUG" />
+		<level value="INFO" />
 		<appender-ref ref="ELP-ALL" />
 		<appender-ref ref="ELP-ERROR" />
 		<appender-ref ref="console" />

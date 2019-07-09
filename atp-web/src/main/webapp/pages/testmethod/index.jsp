@@ -34,11 +34,13 @@
 		var data={};
 		data.sid=id;
 		var url=path+"/testmethod/selectById.do";
-		ajaxReq(data, url, showSingle, "post");
-		$(".edit").modal("show");
+		// ajaxReq(data, url, showSingle, "post");
+		$.post(url, data, function(res) {
+			showSingle(res);
+			$(".edit").modal("show");
+		});
 	}
-	function showSingle(result){
-		var data=result.obj;
+	function showSingle(data){
 		$("#methodname2").val(data.method_name);
 		$("#methodid2").val(data.method_id);
 		$("#methoddes2").val(data.method_des);
@@ -55,7 +57,11 @@
 		data.method_des = $("#methoddes2").val();
 		data.is_run = $("#isrun2").val();
 		var url = path + "/testmethod/updateById.do";
-		ajaxReq(data, url, doCall, "post");
+		// ajaxReq(data, url, doCall, "post");
+		$.post(url, data, function(res) {
+			$("#methodname4").html(res.obj);
+			$(".xinxi").modal('show');
+		});
 	}
 	function del(id,name) {
 		$(".dele").modal("show");
@@ -72,21 +78,39 @@
 	function selectChangeService(event){
 		var value=$(event).val();
 		var url=path+"/testmethod/createdMethod.do";
-		var data={};
-		if(value==""){
-			data.sname="";
-		}else{
-			data.sname=value;
-		}
+		var data={sid:value};
 		ajaxReq(data, url, selectChangeServiceCall, "post");
 	}
 	function selectChangeServiceCall(result){
 		var data = result.obj;
 		var options = "";
 		for(var i=0;i<data.length;i++){
-			options+=("<option value='"+data[i]+"'>"+data[i]+"</option>");
+			options+=("<option value='"+data[i].method_id+"'>"+data[i].method_name+"</option>");
 		}
 		$("#initmethodselect").html(options);
+		
+		query();
+	}
+	function query(){
+		var data={};
+		data.sid=$("#initmethodselect").val();
+		var url=path+"/testmethod/selectById.do";
+		// ajaxReq(data, url, query_result, "post");
+		// $.post(url, data, function(res) {
+		//	query_result(res);
+		// });
+		//$(".edit").modal("show");
+		$("#payForm").submit();
+	}
+	function query_result(data) {
+		$("#table_list").html(data);
+	}
+	function selectChangeMethod(event){
+		var value=$(event).val();
+		var url=path+"/testmethod/createdMethod.do";
+		var data={sid: value};
+		// ajaxReq(data, url, selectChangeServiceCall, "post");
+		query();
 	}
 	function chBlur(a, b, c) {
 		if ($("#" + a).val() == "") {
@@ -113,12 +137,11 @@
 		var url = path + "/testmethod/addBefore.do";
 		ajaxReq(data, url, addBeforecall, "get");
 	}
-	
 	function addBeforecall(result) {
-		var data = result.obj;
+		var data = result;
 		var options = "";
 		for(var i=0;i<data.length;i++){
-			options+=("<option value='"+data[i]+"'>"+data[i]+"</option>");
+			options+=("<option value='"+data[i].service_id+"'>"+data[i].service_name+"</option>");
 			}
 		$("#allService").html(options);
 	}
@@ -141,12 +164,13 @@
 		}
 		$("#unCreateMethod").html(options);
 	}
+	
 	function add() {
 		var data = {};
-		data.service_name = $("#allService").val();
-		data.method_name = $("#unCreateMethod").val();
-		data.method_des = $("#methoddes").val();
-		data.is_run = $("#isrun").val();
+		data.service_id = $("#allService").val();
+		data.method_name = $("#method_name").val();
+		data.method_des = $("#method_des").val();
+		data.is_run = $("#method_isrun").val();
 		var url = path + "/testmethod/add.do";
 		ajaxReq(data, url, doCall, "post");
 	}
@@ -169,18 +193,18 @@
 							<!--<div class="panel-options"> <a href="#"> <i class="linecons-cog"></i> </a> <a href="#" data-toggle="panel"> <span class="collapse-icon">–</span> <span class="expand-icon">+</span> </a> <a href="#" data-toggle="reload"> <i class="fa-rotate-right"></i> </a> <a href="#" data-toggle="remove"> × </a> </div>-->
 						</div>
 						<div class="screen">
-						<form action="<%=path %>/testcase/index.do" id="payForm" method="post">
+						<form action="<%=path %>/testmethod/index.do" id="payForm" method="post">
 							<ul class="shaix clearfix">
 								<li><span>服务名称：</span> <select name="initserviceselect" id="initserviceselect" onchange="selectChangeService(this)">
 										<option value="">全部服务</option>
-										<c:forEach items="${serviceList }" var="item" >
-											<option value="${item.service_name }" onclick="queryMethod('${item.service_name}')" <c:if test="${item.service_name !=null }">selected</c:if> >${item.service_name }</option>
+										<c:forEach items="${initServiceList }" var="item" >
+											<option value="${item.service_id }" <c:if test="${param.initserviceselect == item.service_id }">selected</c:if> >${item.service_name }</option>
 										</c:forEach>
 								</select></li>
-								<li><span>方法名称：</span> <select name="initmethodselect" id="initmethodselect" >
+								<li><span>方法名称：</span> <select name="initmethodselect" id="initmethodselect" onchange="selectChangeMethod(this)">
 										<option value="">全部方法</option>
 										<c:forEach items="${initMethodList }" var="item">
-											<option value="${item.method_name }" <c:if test="${item.method_name !=null }">selected</c:if> >${item.method_name }</option>
+											<option value="${item.method_id }" <c:if test="${param.initmethodselect == item.method_id }">selected</c:if> >${item.method_name }</option>
 										</c:forEach>
 								</select></li>
 								<li><a href="javascript:void(0)" class="sxbtn" onclick="query()"> <span
@@ -194,29 +218,8 @@
 						</form>
 						</div>
 
-						<div class="table-responsive">
-							<table class="table table-bordered">
-								<tr>
-									<th>方法id</th>
-									<th>方法名称</th>
-									<th>方法描述</th>
-									<th>是否运行</th>
-									<th>操作</th>
-								</tr>
-								<c:forEach var="item" items="${methodList }">
-									<tr class="">
-										<td>${item.method_id }</td>
-										<td>${item.method_name }</td>
-										<td>${item.method_des }</td>
-										<td>${item.is_run }</td>
-										<td>
-											<a href="javascript:edit('${item.method_id}')">编辑</a>
-											<a href="javascript:del('${item.method_id }','${item.method_name }')">删除</a>
-											<a href="javascript:hrefCaseIndex('${item.method_id}')">用例</a>
-										</td>
-									</tr>
-								</c:forEach>
-							</table>
+						<div class="table-responsive" id="table_list">
+							<jsp:include page="list.jsp" />
 						</div>
 						<%@include file="../common/page.jsp" %>
 					</div>
@@ -236,21 +239,21 @@
 							<ul>
 							<li class="clearfix bgwhite">
 								<div class="fp">
-									<span><strong>*</strong>服务名称:</span> <select id="allService" onchange="changeService(this)"></select>
+									<span><strong>*</strong>服务名称:</span> <select id="allService"></select>
 								</div>
 								<div class="fp">
-									<span><strong>*</strong>方法名称:</span> <select id="unCreateMethod"></select>
+									<span><strong>*</strong>方法名称:</span> <input type="text" id="method_name" onblur="chBlur('method_name','method_name','方法名称不能为空')"/><span id="method_name_span" style="color: red;font-size:13px"></span>
 								</div>
 							</li>
 							<li class="clearfix bgwhite">
 								<div class="fp">
-									<span><strong>*</strong>方法描述:</span> <input type="text" id="methoddes" onblur="chBlur('methoddes','methoddes1','服务描述不能为空')"/><span id="methoddes1" style="color: red;font-size:13px"></span>
+									<span><strong>*</strong>方法描述:</span> <input type="text" id="method_des" onblur="chBlur('method_des','method_des','方法描述不能为空')"/><span id="method_des_span" style="color: red;font-size:13px"></span>
 								</div>						
 								<div class="fp">
 									<span><strong>*</strong>是否运行:</span>
-									<select id="isrun" >
-										<option value="1">YES</option>
+									<select id="method_isrun" >
 										<option value="0">NO</option>
+										<option value="1">YES</option>
 									</select>
 								</div>
 							</li>
@@ -284,7 +287,7 @@
 									<span><strong>*</strong>方法名称:</span> <input type="text"	id="methodname2"  disabled="disabled"/>
 								</div>
 								<div class="fp">
-									<span><strong>*</strong>方法id:</span> <input type="text"	id="methodid2"  disabled="disabled"/>
+									<span><strong>*</strong>方法id:</span> <input type="text"	 id="methodid2"  disabled="disabled"/>
 								</div>
 							</li>
 							<li class="clearfix bgwhite">

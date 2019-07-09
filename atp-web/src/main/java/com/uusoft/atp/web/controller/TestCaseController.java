@@ -67,14 +67,14 @@ public class TestCaseController {
 		
 		//--3--根据methodId搜索的method结果集
 		List<TestMethodInfo> listMethod = new ArrayList<TestMethodInfo>();
-		listMethod.add(testMethodService.selectById(sid).getObj());
+//		listMethod.add(testMethodService.selectById(sid).getObj());
 		request.setAttribute("initMethodList", listMethod);
 		
 		//--2--根据methodId搜索的service结果集
-		int serviceId = testMethodService.selectById(sid).getObj().getService_id();
-		ResultTool<TestServiceInfo> res = testServiceService.selectById(serviceId);
+//		int serviceId = testMethodService.selectById(sid).getObj().getService_id();
+//		ResultTool<TestServiceInfo> res = testServiceService.selectById(serviceId);
 		List<TestServiceInfo> listService = new ArrayList<TestServiceInfo>();
-		listService.add(res.getObj());
+//		listService.add(res.getObj());
 		request.setAttribute("initServiceList", listService);
 		
 		return "testcase/index";

@@ -73,5 +73,9 @@ public class TestMethodInfo {
 	public void setService_name(String service_name) {
 		this.service_name = service_name;
 	}
+	@Override
+	public String toString() {
+		return "{service_id=" + service_id + ", service_name=" + service_name + ", method_id=" + method_id + ", method_name=" + method_name + ", method_des=" + method_des + ", is_run=" + is_run + ", is_del=" + is_del + "}";
+	}
 	
 }

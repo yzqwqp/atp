@@ -44,7 +44,7 @@ public class TestServiceController {
     @ResponseBody
     public ResultTool<TestServiceInfo> selectById(int sid){
 		LOGGER.info("******开始查询serviceId :" +sid+" *****");
-        return testServiceService.selectById(sid);
+        return  testServiceService.selectById(sid);
     }
 	
 	@RequestMapping("/addBefore")

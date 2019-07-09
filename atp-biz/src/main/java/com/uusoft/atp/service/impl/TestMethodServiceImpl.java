@@ -32,12 +32,7 @@ public class TestMethodServiceImpl implements TestMethodService {
 	
 	@Override
 	public int insert(TestMethodInfo testMethodInfo) {
-		int serviceId = serviceMapper.selectSeviceIdByName(testMethodInfo.getService_name());
-		testMethodInfo.setService_id(serviceId);
-		LOGGER.info("testMethodInfo getService_id is :" +testMethodInfo.getService_id());
-		LOGGER.info("testMethodInfo getMethod_name is :" +testMethodInfo.getMethod_name());
-		LOGGER.info("testMethodInfo getMethod_des is :" +testMethodInfo.getMethod_des());
-		LOGGER.info("testMethodInfo getIs_run is :" +testMethodInfo.getIs_run());
+		LOGGER.info(testMethodInfo.toString());
 		return mapper.insert(testMethodInfo);
 	}
 
@@ -47,10 +42,12 @@ public class TestMethodServiceImpl implements TestMethodService {
 	}
 
 	@Override
-	public ResultTool<TestMethodInfo> selectById(int method_id) {
+	public List<TestMethodInfo> selectById(int method_id) {
+		List<TestMethodInfo> linfo = new ArrayList<TestMethodInfo>();
 		info = mapper.selectById(method_id);
-		LOGGER.info("id: ["+info.getService_id()+"] name: ["+info.getMethod_name()+"] des: ["+info.getMethod_des()+"] isrun: ["+info.getIs_run());
-		return ResultTool.setResult("0000", "查询成功", info);
+		linfo.add(info);
+		LOGGER.info("id: ["+info.getMethod_id()+"] name: ["+info.getMethod_name()+"] des: ["+info.getMethod_des()+"] isrun: ["+info.getIs_run() + "]");
+		return linfo;
 	}
 	
 	public int deleteById(int method_id){
@@ -67,27 +64,28 @@ public class TestMethodServiceImpl implements TestMethodService {
 		List<TestMethodInfo> info = mapper.selectByServiceId(service_id);
 		return info;
 	}
-
+	
+	@Override
+	public ResultTool<List<TestMethodInfo>> createdMethod(int serviceId) {
+		List<TestMethodInfo> info = mapper.selectByServiceId(serviceId);
+		return ResultTool.setResult("0000", "查询成功", info);
+	}
+	
 	@Override
 	public ResultTool<List<String>> unCreateMethod(String service_name) {
 		return ResultTool.setResult("0000", "查询成功", mapper.unCreateMethod(service_name));
 	}
 
 	@Override
-	public ResultTool<List<String>> createdMethod(String service_name) {
-		int serviceId = serviceMapper.selectSeviceIdByName(service_name);
-		List<TestMethodInfo> info = mapper.selectByServiceId(serviceId);
-		List<String> methods = new ArrayList<String>();
-		for (TestMethodInfo t:info) {
-			methods.add(t.getMethod_name());
-		}
-		return ResultTool.setResult("0000", "查询成功", methods);
-	}
-
-	@Override
 	public ResultTool<TestMethodInfo> selectByServiceNameAndMethodName(String service_name, String method_name) {
 		info = mapper.selectByServiceNameAndMethodName(service_name, method_name);
 		return ResultTool.setResult("0000", "查询成功", info);
+	}
+
+	@Override
+	public List<TestMethodInfo> selectMethodsByServiceId(int service_id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

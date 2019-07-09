@@ -36,13 +36,13 @@
     	<include refid="Base_Column_List" />
    		from TEST_METHOD
    		<where>
+   			IS_DEL = 0
    			<if test="method_id != null">
-   				METHOD_ID = #{method_id,jdbcType=INTEGER}
+   				and  METHOD_ID = #{method_id,jdbcType=INTEGER}
    			</if>
-   			and IS_DEL = 0
    		</where>
 	</select>
-	
+	 
 	<select id="selectByServiceId" resultMap="BaseResultMap">
 		select 
     	<include refid="Base_Column_List" />

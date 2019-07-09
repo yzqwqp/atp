@@ -12,35 +12,32 @@ import javax.annotation.Resource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-/** 
- * <p>Description: TODO(用一句话描述该文件做什么)</p> 
- * <p>Company:上海投投金融有限责任公司</p>
- * @author Adele
- * @version V1.0 
- */
+import com.uusoft.atp.model.TestMethodInfo;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/spring-dao.xml")
 public class TestMethodMapperTest {
 
-	/** 
-	 * <p>Description:TODO(这里用一句话描述这个方法的作用)</p>
-	 * @throws java.lang.Exception
-	 * @author Adele
-	 * @date 2016年12月14日 下午2:22:29   
-	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(TestMethodMapperTest.class);
+
 	@Resource
 	private TestMethodMapper methodMapper;
-	@Before
-	public void setUp() throws Exception {
-	}
 
-	@Test
+	//@Test
 	public void test() {
 		int id = methodMapper.selectMethodIdByName("testMethod");
 		System.out.println("************"+id);
+	}
+	
+	@Test
+	public void test2() {
+		TestMethodInfo info = methodMapper.selectById(22);
+		LOGGER.info(info.toString());
 	}
 
 }
