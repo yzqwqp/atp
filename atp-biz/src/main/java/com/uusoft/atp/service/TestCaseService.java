@@ -10,9 +10,8 @@ public interface TestCaseService {
 	
 	int insert(TestCaseInfo testCaseInfo);
 	
-	List<TestCaseInfo> selectAll();
 	
-	ResultTool<TestCaseInfo> selectById(int case_id);
+	TestCaseInfo selectById(int case_id);
 	
 	int update(TestCaseInfo testCaseInfo);
 	
@@ -27,4 +26,7 @@ public interface TestCaseService {
 	List<String>  getDatasByMethod(String method);
 	
 	List<TestCaseInfo> selectByMethodId(int method_id);
+	List<TestCaseInfo> selectByServiceId(int service_id);
+	List<TestCaseInfo> selectAll();
+	
 }

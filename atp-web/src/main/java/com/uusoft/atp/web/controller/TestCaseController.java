@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -40,20 +41,46 @@ public class TestCaseController {
 	
 	@RequestMapping("/index")
 	public String index(HttpServletRequest request) {
-		LOGGER.info("******TestCaseController  index   begin******");
+		LOGGER.info("******TestCase  index   begin******");
+		List<TestServiceInfo> initServiceList = testServiceService.selectAll();
+		List<TestCaseInfo> caseData = null;
+		List<TestMethodInfo> initMethodList = null;
+		String sid = request.getParameter("initserviceselect");
+		if (!StringUtils.isEmpty(sid))
+		{
+			ResultTool<List<TestMethodInfo>> res = testMethodService.createdMethod(Integer.parseInt(sid));
+			if (res.isSuccess())
+			{
+				initMethodList = res.getObj();
+			}
+		}
 		
-		List<TestCaseInfo> allData = testCaseService.selectAll();
-		List<TestServiceInfo> initData = testServiceService.selectAll();
-		request.setAttribute("serviceList", initData);//筛选列的[服务名称]数据
-		request.setAttribute("caseList", allData);
+		String initmethodselect = request.getParameter("initmethodselect");
+		if (!StringUtils.isEmpty(initmethodselect))
+		{
+			caseData = testCaseService.selectByMethodId(Integer.parseInt(initmethodselect));//当前选中的methodid，查出所有methodid下的测试用例
+		}
+		else if (!StringUtils.isEmpty(sid))
+		{
+			caseData = testCaseService.selectByServiceId(Integer.parseInt(sid));//当前选中的serviceid，查出所有serviceid下的测试用例
+		} else
+		{
+			caseData = testCaseService.selectAll();//查出所有测试用例
+		}
+		
+//		List<InitServiceInfo> initData = initServiceService.selectAllService();
+//		request.setAttribute("serviceList", allData);//筛选列的[服务名称]数据
+		request.setAttribute("initServiceList", initServiceList);//筛选列的[服务名称]数据
+		request.setAttribute("initMethodList", initMethodList);//筛选列的[方法名称]数据
+		request.setAttribute("caseList", caseData);//查询结果列的数据
 		return "testcase/index";
 	}
 	
 	@RequestMapping("/selectById")
     @ResponseBody
-    public ResultTool<TestCaseInfo> selectById(int sid){
+    public TestCaseInfo selectById(Integer sid){
 		LOGGER.info("******TestCaseController开始查询caseId :" +sid+" *****");
-		ResultTool<TestCaseInfo> result = testCaseService.selectById(sid);
+		TestCaseInfo result = testCaseService.selectById(sid);
         return result;
     }
 	
@@ -82,33 +109,21 @@ public class TestCaseController {
 	
 	@RequestMapping("/add")
 	@ResponseBody
-    public ResultTool<String> add(String service_name, String method_name, String case_des, String is_run, String case_assert_value, String case_assert_type) {
-		TestCaseInfo info = new TestCaseInfo();
-		int method_id = testMethodService.selectByServiceNameAndMethodName(service_name, method_name).getObj().getMethod_id();
-		info.setMethod_id(method_id);
-		info.setCase_des(case_des);
-		info.setIs_run(Integer.parseInt(is_run));
-		info.setCase_assert_value(case_assert_value);
-		info.setCase_assert_type(case_assert_type);
-		int i = testCaseService.insert(info);
+    public ResultTool<String> add(TestCaseInfo testCaseInfo) {
+		int i = testCaseService.insert(testCaseInfo);
 		if (i>0) {
-			result.setObj("【"+method_name+"的"+case_des+"】新增成功");;
+			result.setObj("【"+testCaseInfo.getCase_des()+"】新增成功");;
 		} else {
-			result.setObj("【"+method_name+"的"+case_des+"】新增失败");;
+			result.setObj("【"+testCaseInfo.getCase_des()+"】新增失败");;
 		}
         return result;
     }
 	
-	@RequestMapping("/update")
+	@RequestMapping("/updateById")
 	@ResponseBody
     public ResultTool<String> update(TestCaseInfo testCaseInfo) {
 		LOGGER.info("******TestCaseController开始updateById :" +testCaseInfo.getCase_id()+" *****");
-		LOGGER.info("id: ["+testCaseInfo.getCase_id()
-					+"] des: ["+testCaseInfo.getCase_des()+"] isrun: ["+testCaseInfo.getIs_del()+"] "
-							+ "case_assert_type: [" + testCaseInfo.getCase_assert_type() +"] "
-									+ "case_assert_value: ["+testCaseInfo.getCase_assert_value()+"] "
-											+ "case_data: ["+testCaseInfo.getCase_data()
-					);
+		LOGGER.info(testCaseInfo.toString());
 		int i = testCaseService.update(testCaseInfo);
 		if (i>0) {
 			result.setObj("【"+testCaseInfo.getCase_des()+"】更新成功");;
@@ -136,4 +151,25 @@ public class TestCaseController {
 		LOGGER.info("******TestCaseController开始run :" +sid+" *****");
 		testCaseService.run(sid);
     }
+	
+	@RequestMapping("/createdMethod")
+	@ResponseBody
+	public ResultTool<List<TestMethodInfo>> createdMethod(int sid){
+		LOGGER.info("******开始查询serviceName :" +sid+" 对应的method *****");
+		ResultTool<List<TestMethodInfo>> result = testMethodService.createdMethod(sid);
+        return result;
+	}
+	
+	@RequestMapping("/selectMethodId")
+    @ResponseBody
+	public TestMethodInfo selectMethodId(Integer sid) {
+		if (sid != null) {
+			LOGGER.info("******开始查询methodId :" + sid + " *****");
+			List<TestMethodInfo> result = testMethodService.selectById(sid);
+			if (result != null && !result.isEmpty()) {
+				return result.get(0);
+			}
+		}
+		return null;
+	}
 }

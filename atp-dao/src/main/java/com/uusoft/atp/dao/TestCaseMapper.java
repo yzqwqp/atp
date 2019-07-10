@@ -19,8 +19,6 @@ public interface TestCaseMapper {
 	
 	TestCaseInfo selectById(@Param("case_id") int case_id);
 	
-	int updateById(TestCaseInfo testCaseInfo);
-	
 	List<String> selectDatasByMethodId(@Param("method_id")int method_id);
 	
 	String selectDataById(@Param("case_id")int case_id);
@@ -36,4 +34,6 @@ public interface TestCaseMapper {
 	TestCaseVo selectByCaseId(@Param("case_id") int case_id);
 
 	List<TestCaseInfo> selectByMethodId(@Param("method_id")int method_id);
+	
+	List<TestCaseInfo> selectByServiceId(@Param("service_id")int service_id);
 }

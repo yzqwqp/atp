@@ -12,7 +12,7 @@
 	    <result column="CASE_ID" property="case_id" jdbcType="INTEGER" />
 	    <result column="CASE_DES" property="case_des" jdbcType="VARCHAR" />
 	    <result column="CASE_DATA" property="case_data" jdbcType="VARCHAR" />
-	    <result column="CASE_ASSERT_TYPE" property="case_assert_type" jdbcType="VARCHAR" />
+	    <result column="CASE_ASSERT_TYPE" property="case_assert_type" jdbcType="INTEGER" />
 	    <result column="CASE_ASSERT_VALUE" property="case_assert_value" jdbcType="VARCHAR" />
 	    <result column="IS_RUN" property="is_run" jdbcType="INTEGER" />
 	    <result column="IS_DEL" property="is_del" jdbcType="INTEGER" />
@@ -28,7 +28,7 @@
 	    <result column="CASE_ID" property="case_id" jdbcType="INTEGER" />
 	    <result column="CASE_DES" property="case_des" jdbcType="VARCHAR" />
 	    <result column="CASE_DATA" property="case_data" jdbcType="VARCHAR" />
-	    <result column="CASE_ASSERT_TYPE" property="case_assert_type" jdbcType="VARCHAR" />
+	    <result column="CASE_ASSERT_TYPE" property="case_assert_type" jdbcType="INTEGER" />
 	    <result column="CASE_ASSERT_VALUE" property="case_assert_value" jdbcType="VARCHAR" />
 	    <result column="IS_RUN" property="is_run" jdbcType="INTEGER" />
 	    <result column="IS_DEL" property="is_del" jdbcType="INTEGER" />
@@ -54,10 +54,10 @@
     	<include refid="Base_Column_List" />
    		from TEST_CASE
    		<where>
+   			IS_DEL = 0
    			<if test="case_id != null">
-   				CASE_ID = #{case_id,jdbcType=INTEGER}
+   				and CASE_ID = #{case_id,jdbcType=INTEGER}
    			</if>
-   			and IS_DEL = 0
    		</where>
 	</select>
 	
@@ -66,19 +66,31 @@
     	<include refid="Base_Column_List" />
    		from TEST_CASE
    		<where>
+   			IS_DEL = 0
    			<if test="method_id != null">
-   				METHOD_ID = #{method_id,jdbcType=INTEGER}
+   				and METHOD_ID = #{method_id,jdbcType=INTEGER}
    			</if>
-   			and IS_DEL = 0
+   		</where>
+	</select>
+	
+	<select id="selectByServiceId" resultMap="BaseResultMap">
+		select 
+    	A.METHOD_ID, A.CASE_ID, A.CASE_DES, A.CASE_DATA, A.CASE_ASSERT_TYPE, A.CASE_ASSERT_VALUE, A.IS_RUN, A.IS_DEL
+   		from TEST_METHOD B,TEST_CASE A
+   		<where>
+   			A.IS_DEL = 0 AND B.METHOD_ID = A.METHOD_ID
+   			<if test="service_id != null">
+   				AND B.SERVICE_ID = #{service_id,jdbcType=INTEGER}
+   			</if>
    		</where>
 	</select>
 	
 	<update id="update" parameterType="com.uusoft.atp.model.TestCaseInfo">
 		update TEST_CASE
-        set METHOD_ID = #{method_id,jdbcType=INTEGER},
+        set 
         	CASE_DES = #{case_des,jdbcType=VARCHAR},
         	CASE_DATA = #{case_data,jdbcType=VARCHAR},
-        	CASE_ASSERT_TYPE = #{case_assert_type,jdbcType=VARCHAR},
+        	CASE_ASSERT_TYPE = #{case_assert_type,jdbcType=INTEGER},
         	CASE_ASSERT_VALUE = #{case_assert_value,jdbcType=VARCHAR},
         	IS_RUN = #{is_run,jdbcType=INTEGER}
         where CASE_ID = #{case_id,jdbcType=INTEGER}

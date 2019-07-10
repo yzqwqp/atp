@@ -128,7 +128,7 @@ public class TestMethodController {
 	@ResponseBody
     public ResultTool<String> updateById(TestMethodInfo testMethodInfo) {
 		LOGGER.info("******开始updateById :" +testMethodInfo.getService_id()+" *****");
-		LOGGER.info("id: ["+testMethodInfo.getService_id()+"] name: ["+testMethodInfo.getMethod_name()+"] des: ["+testMethodInfo.getMethod_des()+"] isrun: ["+testMethodInfo.getIs_del());
+		LOGGER.info(testMethodInfo.toString());
 		int i = testMethodService.updateById(testMethodInfo);
 		if (i>0) {
 			result.setObj("【"+testMethodInfo.getMethod_name()+"】更新成功");;

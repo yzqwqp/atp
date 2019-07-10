@@ -119,11 +119,6 @@ public class TestCaseServiceImpl implements TestCaseService {
 	
 	@Override
 	public int insert(TestCaseInfo testCaseInfo) {
-		LOGGER.info("testCaseInfo getCase_des is :" +testCaseInfo.getCase_des());
-		LOGGER.info("testCaseInfo getCase_data is :" +testCaseInfo.getCase_data());
-		LOGGER.info("testCaseInfo getCase_assert_type is :" +testCaseInfo.getCase_assert_type());
-		LOGGER.info("testCaseInfo getCase_assert_value is :" +testCaseInfo.getCase_assert_value());
-		LOGGER.info("testCaseInfo getIs_run is :" +testCaseInfo.getIs_run());
 		return mapper.insert(testCaseInfo);
 	}
 
@@ -133,10 +128,8 @@ public class TestCaseServiceImpl implements TestCaseService {
 	}
 
 	@Override
-	public ResultTool<TestCaseInfo> selectById(int case_id) {
-		TestCaseInfo info = mapper.selectById(case_id);
-		LOGGER.info("id: ["+info.getCase_id()+"] des: ["+info.getCase_des()+"] isrun: ["+info.getIs_run());
-		return ResultTool.setResult("0000", "查询成功", info);
+	public TestCaseInfo selectById(int case_id) {
+		return mapper.selectById(case_id);
 	}
 
 	@Override
@@ -216,6 +209,11 @@ public class TestCaseServiceImpl implements TestCaseService {
 	@Override
 	public List<TestCaseInfo> selectByMethodId(int method_id) {
 		return mapper.selectByMethodId(method_id);
+	}
+
+	@Override
+	public List<TestCaseInfo> selectByServiceId(int service_id) {
+		return mapper.selectByServiceId(service_id);
 	}
 
 }
