@@ -29,4 +29,6 @@ public interface TestCaseService {
 	List<TestCaseInfo> selectByServiceId(int service_id);
 	List<TestCaseInfo> selectAll();
 	
+	ResultTool<String> runById(int case_id);
+	
 }

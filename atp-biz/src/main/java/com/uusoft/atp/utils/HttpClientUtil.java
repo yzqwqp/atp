@@ -16,7 +16,7 @@ import com.uusoft.atp.httptest.utils.SSLClient;
  */
 public class HttpClientUtil {
     @SuppressWarnings("resource")
-    public static String doPost(String url,String jsonstr,String charset){
+    public static String doPost(String url,String jsonstr,String charset) throws Exception{
         HttpClient httpClient = null;
         HttpPost httpPost = null;
         String result = null;
@@ -36,7 +36,7 @@ public class HttpClientUtil {
                 }
             }
         }catch(Exception ex){
-            ex.printStackTrace();
+            throw ex;
         }
         return result;
     }

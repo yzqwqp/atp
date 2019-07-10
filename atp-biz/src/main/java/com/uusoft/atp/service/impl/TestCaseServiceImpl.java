@@ -9,14 +9,20 @@ import java.util.LinkedHashMap;
 * @since 2016年12月13日 上午10:19:12 
 */
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import static org.assertj.core.api.Assertions.*;
+
+import com.alibaba.fastjson.JSONObject;
 import com.uusoft.atp.dao.InitParaMapper;
 import com.uusoft.atp.dao.InitServiceMapper;
 import com.uusoft.atp.dao.TestCaseMapper;
@@ -25,11 +31,15 @@ import com.uusoft.atp.dao.TestReportMapper;
 import com.uusoft.atp.model.ParameterVo;
 import com.uusoft.atp.model.TestCaseInfo;
 import com.uusoft.atp.model.TestCaseVo;
+import com.uusoft.atp.model.TestMethodInfo;
 import com.uusoft.atp.model.TestReportInfo;
 import com.uusoft.atp.service.InitMethodService;
 import com.uusoft.atp.service.TestCaseService;
+import com.uusoft.atp.utils.HttpClientUtil;
+import com.uusoft.atp.utils.JsonUtil;
 import com.uusoft.atp.utils.ResultTool;
 import com.uusoft.atp.utils.SpringUtil;
+
 
 @Service("TestCaseService")
 @Transactional
@@ -196,8 +206,6 @@ public class TestCaseServiceImpl implements TestCaseService {
 		if (result.getCode().equals("9999")) {
 			return ResultTool.setResult("9999", "Case执行失败", null);
 		}
-		
-		//--6--TODO
 		//--6--根据getCase_assert_type类型不同，进行result返回值校验（如果调用的是void方法，暂时未想好怎么校验）
 		if (result.getObj().equals(null)) {
 			return ResultTool.setResult("9999", "Case执行返回值为空", null);
@@ -214,6 +222,60 @@ public class TestCaseServiceImpl implements TestCaseService {
 	@Override
 	public List<TestCaseInfo> selectByServiceId(int service_id) {
 		return mapper.selectByServiceId(service_id);
+	}
+
+	@Override
+	public ResultTool<String> runById(int case_id) {
+		TestCaseInfo caseInfo = mapper.selectById(case_id);
+		TestMethodInfo methodInfo =  methodMapper.selectById(caseInfo.getMethod_id());
+		String httpOrgCreateTestRtn = "";
+		int httpStatus = 0;//0-初始化 1-成功 2失败
+		String httpError = "";
+		int assertStatus = 0;
+		String assertError = "";
+		try {
+			httpOrgCreateTestRtn = HttpClientUtil.doPost(methodInfo.getMethod_address(), caseInfo.getCase_data(), "utf-8");
+			httpStatus = 1;
+		} catch (Exception e) {
+			LOGGER.error("", e);
+			httpError = e.getMessage();
+			httpStatus = 2;
+		}
+		
+		if (httpStatus != 1)
+		{
+			// throw 记录结果（执行ID，用例ID，用例data，返回结果，httpStatus,httpError）
+		}
+		
+		if (StringUtils.isEmpty(httpOrgCreateTestRtn))
+		{
+			// throw
+		}
+		
+		JSONObject jsonobj = JSONObject.parseObject(httpOrgCreateTestRtn);
+		if (jsonobj == null)
+		{
+			// throw
+		}
+		
+		if (!jsonobj.containsKey("code"))
+		{
+			// throw
+		}
+		
+		String code = jsonobj.getString("code");
+		if (StringUtils.isEmpty(code))
+		{
+			// throw
+		}
+		
+//		Map<String, String> map = JsonUtil.json2Map(httpOrgCreateTestRtn);
+		Boolean a = code.equals(caseInfo.getCase_assert_value());
+		if (a == true) {
+			return ResultTool.setResult("9999", "Case执行返回值为空", null);
+		} else {
+			return ResultTool.setResult("9999", "Case执行返回值为空", null);
+		}
 	}
 
 }

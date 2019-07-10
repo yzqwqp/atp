@@ -18,6 +18,10 @@ public class TestMethodInfo {
      */
 	private String method_name;
 	/**
+     * 方法地址
+     */
+	private String method_address;
+	/**
      * 方法描述
      */
 	private String method_des;
@@ -73,9 +77,15 @@ public class TestMethodInfo {
 	public void setService_name(String service_name) {
 		this.service_name = service_name;
 	}
+	public String getMethod_address() {
+		return method_address;
+	}
+	public void setMethod_address(String method_address) {
+		this.method_address = method_address;
+	}
 	@Override
 	public String toString() {
-		return "{service_id=" + service_id + ", service_name=" + service_name + ", method_id=" + method_id + ", method_name=" + method_name + ", method_des=" + method_des + ", is_run=" + is_run + ", is_del=" + is_del + "}";
+		return "{service_id=" + service_id + ", service_name=" + service_name + ", method_id=" + method_id + ", method_name=" + method_name + ", method_des=" + method_des + ", is_run=" +", method_address=" + method_address + ", is_run=" + is_run + ", is_del=" + is_del + "}";
 	}
 	
 }

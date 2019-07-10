@@ -20,7 +20,7 @@ public class TestCaseInfo {
 	/**
      * 用例断言类型
      */
-	private String case_assert_type;
+	private int case_assert_type;
 	/**
      * 用例断言的值
      */
@@ -58,10 +58,10 @@ public class TestCaseInfo {
 	public void setCase_data(String case_data) {
 		this.case_data = case_data;
 	}
-	public String getCase_assert_type() {
+	public int getCase_assert_type() {
 		return case_assert_type;
 	}
-	public void setCase_assert_type(String case_assert_type) {
+	public void setCase_assert_type(int case_assert_type) {
 		this.case_assert_type = case_assert_type;
 	}
 	public String getCase_assert_value() {

@@ -5,6 +5,7 @@
 		<th>方法id</th>
 		<th>方法名称</th>
 		<th>方法描述</th>
+		<th>方法地址</th>
 		<th>是否运行</th>
 		<th>操作</th>
 	</tr>
@@ -13,6 +14,7 @@
 			<td>${item.method_id }</td>
 			<td>${item.method_name }</td>
 			<td>${item.method_des }</td>
+			<td>${item.method_address }</td>
 			<td>${item.is_run == '1' ? 'YES' : 'NO' }</td>
 			<td>
 				<a href="javascript:edit('${item.method_id}')">编辑</a>
