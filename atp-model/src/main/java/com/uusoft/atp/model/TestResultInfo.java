@@ -2,9 +2,17 @@ package com.uusoft.atp.model;
 
 public class TestResultInfo {
 	/**
+     * 执行结果id
+     */
+	private int result_id;
+	/**
      * 执行id
      */
-	private int test_id;
+	private int execution_id;
+	/**
+     * 用例组ID
+     */
+	private int suite_id;
 	/**
      * 用例id
      */
@@ -53,17 +61,12 @@ public class TestResultInfo {
      * 断言状态异常信息
      */
 	private String assert_error;
-	/**
-     * 请求中的code的值
-     */
-	private String respone_data;
 	
-	public int getTest_id() {
-		return test_id;
+	@Override
+	public String toString() {
+		return "TestResultInfo : {result_id=" + result_id + ", execution_id=" + execution_id + ", suite_id=" + suite_id + ", case_id=" + case_id + ", case_des=" + case_des + ", method_address=" + method_address + ", case_data=" + case_data + ", response_data=" + response_data + ", case_assert_type=" + case_assert_type + ", case_assert_value=" + case_assert_value + ", response_assert_value=" + response_assert_value + ", http_status=" + http_status+ ", assert_status=" + assert_status+ ", http_error=" + http_error+ ", assert_error=" + assert_error+ ", 11=" + 11+ ", 11=" + 11 +"}";
 	}
-	public void setTest_id(int test_id) {
-		this.test_id = test_id;
-	}
+	
 	public int getCase_id() {
 		return case_id;
 	}
@@ -136,14 +139,23 @@ public class TestResultInfo {
 	public void setResponse_assert_value(String response_assert_value) {
 		this.response_assert_value = response_assert_value;
 	}
-	public String getRespone_data() {
-		return respone_data;
+	public int getResult_id() {
+		return result_id;
 	}
-	public void setRespone_data(String respone_data) {
-		this.respone_data = respone_data;
+	public void setResult_id(int result_id) {
+		this.result_id = result_id;
 	}
-	
-	
-	
+	public int getExecution_id() {
+		return execution_id;
+	}
+	public void setExecution_id(int execution_id) {
+		this.execution_id = execution_id;
+	}
+	public int getSuite_id() {
+		return suite_id;
+	}
+	public void setSuite_id(int suite_id) {
+		this.suite_id = suite_id;
+	}
 	
 }

@@ -2,13 +2,17 @@ package com.uusoft.atp.model;
 
 public class TestCaseInfo {
 	/**
-     * 方法id
-     */
-	private int method_id;
-	/**
      * 用例id
      */
 	private int case_id;
+	/**
+     * 用例组id
+     */
+	private int suite_id;
+	/**
+     * 方法地址
+     */
+	private String method_address;
 	/**
      * 用例描述
      */
@@ -26,19 +30,27 @@ public class TestCaseInfo {
      */
 	private String case_assert_value;
 	/**
-     * 是否执行
+     * 执行前处理
      */
-	private Integer is_run;
+	private int before_run;
+	/**
+     * 执行后处理
+     */
+	private int after_run;
+	/**
+     * 用例执行顺序 从  [before_run开始]-0-1-3-4
+     */
+	private int case_run_num;
 	/**
      * 是否删除
      */
-	private String is_del;
+	private int is_del;
 	
-	public int getMethod_id() {
-		return method_id;
+	public int getSuite_id() {
+		return suite_id;
 	}
-	public void setMethod_id(int method_id) {
-		this.method_id = method_id;
+	public void setSuite_id(int suite_id) {
+		this.suite_id = suite_id;
 	}
 	public int getCase_id() {
 		return case_id;
@@ -70,17 +82,38 @@ public class TestCaseInfo {
 	public void setCase_assert_value(String case_assert_value) {
 		this.case_assert_value = case_assert_value;
 	}
-	public Integer getIs_run() {
-		return is_run;
-	}
-	public void setIs_run(Integer is_run) {
-		this.is_run = is_run;
-	}
-	public String getIs_del() {
+	public int getIs_del() {
 		return is_del;
 	}
-	public void setIs_del(String is_del) {
+	public void setIs_del(int is_del) {
 		this.is_del = is_del;
 	}
-	
+	public String getMethod_address() {
+		return method_address;
+	}
+	public void setMethod_address(String method_address) {
+		this.method_address = method_address;
+	}
+	public int getBefore_run() {
+		return before_run;
+	}
+	public void setBefore_run(int before_run) {
+		this.before_run = before_run;
+	}
+	public int getAfter_run() {
+		return after_run;
+	}
+	public void setAfter_run(int after_run) {
+		this.after_run = after_run;
+	}
+	public int getCase_run_num() {
+		return case_run_num;
+	}
+	public void setCase_run_num(int case_run_num) {
+		this.case_run_num = case_run_num;
+	}
+	@Override
+	public String toString() {
+		return "TestCaseInfo : {case_id=" + case_id +", suite_id=" + suite_id +", method_address=" + method_address + ", case_des=" + case_des + ", case_data=" + case_data + ", case_assert_type=" + case_assert_type + ", case_assert_value=" + case_assert_value + ", is_del=" + is_del + ", case_assert_value=" + case_assert_value + "}";
+	}
 }

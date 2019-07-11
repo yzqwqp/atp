@@ -46,7 +46,6 @@ public class TestCaseMapperTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		testCase.setMethod_id(500);
 		String json="{loginName:\"Albert\",com.uusoft.cfg.service.model.TaInfo: {tano:\"55\",orgname:\"testTaname\",registercode:\"56\" ,cfctacode:\"tacf\"}com.xxx.Person:{name:\"Adele\",age:15}}";
 		testCase.setCase_data(json);
 		testCase.setCase_des("adele's test");

@@ -42,7 +42,6 @@ public class TestServiceServiceImplTest {
 	public void test01insert() {
 		info.setService_name("测试插入服务1");
 		info.setService_des("测试服务描述1");
-		info.setIs_run(0);
 		int i = impl.insert(info);
 		LOGGER.info("###########################");
 		LOGGER.info(Thread.currentThread() .getStackTrace()[1].getMethodName());
@@ -88,7 +87,6 @@ public class TestServiceServiceImplTest {
 		info.setService_id(3);
 		info.setService_name("测试插入服务3");
 		info.setService_des("测试服务描述3");
-		info.setIs_run(1);
 		int i =impl.updateById(info);
 		LOGGER.info("###########################");
 		LOGGER.info(Thread.currentThread() .getStackTrace()[1].getMethodName());

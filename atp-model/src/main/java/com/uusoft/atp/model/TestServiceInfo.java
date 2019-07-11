@@ -20,28 +20,15 @@ public class TestServiceInfo implements Serializable {
      */
 	private String service_des;
 	/**
-     * 是否执行
-     */
-	private Integer is_run;
-	/**
      * 是否删除
      */
-	private String is_del;
+	private int is_del;
 	
-	public String toString(){
-		return "test";
-	}
-	public String getIs_del() {
+	public int getIs_del() {
 		return is_del;
 	}
-	public void setIs_del(String is_del) {
+	public void setIs_del(int is_del) {
 		this.is_del = is_del;
-	}
-	public Integer getIs_run() {
-		return is_run;
-	}
-	public void setIs_run(Integer is_run) {
-		this.is_run = is_run;
 	}
 	public int getService_id() {
 		return service_id;
@@ -61,5 +48,8 @@ public class TestServiceInfo implements Serializable {
 	public void setService_des(String service_des) {
 		this.service_des = service_des;
 	}
-	
+	@Override
+	public String toString() {
+		return "TestServiceInfo ： {service_id=" + service_id + ", service_name=" + service_name + ", service_des=" + service_des + ", is_del=" + is_del + "}";
+	}
 }

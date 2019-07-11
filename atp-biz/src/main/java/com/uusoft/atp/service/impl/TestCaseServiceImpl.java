@@ -9,18 +9,14 @@ import java.util.LinkedHashMap;
 * @since 2016年12月13日 上午10:19:12 
 */
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-
-import static org.assertj.core.api.Assertions.*;
 
 import com.alibaba.fastjson.JSONObject;
 import com.uusoft.atp.dao.InitParaMapper;
@@ -28,16 +24,17 @@ import com.uusoft.atp.dao.InitServiceMapper;
 import com.uusoft.atp.dao.TestCaseMapper;
 import com.uusoft.atp.dao.TestMethodMapper;
 import com.uusoft.atp.dao.TestReportMapper;
+import com.uusoft.atp.dao.TestSuiteMapper;
 import com.uusoft.atp.model.ParameterVo;
 import com.uusoft.atp.model.TestCaseInfo;
 import com.uusoft.atp.model.TestCaseVo;
 import com.uusoft.atp.model.TestMethodInfo;
 import com.uusoft.atp.model.TestReportInfo;
 import com.uusoft.atp.model.TestResultInfo;
+import com.uusoft.atp.model.TestSuiteInfo;
 import com.uusoft.atp.service.InitMethodService;
 import com.uusoft.atp.service.TestCaseService;
 import com.uusoft.atp.utils.HttpClientUtil;
-import com.uusoft.atp.utils.JsonUtil;
 import com.uusoft.atp.utils.ResultTool;
 import com.uusoft.atp.utils.SpringUtil;
 
@@ -50,6 +47,8 @@ public class TestCaseServiceImpl implements TestCaseService {
 	
 	@Resource
 	TestCaseMapper mapper;
+	@Resource
+	TestSuiteMapper suiteMapper;	
 	@Resource
 	TestMethodMapper methodMapper;
 	@Resource
@@ -230,7 +229,10 @@ public class TestCaseServiceImpl implements TestCaseService {
 	@Override
 	public ResultTool<String> runById(int case_id) {
 		TestCaseInfo caseInfo = mapper.selectById(case_id);
-		TestMethodInfo methodInfo =  methodMapper.selectById(caseInfo.getMethod_id());
+		// TODO
+		TestSuiteInfo suiteInfo = suiteMapper.selectByCaseId(1);
+		// TODO
+		TestMethodInfo methodInfo =  methodMapper.selectById(suiteInfo.getMethod_id());
 		TestResultInfo testResultInfo = new TestResultInfo();
 		String httpOrgCreateTestRtn = "";
 		int httpStatus = 0;//0-初始化 1-成功 2失败
@@ -242,7 +244,8 @@ public class TestCaseServiceImpl implements TestCaseService {
 		
 		testResultInfo.setCase_id(caseInfo.getCase_id());
 		testResultInfo.setCase_des(caseInfo.getCase_des());
-		testResultInfo.setMethod_address(methodInfo.getMethod_address());
+		// TODO
+		testResultInfo.setMethod_address(caseInfo.getMethod_address());
 		testResultInfo.setCase_data(caseInfo.getCase_data());
 		testResultInfo.setCase_assert_type(caseInfo.getCase_assert_type());
 		testResultInfo.setCase_assert_value(caseInfo.getCase_assert_value());
@@ -250,7 +253,8 @@ public class TestCaseServiceImpl implements TestCaseService {
 		
 		// --1--开始处理请求
 		try {
-			httpOrgCreateTestRtn = HttpClientUtil.doPost(methodInfo.getMethod_address(), caseInfo.getCase_data(), "utf-8");
+			// TODO
+			httpOrgCreateTestRtn = HttpClientUtil.doPost(caseInfo.getMethod_address(), caseInfo.getCase_data(), "utf-8");
 			httpStatus = 10;
 			testResultInfo.setHttp_status(httpStatus);
 			testResultInfo.setResponse_data(httpOrgCreateTestRtn);

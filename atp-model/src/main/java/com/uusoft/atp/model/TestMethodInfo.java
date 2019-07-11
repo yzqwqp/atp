@@ -2,37 +2,25 @@ package com.uusoft.atp.model;
 
 public class TestMethodInfo {
 	/**
+	 * 测试集id
+	 */
+	private int method_id;
+	/**
      * 服务id
      */
 	private int service_id;
 	/**
-     * 服务name
-     */
-	private String service_name;
-	/**
-     * 方法id
-     */
-	private int method_id;
-	/**
-     * 方法名称
+     * 测试集名称
      */
 	private String method_name;
 	/**
-     * 方法地址
-     */
-	private String method_address;
-	/**
-     * 方法描述
+     * 测试集描述
      */
 	private String method_des;
 	/**
-     * 是否执行
-     */
-	private Integer is_run;
-	/**
      * 是否删除
      */
-	private String is_del;
+	private int is_del;
 	
 	
 	public int getService_id() {
@@ -59,33 +47,15 @@ public class TestMethodInfo {
 	public void setMethod_des(String method_des) {
 		this.method_des = method_des;
 	}
-	public Integer getIs_run() {
-		return is_run;
-	}
-	public void setIs_run(Integer is_run) {
-		this.is_run = is_run;
-	}
-	public String getIs_del() {
+	public int getIs_del() {
 		return is_del;
 	}
-	public void setIs_del(String is_del) {
+	public void setIs_del(int is_del) {
 		this.is_del = is_del;
-	}
-	public String getService_name() {
-		return service_name;
-	}
-	public void setService_name(String service_name) {
-		this.service_name = service_name;
-	}
-	public String getMethod_address() {
-		return method_address;
-	}
-	public void setMethod_address(String method_address) {
-		this.method_address = method_address;
 	}
 	@Override
 	public String toString() {
-		return "{service_id=" + service_id + ", service_name=" + service_name + ", method_id=" + method_id + ", method_name=" + method_name + ", method_des=" + method_des + ", is_run=" +", method_address=" + method_address + ", is_run=" + is_run + ", is_del=" + is_del + "}";
+		return "TestMethodInfo ：{service_id=" + service_id +  ", method_id=" + method_id + ", method_name=" + method_name + ", method_des=" + method_des + ", is_run=" +", is_del=" + is_del + "}";
 	}
 	
 }

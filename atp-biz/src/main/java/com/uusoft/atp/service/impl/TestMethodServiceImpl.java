@@ -46,7 +46,7 @@ public class TestMethodServiceImpl implements TestMethodService {
 		List<TestMethodInfo> linfo = new ArrayList<TestMethodInfo>();
 		info = mapper.selectById(method_id);
 		linfo.add(info);
-		LOGGER.info("id: ["+info.getMethod_id()+"] name: ["+info.getMethod_name()+"] des: ["+info.getMethod_des()+"] isrun: ["+info.getIs_run() + "]");
+		LOGGER.info("id: ["+info.getMethod_id()+"] name: ["+info.getMethod_name()+"] des: ["+info.getMethod_des()+"] ");
 		return linfo;
 	}
 	
