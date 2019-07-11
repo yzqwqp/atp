@@ -6,16 +6,17 @@
 	id:必须与对应接口的某个对应的方法名一致
 	
  -->
-<mapper namespace="com.uusoft.atp.dao.TestCaseMapper">
-	<resultMap id="BaseResultMap" type="com.uusoft.atp.model.TestCaseInfo" >
+<mapper namespace="com.uusoft.atp.dao.TestResultMapper">
+	<resultMap id="BaseResultMap" type="com.uusoft.atp.model.TestResultInfo" >
 	    <result column="TEST_ID" property="test_id" jdbcType="INTEGER" />
 	    <result column="CASE_ID" property="case_id" jdbcType="INTEGER" />
 	    <result column="CASE_DES" property="case_des" jdbcType="VARCHAR" />
 	    <result column="METHOD_ADDRESS" property="method_address" jdbcType="VARCHAR" />
 	    <result column="CASE_DATA" property="case_data" jdbcType="VARCHAR" />
-	    <result column="REPONSE_DATA" property="reponse_data" jdbcType="VARCHAR" />
+	    <result column="RESPONSE_DATA" property="response_data" jdbcType="VARCHAR" />
 	    <result column="CASE_ASSERT_TYPE" property="case_assert_type" jdbcType="INTEGER" />
 	    <result column="CASE_ASSERT_VALUE" property="case_assert_value" jdbcType="VARCHAR" />
+	    <result column="RESPONSE_ASSERT_VALUE" property="response_assert_value" jdbcType="VARCHAR" />
 	    <result column="HTTP_STATUS" property="http_status" jdbcType="INTEGER" />
 	    <result column="HTTP_ERROR" property="http_error" jdbcType="VARCHAR" />
 	    <result column="ASSERT_STATUS" property="assert_status" jdbcType="INTEGER" />
@@ -23,107 +24,31 @@
 	</resultMap>
 	
 	<sql id="Base_Column_List" >
-    	TEST_ID, CASE_ID, CASE_DES, METHOD_ADDRESS, CASE_DATA, REPONSE_DATA, CASE_ASSERT_TYPE, CASE_ASSERT_VALUE, HTTP_STATUS, HTTP_ERROR, ASSERT_STATUS, ASSERT_ERROR
+    	TEST_ID, CASE_ID, CASE_DES, METHOD_ADDRESS, CASE_DATA, RESPONSE_DATA, CASE_ASSERT_TYPE, CASE_ASSERT_VALUE, RESPONSE_ASSERT_VALUE, HTTP_STATUS, HTTP_ERROR, ASSERT_STATUS, ASSERT_ERROR
   	</sql>
 	
-	<insert id="insert" parameterType="com.uusoft.atp.model.TestCaseInfo">
-		insert into TEST_CASE (CASE_ID, CASE_DES, METHOD_ADDRESS, CASE_DATA, REPONSE_DATA, CASE_ASSERT_TYPE, CASE_ASSERT_VALUE, HTTP_STATUS, HTTP_ERROR, ASSERT_STATUS, ASSERT_ERROR  
-						values (#{CASE_ID}, #{case_des}, #{case_data}, #{case_assert_type}, #{case_assert_value}, #{is_run}, 0)
+	<insert id="insert" parameterType="com.uusoft.atp.model.TestResultInfo" useGeneratedKeys="true" keyProperty="test_id">
+		insert into TEST_RESULT (CASE_ID, CASE_DES, METHOD_ADDRESS, CASE_DATA, RESPONSE_DATA, CASE_ASSERT_TYPE, CASE_ASSERT_VALUE, RESPONSE_ASSERT_VALUE, HTTP_STATUS, HTTP_ERROR, ASSERT_STATUS, ASSERT_ERROR)
+			 values (#{case_id}, #{case_des}, #{method_address}, #{case_data}, #{response_data}, #{case_assert_type}, #{case_assert_value}, #{response_assert_value}, #{http_status}, #{http_error}, #{assert_status}, #{assert_error})
 	</insert>
 	
 	<select id="selectAll" resultMap="BaseResultMap">
 		select 
     	<include refid="Base_Column_List" />
-   		from TEST_CASE
+   		from TEST_RESULT
    		where IS_DEL = 0
 	</select>
 		
 	<select id="selectById" resultMap="BaseResultMap">
 		select 
     	<include refid="Base_Column_List" />
-   		from TEST_CASE
+   		from TEST_RESULT
    		<where>
    			IS_DEL = 0
    			<if test="case_id != null">
-   				and CASE_ID = #{case_id,jdbcType=INTEGER}
+   				and TEST_ID = #{test_id,jdbcType=INTEGER}
    			</if>
    		</where>
 	</select>
-	
-	<select id="selectByMethodId" resultMap="BaseResultMap">
-		select 
-    	<include refid="Base_Column_List" />
-   		from TEST_CASE
-   		<where>
-   			IS_DEL = 0
-   			<if test="method_id != null">
-   				and METHOD_ID = #{method_id,jdbcType=INTEGER}
-   			</if>
-   		</where>
-	</select>
-	
-	<select id="selectByServiceId" resultMap="BaseResultMap">
-		select 
-    	A.METHOD_ID, A.CASE_ID, A.CASE_DES, A.CASE_DATA, A.CASE_ASSERT_TYPE, A.CASE_ASSERT_VALUE, A.IS_RUN, A.IS_DEL
-   		from TEST_METHOD B,TEST_CASE A
-   		<where>
-   			A.IS_DEL = 0 AND B.METHOD_ID = A.METHOD_ID
-   			<if test="service_id != null">
-   				AND B.SERVICE_ID = #{service_id,jdbcType=INTEGER}
-   			</if>
-   		</where>
-	</select>
-	
-	<update id="update" parameterType="com.uusoft.atp.model.TestCaseInfo">
-		update TEST_CASE
-        set 
-        	CASE_DES = #{case_des,jdbcType=VARCHAR},
-        	CASE_DATA = #{case_data,jdbcType=VARCHAR},
-        	CASE_ASSERT_TYPE = #{case_assert_type,jdbcType=INTEGER},
-        	CASE_ASSERT_VALUE = #{case_assert_value,jdbcType=VARCHAR},
-        	IS_RUN = #{is_run,jdbcType=INTEGER}
-        where CASE_ID = #{case_id,jdbcType=INTEGER}
-	</update>
-	
-	<select id ="selectDatasByMethodId"  resultType="java.lang.String">
-		select CASE_DATA from TEST_CASE
-		<where>
-   			<if test="method_id != null">
-   				METHOD_ID = #{method_id,jdbcType=INTEGER}
-   			</if>
-   			and IS_DEL = 0
-   		</where>
-	</select>
-	
-	<select id ="selectDataById"  resultType="string">
-		select CASE_DATA from TEST_CASE
-		<where>
-   			<if test="case_id != null">
-   				CASE_ID = #{case_id,jdbcType=INTEGER}
-   			</if>
-   			and IS_DEL = 0
-   		</where>
-	</select>
-	
-	<select id ="selectByCaseId"  resultMap="CaseDetailsMap">
-		SELECT s.service_id,s.service_name,s.service_des,m.method_id,m.method_name,m.method_des,c.case_id,c.case_des,c.case_data,c.case_assert_value,c.case_assert_type from 
-		test_service s,
-		test_method m,
-		test_case c
-		<where>
-			m.service_id  = s.service_id
-			and m.method_id = c.method_id
-   			<if test="case_id != null">
-   			and c.CASE_ID = #{case_id,jdbcType=INTEGER}
-   			</if>
-   			and c.IS_DEL = 0
-   		</where>
-	</select>
-		
-	<update id="deleteById">
-		update TEST_CASE
-        set IS_DEL = 1
-        where CASE_ID = #{case_id,jdbcType=INTEGER}
-	</update>
 	
 </mapper>

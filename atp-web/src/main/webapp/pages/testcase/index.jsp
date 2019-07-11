@@ -145,6 +145,16 @@
 		var url = path + "/testcase/add.do";
 		ajaxReq(data, url, doCall, "post");
 	}
+	function run(id) {
+		var data = {};
+		data.sid = id;
+		var url = path + "/testcase/run.do";
+		//ajaxReq(data, url, doCall, "post");
+		$.post(url, data, function(res) {
+			$("#methodname4").html(res.obj);
+			$(".xinxi").modal('show');
+		});
+	}
 	
 </script>
 </head>

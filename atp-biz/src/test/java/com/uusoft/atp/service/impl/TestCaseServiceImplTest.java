@@ -22,6 +22,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import com.uusoft.atp.dao.TestCaseMapper;
 import com.uusoft.atp.utils.JsonUtil;
+import com.uusoft.atp.utils.ResultTool;
 
 /** 
  * <p>Description: TODO(用一句话描述该文件做什么)</p> 
@@ -81,9 +82,12 @@ public class TestCaseServiceImplTest {
 	
 	@Test
 	public void testrun(){
-		Object obj = testCaseImp.run(12);
-		LOGGER.info("###########################");
-		LOGGER.info(obj.toString());
+//		testCaseImp.run(12);
+		ResultTool<String> result = testCaseImp.runById(29);
+		LOGGER.info(result.toString());
+//		Object obj = testCaseImp.run(12);
+//		LOGGER.info("###########################");
+//		LOGGER.info(obj.toString());
 	}
 	
 

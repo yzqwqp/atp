@@ -11,7 +11,7 @@ import com.uusoft.atp.model.TestResultInfo;
 import com.uusoft.atp.service.TestResultService;
 
 
-@Service("TestCaseService")
+@Service("TestResultService")
 @Transactional
 public class TestResultServiceImpl implements TestResultService {
 	

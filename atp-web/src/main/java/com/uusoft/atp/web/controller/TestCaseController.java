@@ -147,9 +147,12 @@ public class TestCaseController {
     }
 	
 	@RequestMapping("/run")
-    public void run(int sid){
+    @ResponseBody
+    public ResultTool<String> run(int sid){
 		LOGGER.info("******TestCaseController开始run :" +sid+" *****");
-		testCaseService.run(sid);
+		ResultTool<String> result = testCaseService.runById(sid);
+		LOGGER.info(result.toString());
+		return result;
     }
 	
 	@RequestMapping("/createdMethod")

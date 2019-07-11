@@ -34,6 +34,10 @@ public class TestResultInfo {
      */
 	private String case_assert_value;
 	/**
+     * 请求返回断言实际值
+     */
+	private String response_assert_value;
+	/**
      * HTTP请求状态
      */
 	private int http_status;
@@ -49,6 +53,10 @@ public class TestResultInfo {
      * 断言状态异常信息
      */
 	private String assert_error;
+	/**
+     * 请求中的code的值
+     */
+	private String respone_data;
 	
 	public int getTest_id() {
 		return test_id;
@@ -121,6 +129,18 @@ public class TestResultInfo {
 	}
 	public void setAssert_error(String assert_error) {
 		this.assert_error = assert_error;
+	}
+	public String getResponse_assert_value() {
+		return response_assert_value;
+	}
+	public void setResponse_assert_value(String response_assert_value) {
+		this.response_assert_value = response_assert_value;
+	}
+	public String getRespone_data() {
+		return respone_data;
+	}
+	public void setRespone_data(String respone_data) {
+		this.respone_data = respone_data;
 	}
 	
 	
