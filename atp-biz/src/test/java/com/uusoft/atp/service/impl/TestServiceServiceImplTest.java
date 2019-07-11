@@ -1,3 +1,4 @@
+
 package com.uusoft.atp.service.impl;
 
 /** 
@@ -70,7 +71,7 @@ public class TestServiceServiceImplTest {
 	 */
 	@Test
 	public void test03SelectById() {
-		ResultTool<TestServiceInfo> info2 =impl.selectById(1);
+		ResultTool<TestServiceInfo> info2 =impl.selectByServiceId(1);
 		TestServiceInfo info = info2.getObj();
 		LOGGER.info("###########################");
 		LOGGER.info(Thread.currentThread() .getStackTrace()[1].getMethodName());
@@ -109,7 +110,7 @@ public class TestServiceServiceImplTest {
 	
 	@Test
 	public void test05selectById() {
-		ResultTool<TestServiceInfo> info = impl.selectById(1);
+		ResultTool<TestServiceInfo> info = impl.selectByServiceId(1);
 		LOGGER.info(info.getObj().toString());
 	}
 	

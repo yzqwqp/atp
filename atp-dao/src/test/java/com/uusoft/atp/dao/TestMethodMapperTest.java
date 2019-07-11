@@ -36,7 +36,7 @@ public class TestMethodMapperTest {
 	
 	@Test
 	public void test2() {
-		TestMethodInfo info = methodMapper.selectById(22);
+		TestMethodInfo info = methodMapper.selectByMethodId(22);
 		LOGGER.info(info.toString());
 	}
 

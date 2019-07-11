@@ -19,7 +19,7 @@ public interface TestSuiteMapper {
 	 * 用于查询case对应的methodName,serviceName等信息
 	 * @author qiupeng
 	 */
-	TestSuiteInfo selectByCaseId(@Param("suite_id") int suite_id);
+	TestSuiteInfo selectBySuiteId(@Param("suite_id") int suite_id);
 
 	List<TestSuiteInfo> selectByMethodId(@Param("method_id")int method_id);
 	

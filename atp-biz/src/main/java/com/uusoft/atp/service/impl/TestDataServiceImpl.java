@@ -49,23 +49,23 @@ public class TestDataServiceImpl implements TestDataService {
 		return mapper.selectAll();
 	}
 
-	@Override
-	public ResultTool<List<TestDataInfo>> selectById(int case_id) {
-		dataInfoList = mapper.selectById(case_id);
-		if (dataInfoList.size() > 0) {
-			return ResultTool.setResult("0000", "查询成功", dataInfoList);
-		} else {
-			TestCaseVo caseVo = caseMapper.selectByCaseId(case_id);
-			int i = mapper.insertInitTestData(case_id, caseVo.getService_name(), caseVo.getMethod_name());
-			if ( i > 0) {
-				dataInfoList = mapper.selectById(case_id);
-				return ResultTool.setResult("0000", "查询成功", dataInfoList);
-			} else {
-				return ResultTool.setResult("9999", "init初始表中无相关数据", dataInfoList);
-			}
-		}
-		
-	}
+//	@Override
+//	public ResultTool<List<TestDataInfo>> selectById(int case_id) {
+//		dataInfoList = mapper.selectById(case_id);
+//		if (dataInfoList.size() > 0) {
+//			return ResultTool.setResult("0000", "查询成功", dataInfoList);
+//		} else {
+//			TestCaseVo caseVo = caseMapper.selectByCaseId(case_id);
+//			int i = mapper.insertInitTestData(case_id, caseVo.getService_name(), caseVo.getMethod_name());
+//			if ( i > 0) {
+//				dataInfoList = mapper.selectById(case_id);
+//				return ResultTool.setResult("0000", "查询成功", dataInfoList);
+//			} else {
+//				return ResultTool.setResult("9999", "init初始表中无相关数据", dataInfoList);
+//			}
+//		}
+//		
+//	}
 
 	@Override
 	public int updateById(TestDataInfo testDataInfo) {

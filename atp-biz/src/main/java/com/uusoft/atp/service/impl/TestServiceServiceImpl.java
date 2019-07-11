@@ -44,8 +44,8 @@ public class TestServiceServiceImpl implements TestServiceService {
 	}
 
 	@Override
-	public ResultTool<TestServiceInfo> selectById(int service_id) {
-		TestServiceInfo info = mapper.selectById(service_id);
+	public ResultTool<TestServiceInfo> selectByServiceId(int service_id) {
+		TestServiceInfo info = mapper.selectByServiceId(service_id);
 		LOGGER.info("id: ["+info.getService_id()+"] name: ["+info.getService_name()+"] des: ["+info.getService_des()+"]  isdel: ["+info.getIs_del());
 		return ResultTool.setResult("0000", "查询成功", info);
 	}
@@ -80,5 +80,4 @@ public class TestServiceServiceImpl implements TestServiceService {
 	public int selectSeviceIdByName(String service_name) {
 		return mapper.selectSeviceIdByName(service_name);
 	}
-
 }

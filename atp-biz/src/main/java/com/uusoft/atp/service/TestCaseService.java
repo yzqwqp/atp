@@ -11,13 +11,13 @@ public interface TestCaseService {
 	int insert(TestCaseInfo testCaseInfo);
 	
 	
-	TestCaseInfo selectById(int case_id);
+	TestCaseInfo selectByCaseId(int case_id);
 	
 	int update(TestCaseInfo testCaseInfo);
 	
 	int deleteById(int case_id);
 	
-	Object run(int case_id);
+//	Object run(int case_id);
 	
 	String getDataById(int caseId);
 	

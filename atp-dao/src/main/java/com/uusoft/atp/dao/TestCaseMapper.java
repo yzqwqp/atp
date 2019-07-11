@@ -17,7 +17,7 @@ public interface TestCaseMapper {
 	
 	List<TestCaseInfo> selectAll();
 	
-	TestCaseInfo selectById(@Param("case_id") int case_id);
+	TestCaseInfo selectByCaseId(@Param("case_id") int case_id);
 	
 	List<String> selectDatasByMethodId(@Param("method_id")int method_id);
 	
@@ -31,8 +31,6 @@ public interface TestCaseMapper {
 	 * 用于查询case对应的methodName,serviceName等信息
 	 * @author qiupeng
 	 */
-	TestCaseVo selectByCaseId(@Param("case_id") int case_id);
-
 	List<TestCaseInfo> selectByMethodId(@Param("method_id")int method_id);
 	
 	List<TestCaseInfo> selectByServiceId(@Param("service_id")int service_id);

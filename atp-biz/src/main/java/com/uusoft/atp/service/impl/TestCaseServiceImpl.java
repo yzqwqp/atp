@@ -140,8 +140,8 @@ public class TestCaseServiceImpl implements TestCaseService {
 	}
 
 	@Override
-	public TestCaseInfo selectById(int case_id) {
-		return mapper.selectById(case_id);
+	public TestCaseInfo selectByCaseId(int case_id) {
+		return mapper.selectByCaseId(case_id);
 	}
 
 	@Override
@@ -154,67 +154,67 @@ public class TestCaseServiceImpl implements TestCaseService {
 		return mapper.deleteById(case_id);
 	}
 
-	@Override
-	public ResultTool<Object> run(int case_id) {
-		
-		//--1--获取case对象的值
-		LOGGER.info("********开始 runCase , id is :【"+ case_id+"】**********");
-		TestCaseVo caseVo = mapper.selectByCaseId(case_id);
-		
-		//--5--获取caseVo的校验数据，如果没有校验数据，直接返回【执行失败】
-		String assertType = caseVo.getCase_assert_type();
-		String assertValue = caseVo.getCase_assert_value();
-		if (assertType.isEmpty() || assertValue.isEmpty()) {
-			return ResultTool.setResult("2222", "无校验数据，CASE校验失败", null);
-		}		
-		
-		//--2--获取serviceName\methodName\caseData
-		String serviceName = caseVo.getService_name();
-		String methodName = caseVo.getMethod_name();
-		String caseData = caseVo.getCase_data();
-		
-		//--3--根据case对象的data值进行json转义
-		//--4--调用initMethodService,传入serviceName\methodName\caseData
-		LOGGER.info("#####开始查询serviceName ："+serviceName+" methodName："+methodName+" caseData : "+caseData);
-		ParameterVo parameterVo = testDataService.parseTestData(case_id);
-		if (parameterVo.getParamSize() < 1) {
-			return ResultTool.setResult("9998", "初始化case值失败", null);
-		}
-		String[] strTypes= parameterVo.getParamTypes();
-		Object[] objValues= parameterVo.getParamValues();
-		LOGGER.info("#####开始打印strTypes####");
-		for(int i=0; i < strTypes.length; i++) {
-			LOGGER.info(strTypes[i]);
-		}
-		LOGGER.info("#####开始打印objValues####");
-		for(int i=0; i < objValues.length; i++) {
-			LOGGER.info(objValues[i].toString());
-		}
-		
-		//--5--根据初始化返回的两个数组（值类型string数组，值obj数组），泛化调用进行反射dubbo调用服务器，实现方法
-		ResultTool<Object> result = SpringUtil.genericInvoke(serviceName, methodName, strTypes, objValues);
-		LOGGER.info("##########用例执行 :【"+ case_id+"】########## run's result is 【" +result.toString() +"】##########");
-		
-		//--7--
-		//写入测试结果
-		TestReportInfo testReportInfo = new TestReportInfo();
-		testReportInfo.setCase_id(case_id);
-		testReportInfo.setMethod_id(caseVo.getMethod_id());
-		testReportInfo.setService_id(caseVo.getService_id());
-		testReportInfo.setReport_data(result.getObj().toString());
-		testReportMapper.insert(testReportInfo)	;	
-		
-		//--6--判断返回值的code
-		if (result.getCode().equals("9999")) {
-			return ResultTool.setResult("9999", "Case执行失败", null);
-		}
-		//--6--根据getCase_assert_type类型不同，进行result返回值校验（如果调用的是void方法，暂时未想好怎么校验）
-		if (result.getObj().equals(null)) {
-			return ResultTool.setResult("9999", "Case执行返回值为空", null);
-		}
-		
-		return result;
-	}
+//	@Override
+//	public ResultTool<Object> run(int case_id) {
+//		
+//		//--1--获取case对象的值
+//		LOGGER.info("********开始 runCase , id is :【"+ case_id+"】**********");
+//		TestCaseVo caseVo = mapper.selectByCaseId(case_id);
+//		
+//		//--5--获取caseVo的校验数据，如果没有校验数据，直接返回【执行失败】
+//		String assertType = caseVo.getCase_assert_type();
+//		String assertValue = caseVo.getCase_assert_value();
+//		if (assertType.isEmpty() || assertValue.isEmpty()) {
+//			return ResultTool.setResult("2222", "无校验数据，CASE校验失败", null);
+//		}		
+//		
+//		//--2--获取serviceName\methodName\caseData
+//		String serviceName = caseVo.getService_name();
+//		String methodName = caseVo.getMethod_name();
+//		String caseData = caseVo.getCase_data();
+//		
+//		//--3--根据case对象的data值进行json转义
+//		//--4--调用initMethodService,传入serviceName\methodName\caseData
+//		LOGGER.info("#####开始查询serviceName ："+serviceName+" methodName："+methodName+" caseData : "+caseData);
+//		ParameterVo parameterVo = testDataService.parseTestData(case_id);
+//		if (parameterVo.getParamSize() < 1) {
+//			return ResultTool.setResult("9998", "初始化case值失败", null);
+//		}
+//		String[] strTypes= parameterVo.getParamTypes();
+//		Object[] objValues= parameterVo.getParamValues();
+//		LOGGER.info("#####开始打印strTypes####");
+//		for(int i=0; i < strTypes.length; i++) {
+//			LOGGER.info(strTypes[i]);
+//		}
+//		LOGGER.info("#####开始打印objValues####");
+//		for(int i=0; i < objValues.length; i++) {
+//			LOGGER.info(objValues[i].toString());
+//		}
+//		
+//		//--5--根据初始化返回的两个数组（值类型string数组，值obj数组），泛化调用进行反射dubbo调用服务器，实现方法
+//		ResultTool<Object> result = SpringUtil.genericInvoke(serviceName, methodName, strTypes, objValues);
+//		LOGGER.info("##########用例执行 :【"+ case_id+"】########## run's result is 【" +result.toString() +"】##########");
+//		
+//		//--7--
+//		//写入测试结果
+//		TestReportInfo testReportInfo = new TestReportInfo();
+//		testReportInfo.setCase_id(case_id);
+//		testReportInfo.setMethod_id(caseVo.getMethod_id());
+//		testReportInfo.setService_id(caseVo.getService_id());
+//		testReportInfo.setReport_data(result.getObj().toString());
+//		testReportMapper.insert(testReportInfo)	;	
+//		
+//		//--6--判断返回值的code
+//		if (result.getCode().equals("9999")) {
+//			return ResultTool.setResult("9999", "Case执行失败", null);
+//		}
+//		//--6--根据getCase_assert_type类型不同，进行result返回值校验（如果调用的是void方法，暂时未想好怎么校验）
+//		if (result.getObj().equals(null)) {
+//			return ResultTool.setResult("9999", "Case执行返回值为空", null);
+//		}
+//		
+//		return result;
+//	}
 
 	@Override
 	public List<TestCaseInfo> selectByMethodId(int method_id) {
@@ -228,11 +228,11 @@ public class TestCaseServiceImpl implements TestCaseService {
 
 	@Override
 	public ResultTool<String> runById(int case_id) {
-		TestCaseInfo caseInfo = mapper.selectById(case_id);
+		TestCaseInfo caseInfo = mapper.selectByCaseId(case_id);
 		// TODO
-		TestSuiteInfo suiteInfo = suiteMapper.selectByCaseId(1);
+		TestSuiteInfo suiteInfo = suiteMapper.selectBySuiteId(1);
 		// TODO
-		TestMethodInfo methodInfo =  methodMapper.selectById(suiteInfo.getMethod_id());
+		TestMethodInfo methodInfo =  methodMapper.selectByMethodId(suiteInfo.getMethod_id());
 		TestResultInfo testResultInfo = new TestResultInfo();
 		String httpOrgCreateTestRtn = "";
 		int httpStatus = 0;//0-初始化 1-成功 2失败
@@ -392,5 +392,4 @@ public class TestCaseServiceImpl implements TestCaseService {
 		}
 		
 	}
-
 }

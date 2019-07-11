@@ -10,9 +10,9 @@ public interface TestServiceMapper {
 	
 	int insert(TestServiceInfo testServiceInfo);
 	
+	TestServiceInfo selectByServiceId(@Param("service_id") int service_id);
+
 	List<TestServiceInfo> selectAll();
-	
-	TestServiceInfo selectById(@Param("service_id") int service_id);
 	
 	int updateById(TestServiceInfo testServiceInfo);
 	

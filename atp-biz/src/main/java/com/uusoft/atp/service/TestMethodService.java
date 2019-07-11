@@ -9,9 +9,9 @@ public interface TestMethodService {
 	
 	int insert(TestMethodInfo testMethodInfo);
 	
+	List<TestMethodInfo> selectByMethodId(int method_id);
+
 	List<TestMethodInfo> selectAll();
-	
-	List<TestMethodInfo> selectById(int method_id);
 	
 	ResultTool<TestMethodInfo> selectByServiceNameAndMethodName(String service_name, String method_name);
 	

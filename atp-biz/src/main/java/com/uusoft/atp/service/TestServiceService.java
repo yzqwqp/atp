@@ -14,12 +14,12 @@ import com.uusoft.atp.utils.ResultTool;
 public interface TestServiceService {
 	
 	int insert(TestServiceInfo testServiceInfo);
+
+	ResultTool<TestServiceInfo> selectByServiceId(int service_id);
 	
 	List<TestServiceInfo> selectAll();
 	
 	int selectSeviceIdByName(String service_name);
-	
-	ResultTool<TestServiceInfo> selectById(int service_id);
 	
 	int updateById(TestServiceInfo testServiceInfo);
 	
@@ -28,4 +28,5 @@ public interface TestServiceService {
 	ResultTool<List<String>> selectUnCreateService();
 
 	ResultTool<List<String>> selectCreateService();
+
 }

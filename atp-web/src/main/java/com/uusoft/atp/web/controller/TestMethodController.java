@@ -57,7 +57,7 @@ public class TestMethodController {
 		String initmethodselect = request.getParameter("initmethodselect");
 		if (!StringUtils.isEmpty(initmethodselect))
 		{
-			methodData = testMethodService.selectById(Integer.parseInt(initmethodselect));
+			methodData = testMethodService.selectByMethodId(Integer.parseInt(initmethodselect));
 		}
 		else
 		{
@@ -76,7 +76,7 @@ public class TestMethodController {
 	public String selectByServiceId(HttpServletRequest request, int sid) {
 		LOGGER.info("******TestMethod  selectByServiceId   begin******");
 		List<TestMethodInfo> methodData = testMethodService.selectByServiceId(sid);
-		ResultTool<TestServiceInfo> res = testServiceService.selectById(sid);
+		ResultTool<TestServiceInfo> res = testServiceService.selectByServiceId(sid);
 		String serviceName = res.getObj().getService_name();
 		List<InitServiceInfo> initMethodData = initServiceService.selectByName(serviceName);
 		List<TestServiceInfo> listService = new ArrayList<TestServiceInfo>();
@@ -96,7 +96,7 @@ public class TestMethodController {
 	public TestMethodInfo selectById(Integer sid) {
 		if (sid != null) {
 			LOGGER.info("******开始查询methodId :" + sid + " *****");
-			List<TestMethodInfo> result = testMethodService.selectById(sid);
+			List<TestMethodInfo> result = testMethodService.selectByMethodId(sid);
 			if (result != null && !result.isEmpty()) {
 				return result.get(0);
 			}

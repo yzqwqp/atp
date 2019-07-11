@@ -68,11 +68,6 @@ public class TestDataServiceImplTest2 {
 	}
 	
 	@Test
-	public void test01(){
-		testDataImp.selectById(12);
-	}
-	
-	@Test
 	public void test02(){
 		String json = "{\"69\":\"12\",\"70\":\"23\",\"71\":\"null\"}";
 		testDataImp.updateMap(json);

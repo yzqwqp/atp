@@ -24,14 +24,7 @@
 			 values (#{method_id}, #{suite_des}, #{is_run}, 0)
 	</insert>
 	
-	<select id="selectAll" resultMap="BaseResultMap">
-		select 
-    	<include refid="Base_Column_List" />
-   		from TEST_SUITE
-   		where IS_DEL = 0
-	</select>
-		
-	<select id="selectById" resultMap="BaseResultMap">
+	<select id="selectBySuiteId" resultMap="BaseResultMap">
 		select 
     	<include refid="Base_Column_List" />
    		from TEST_SUITE

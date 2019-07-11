@@ -11,7 +11,7 @@ public interface TestDataService {
 	
 	List<TestDataInfo> selectAll();
 	
-	ResultTool<List<TestDataInfo>> selectById(int case_id);
+//	ResultTool<List<TestDataInfo>> selectById(int case_id);
 	
 	int updateById(TestDataInfo testDataInfo);
 	

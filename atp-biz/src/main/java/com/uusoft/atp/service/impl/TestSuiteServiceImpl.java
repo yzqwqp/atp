@@ -26,7 +26,12 @@ public class TestSuiteServiceImpl implements TestSuiteService {
 	public int insert(TestSuiteInfo testSuiteInfo) {
 		return mapper.insert(testSuiteInfo);
 	}
-
+	
+	@Override
+	public TestSuiteInfo selectBySuiteId(int suite_id) {
+		return mapper.selectBySuiteId(suite_id);
+	}
+	
 	@Override
 	public List<TestSuiteInfo> selectByMethodId(int method_id) {
 		return mapper.selectByMethodId(method_id);

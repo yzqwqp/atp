@@ -83,7 +83,7 @@ public class TestSuiteController {
     @ResponseBody
     public TestCaseInfo selectById(Integer sid){
 		LOGGER.info("******TestCaseController开始查询caseId :" +sid+" *****");
-		TestCaseInfo result = testCaseService.selectById(sid);
+		TestCaseInfo result = testCaseService.selectByCaseId(sid);
         return result;
     }
 	
@@ -171,7 +171,7 @@ public class TestSuiteController {
 	public TestMethodInfo selectMethodId(Integer sid) {
 		if (sid != null) {
 			LOGGER.info("******开始查询methodId :" + sid + " *****");
-			List<TestMethodInfo> result = testMethodService.selectById(sid);
+			List<TestMethodInfo> result = testMethodService.selectByMethodId(sid);
 			if (result != null && !result.isEmpty()) {
 				return result.get(0);
 			}

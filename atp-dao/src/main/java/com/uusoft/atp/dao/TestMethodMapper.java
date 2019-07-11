@@ -11,9 +11,10 @@ public interface TestMethodMapper {
 	
 	int insert(TestMethodInfo testMethodInfo);
 	
+
+	TestMethodInfo selectByMethodId(@Param("method_id") int method_id);
+
 	List<TestMethodInfo> selectAll();
-	
-	TestMethodInfo selectById(@Param("method_id") int method_id);
 	
 	TestMethodInfo selectByServiceNameAndMethodName(@Param("service_name") String service_name, @Param("method_name") String method_name);
 	
