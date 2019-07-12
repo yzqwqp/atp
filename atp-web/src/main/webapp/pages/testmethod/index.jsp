@@ -71,7 +71,7 @@
 	}
 	function selectChangeService(event){
 		var value=$(event).val();
-		var url=path+"/testmethod/selectById.do";
+		var url=path+"/testmethod/selectByServiceId.do";
 		var data={sid:value};
 		ajaxReq(data, url, selectChangeServiceCall, "post");
 	}

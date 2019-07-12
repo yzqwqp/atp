@@ -108,24 +108,24 @@ public class TestMethodController {
 		return "testmethod/index";
 	}
 	
-	@RequestMapping("/selectByServiceId")
-	public String selectByServiceId(HttpServletRequest request, int sid) {
-		LOGGER.info("******TestMethod  selectByServiceId   begin******");
-		List<TestMethodInfo> methodData = testMethodService.selectByServiceId(sid);
-		TestServiceInfo res = testServiceService.selectByServiceId(sid);
-		String serviceName = res.getService_name();
-		List<InitServiceInfo> initMethodData = initServiceService.selectByName(serviceName);
-		List<TestServiceInfo> listService = new ArrayList<TestServiceInfo>();
-		listService.add(res);
-		LOGGER.info("***打印initData***");
-		for (InitServiceInfo is : initMethodData) {
-			LOGGER.info(is.getMethod_name());
-		}
-		request.setAttribute("initServiceList", listService);//筛选列的[服务名称]数据
-		request.setAttribute("initMethodList", initMethodData);//筛选列的[方法名称]数据
-		request.setAttribute("methodList", methodData);//查询结果列的数据
-		return "testmethod/index";
-	}
+//	@RequestMapping("/selectByServiceId")
+//	public String selectByServiceId(HttpServletRequest request, int sid) {
+//		LOGGER.info("******TestMethod  selectByServiceId   begin******");
+//		List<TestMethodInfo> methodData = testMethodService.selectByServiceId(sid);
+//		TestServiceInfo res = testServiceService.selectByServiceId(sid);
+//		String serviceName = res.getService_name();
+//		List<InitServiceInfo> initMethodData = initServiceService.selectByName(serviceName);
+//		List<TestServiceInfo> listService = new ArrayList<TestServiceInfo>();
+//		listService.add(res);
+//		LOGGER.info("***打印initData***");
+//		for (InitServiceInfo is : initMethodData) {
+//			LOGGER.info(is.getMethod_name());
+//		}
+//		request.setAttribute("initServiceList", listService);//筛选列的[服务名称]数据
+//		request.setAttribute("initMethodList", initMethodData);//筛选列的[方法名称]数据
+//		request.setAttribute("methodList", methodData);//查询结果列的数据
+//		return "testmethod/index";
+//	}
 	
 	@RequestMapping("/selectById")
     @ResponseBody
@@ -139,13 +139,13 @@ public class TestMethodController {
 		}
 	}
 	
-//	@RequestMapping("/selectByServiceId")
-//    @ResponseBody
-//    public List<TestMethodInfo> selectByServiceId(int sid){
-//		LOGGER.info("******开始查询methodId :" +sid+" *****");
-//		List<TestMethodInfo> result = testMethodService.selectByServiceId(sid);
-//        return result;
-//    }
+	@RequestMapping("/selectByServiceId")
+    @ResponseBody
+    public List<TestMethodInfo> selectByServiceId(int sid){
+		LOGGER.info("******开始查询methodId :" +sid+" *****");
+		List<TestMethodInfo> result = testMethodService.selectByServiceId(sid);
+        return result;
+    }
 	
 	@RequestMapping("/add")
 	@ResponseBody
