@@ -1,6 +1,4 @@
 package com.uusoft.atp.service.impl;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 /** 
 * 类说明 ：
 * 	TestCaseService实现类
@@ -25,18 +23,14 @@ import com.uusoft.atp.dao.TestCaseMapper;
 import com.uusoft.atp.dao.TestMethodMapper;
 import com.uusoft.atp.dao.TestReportMapper;
 import com.uusoft.atp.dao.TestSuiteMapper;
-import com.uusoft.atp.model.ParameterVo;
 import com.uusoft.atp.model.TestCaseInfo;
-import com.uusoft.atp.model.TestCaseVo;
 import com.uusoft.atp.model.TestMethodInfo;
-import com.uusoft.atp.model.TestReportInfo;
 import com.uusoft.atp.model.TestResultInfo;
 import com.uusoft.atp.model.TestSuiteInfo;
 import com.uusoft.atp.service.InitMethodService;
 import com.uusoft.atp.service.TestCaseService;
 import com.uusoft.atp.utils.HttpClientUtil;
 import com.uusoft.atp.utils.ResultTool;
-import com.uusoft.atp.utils.SpringUtil;
 
 
 @Service("TestCaseService")
@@ -64,70 +58,32 @@ public class TestCaseServiceImpl implements TestCaseService {
 	@Resource
 	private TestResultServiceImpl testResultService;
 
-	/** 
-	 * <p>Description:根据方法名获取入参数据</p>
-	 * @param method
-	 * @return 
-	 * @author Adele
-	 * @date 2016年12月11日 下午12:59:16   
-	 */
-	public List<String>  getDatasByMethod(String method){
-		List<String> datas = new ArrayList<String>();
-		if(method.isEmpty()){
-			LOGGER.info("Given methodName is empty!!!");
-		}
-		else {
-			int methodId = methodMapper.selectMethodIdByName(method);
-			if (0 == methodId) {
-				LOGGER.info("There's no method named"+method+"in the DB!");
-			}
-			else {
-				 datas = mapper.selectDatasByMethodId(methodId);
-			}
-		}
-		return datas;
-	}
 	
-	/** 
-	 * <p>Description:根据caseId获取入参数据</p>
-	 * @param caseId
-	 * @return
-	 * @author Adele
-	 * @date 2016年12月11日 下午2:41:57   
-	 */
-	public String getDataById(int caseId){
-		String data = mapper.selectDataById(caseId);
-		if (data.equals(null)) {
-			LOGGER.info("There's no data related to"+caseId);
-		}
-		 return data;
-	}
-	
-	/** 
-	 * <p>Description:根据方法名称和服务名称去获取方法的参数类型</p>
-	 * @param method
-	 * @return Map<Integer,List<String>> Integer记录方法Id，List记录这个方法的参数类型
-	 * @author Adele
-	 * @date 2016年12月14日 上午10:44:06   
-	 */
-	public List<LinkedHashMap<String, String>> selectParasByMethod(String service,String method){
-		List<Integer> methodId = serviceMapper.selectMethodIdByNameAndService(service,method);
-//		List<List<String>> methodParaTypes = new ArrayList<List<String>>();
-		List<LinkedHashMap<String, String>> methodParaTypes = new ArrayList<LinkedHashMap<String, String>>();
-		if(0 == methodId.size())
-			LOGGER.info("There's NO method named"+method);
-		else{
-			//TODO如果相同的方法，参数不同，需要区分
-			for(int methodid:methodId){
-//				List<String> paras = paraMapper.selectParaTypesByMethId(methodid);
-				List<LinkedHashMap<String, String>> paras = paraMapper.selectParaLinkedHashMap(methodid);
-//				methodParaTypes.add(paras);
-				methodParaTypes.addAll(paras);
-			}
-		}
-		return methodParaTypes;
-		
-	}
+//	/** 
+//	 * <p>Description:根据方法名称和服务名称去获取方法的参数类型</p>
+//	 * @param method
+//	 * @return Map<Integer,List<String>> Integer记录方法Id，List记录这个方法的参数类型
+//	 * @author Adele
+//	 * @date 2016年12月14日 上午10:44:06   
+//	 */
+//	public List<LinkedHashMap<String, String>> selectParasByMethod(String service,String method){
+//		List<Integer> methodId = serviceMapper.selectMethodIdByNameAndService(service,method);
+////		List<List<String>> methodParaTypes = new ArrayList<List<String>>();
+//		List<LinkedHashMap<String, String>> methodParaTypes = new ArrayList<LinkedHashMap<String, String>>();
+//		if(0 == methodId.size())
+//			LOGGER.info("There's NO method named"+method);
+//		else{
+//			//TODO如果相同的方法，参数不同，需要区分
+//			for(int methodid:methodId){
+////				List<String> paras = paraMapper.selectParaTypesByMethId(methodid);
+//				List<LinkedHashMap<String, String>> paras = paraMapper.selectParaLinkedHashMap(methodid);
+////				methodParaTypes.add(paras);
+//				methodParaTypes.addAll(paras);
+//			}
+//		}
+//		return methodParaTypes;
+//		
+//	}
 	
 	@Override
 	public int insert(TestCaseInfo testCaseInfo) {
@@ -135,13 +91,28 @@ public class TestCaseServiceImpl implements TestCaseService {
 	}
 
 	@Override
-	public List<TestCaseInfo> selectAll() {
-		return mapper.selectAll();
+	public TestCaseInfo selectByCaseId(int case_id) {
+		return mapper.selectByCaseId(case_id);
 	}
 
 	@Override
-	public TestCaseInfo selectByCaseId(int case_id) {
-		return mapper.selectByCaseId(case_id);
+	public List<TestCaseInfo> selectBySuiteId(int suite_id) {
+		return mapper.selectBySuiteId(suite_id);
+	}
+	
+	@Override
+	public List<TestCaseInfo> selectByMethodId(int method_id) {
+		return mapper.selectByMethodId(method_id);
+	}
+
+	@Override
+	public List<TestCaseInfo> selectByServiceId(int service_id) {
+		return mapper.selectByServiceId(service_id);
+	}
+	
+	@Override
+	public List<TestCaseInfo> selectAll() {
+		return mapper.selectAll();
 	}
 
 	@Override
@@ -216,15 +187,7 @@ public class TestCaseServiceImpl implements TestCaseService {
 //		return result;
 //	}
 
-	@Override
-	public List<TestCaseInfo> selectByMethodId(int method_id) {
-		return mapper.selectByMethodId(method_id);
-	}
-
-	@Override
-	public List<TestCaseInfo> selectByServiceId(int service_id) {
-		return mapper.selectByServiceId(service_id);
-	}
+	
 
 	@Override
 	public ResultTool<String> runById(int case_id) {
@@ -392,4 +355,6 @@ public class TestCaseServiceImpl implements TestCaseService {
 		}
 		
 	}
+
+	
 }

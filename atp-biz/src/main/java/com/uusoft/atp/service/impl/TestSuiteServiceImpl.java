@@ -9,8 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.uusoft.atp.dao.TestSuiteMapper;
+import com.uusoft.atp.model.TestCaseInfo;
 import com.uusoft.atp.model.TestSuiteInfo;
+import com.uusoft.atp.service.TestCaseService;
 import com.uusoft.atp.service.TestSuiteService;
+import com.uusoft.atp.utils.ResultTool;
 
 
 @Service("TestSuiteService")
@@ -21,6 +24,8 @@ public class TestSuiteServiceImpl implements TestSuiteService {
 	
 	@Resource
 	TestSuiteMapper mapper;
+	@Resource
+	TestCaseService caseService;
 	
 	@Override
 	public int insert(TestSuiteInfo testSuiteInfo) {
@@ -47,5 +52,26 @@ public class TestSuiteServiceImpl implements TestSuiteService {
 		return mapper.selectAll();
 	}
 
+	@Override
+	public int update(TestSuiteInfo testSuiteInfo) {
+		return mapper.update(testSuiteInfo);
+	}
+
+	@Override
+	public int deleteById(int suite_id) {
+		return mapper.deleteById(suite_id);
+	}
+
+	@Override
+	public ResultTool<String> runBySuiteId(int suite_id) {
+		List<TestCaseInfo> caseInfoList = caseService.selectBySuiteId(suite_id);
+		for(TestCaseInfo caseInfo:caseInfoList){
+			LOGGER.info("### runBySuiteId ： " + suite_id + "### caseInfo is :" + caseInfo.toString());
+			caseService.runById(caseInfo.getCase_id());
+		}
+		return null;
+	}
+	
+	
 
 }

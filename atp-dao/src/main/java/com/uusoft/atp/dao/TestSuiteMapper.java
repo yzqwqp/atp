@@ -13,15 +13,16 @@ import com.uusoft.atp.model.TestSuiteInfo;
 public interface TestSuiteMapper {
 	
 	int insert(TestSuiteInfo testSuiteInfo);
-	
-	List<TestSuiteInfo> selectAll();
-	/**
-	 * 用于查询case对应的methodName,serviceName等信息
-	 * @author qiupeng
-	 */
+
 	TestSuiteInfo selectBySuiteId(@Param("suite_id") int suite_id);
 
 	List<TestSuiteInfo> selectByMethodId(@Param("method_id")int method_id);
 	
 	List<TestSuiteInfo> selectByServiceId(@Param("service_id")int service_id);
+	
+	List<TestSuiteInfo> selectAll();
+	
+	int update(TestSuiteInfo testSuiteInfo);
+	
+	int deleteById(@Param("suite_id") int suite_id);
 }

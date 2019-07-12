@@ -44,7 +44,6 @@
 		$("#case_id2").val(data.case_id);
 		$("#case_des2").val(data.case_des);
 		$("#case_data2").val(data.case_data);
-		$("#case_isrun2").val(data.is_run);
 		$("#case_assert_type2").val(data.case_assert_type);
 		$("#case_assert_value2").val(data.case_assert_value);
 	}
@@ -53,7 +52,6 @@
 		data.case_id = $("#case_id2").val();
 		data.case_des = $("#case_des2").val();
 		data.case_data = $("#case_data2").val();
-		data.is_run = $("#case_isrun2").val();
 		data.case_assert_type = $("#case_assert_type2").val();
 		data.case_assert_value = $("#case_assert_value2").val();
 		var url = path + "/testcase/updateById.do";
@@ -139,7 +137,6 @@
 		data.method_id = $("#methodselect").val();
 		data.case_des = $("#case_des").val();
 		data.case_data = $("#case_data").val();
-		data.is_run = $("#case_isrun").val();
 		data.case_assert_type = $("#case_assert_tpye").val();
 		data.case_assert_value = $("#case_assert_value").val();
 		var url = path + "/testcase/add.do";
@@ -230,13 +227,6 @@
 								<div class="fp">
 									<span><strong>*</strong>用例数据json:</span><input type="text" id="case_data" onblur="chBlur('case_data','case_data','方法描述不能为空')"/><span id="case_data_span" style="color: red;font-size:13px"></span>
 								</div>						
-								<div class="fp">
-									<span><strong>*</strong>是否运行:</span>
-									<select id="case_isrun" >
-										<option value="0">NO</option>
-										<option value="1">YES</option>
-									</select>
-								</div>
 							</li>
 							<li class="clearfix bgwhite">
 								<div class="fp">
@@ -287,13 +277,6 @@
 								<div class="fp">
 									<span><strong>*</strong>用例数据json:</span><input type="text" id="case_data2" onblur="chBlur('case_data2','case_data2','用例数据json不能为空')"/><span id="case_data_span2" style="color: red;font-size:13px"></span>
 								</div>						
-								<div class="fp">
-									<span><strong>*</strong>是否运行:</span>
-									<select id="case_isrun2" >
-										<option value="0">NO</option>
-										<option value="1">YES</option>
-									</select>
-								</div>
 							</li>
 							<li class="clearfix bgwhite">
 								<div class="fp">

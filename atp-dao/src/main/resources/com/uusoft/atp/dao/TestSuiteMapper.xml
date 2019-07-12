@@ -68,5 +68,19 @@
    		where IS_DEL = 0
 	</select>
 	
+	<update id="update" parameterType="com.uusoft.atp.model.TestSuiteInfo">
+		update TEST_SUITE
+        set 
+        	SUITE_DES = #{suite_des,jdbcType=VARCHAR},
+        	IS_RUN = #{is_run,jdbcType=INTEGER}
+        where SUITE_ID = #{suite_id,jdbcType=INTEGER}
+	</update>
+	
+	<update id="deleteById">
+		update TEST_SUITE
+        set IS_DEL = 1
+        where SUITE_ID = #{suite_id,jdbcType=INTEGER}
+	</update>
+	
 	
 </mapper>

@@ -21,8 +21,6 @@
 	    <result column="IS_DEL" property="is_del" jdbcType="INTEGER" />
 	</resultMap>
 	
-
-	
 	<sql id="Base_Column_List" >
     	CASE_ID, SUITE_ID, METHOD_ADDRESS, CASE_DES, CASE_DATA, CASE_ASSERT_TYPE, CASE_ASSERT_VALUE, BEFORE_RUN, AFTER_RUN, CASE_RUN_NUM, IS_DEL
   	</sql>
@@ -32,14 +30,7 @@
 		values (#{suite_id}, #{method_address}, #{case_des}, #{case_data}, #{case_assert_type}, #{case_assert_value}, #{before_run}, #{after_run}, #{case_run_num}, 0)
 	</insert>
 	
-	<select id="selectAll" resultMap="BaseResultMap">
-		select 
-    	<include refid="Base_Column_List" />
-   		from TEST_CASE
-   		where IS_DEL = 0
-	</select>
-		
-	</select id="selectByCaseId" resultMap="BaseResultMap">
+	<select id="selectByCaseId" resultMap="BaseResultMap">
 		select 
     	<include refid="Base_Column_List" />
    		from TEST_CASE
@@ -50,12 +41,27 @@
    			</if>
    		</where>
 	</select>
-   		
-	</select id="selectByMethodId" resultMap="BaseResultMap">
+	
+	<select id="selectBySuiteId" resultMap="BaseResultMap">
+		SELECT A.CASE_ID,A.SUITE_ID,A.METHOD_ADDRESS,A.CASE_DES,A.CASE_DATA,A.CASE_ASSERT_TYPE,A.CASE_ASSERT_VALUE,A.BEFORE_RUN,A.AFTER_RUN,A.CASE_RUN_NUM,A.IS_DEL 
+		FROM TEST_CASE A, TEST_SUITE B
+			<where> A.SUITE_ID = B.SUITE_ID
+				AND A.IS_DEL = 0
+				AND B.IS_DEL = 0
+				<if test="suite_id != null">
+					AND b.SUITE_ID = = #{suite_id,jdbcType=INTEGER}
+				</if>
+			</where>
+	</select>
+	
+	<select id="selectByMethodId" resultMap="BaseResultMap">
 		SELECT A.CASE_ID,A.SUITE_ID,A.METHOD_ADDRESS,A.CASE_DES,A.CASE_DATA,A.CASE_ASSERT_TYPE,A.CASE_ASSERT_VALUE,A.BEFORE_RUN,A.AFTER_RUN,A.CASE_RUN_NUM,A.IS_DEL
 		FROM TEST_CASE A,TEST_SUITE B,TEST_METHOD C
 			<where> A.SUITE_ID = B.SUITE_ID
 				AND B.METHOD_ID = C.METHOD_ID
+				AND A.IS_DEL = 0
+				AND B.IS_DEL = 0
+				AND C.IS_DEL = 0
 				<if test="method_id != null">
 					AND C.METHOD_ID = #{method_id,jdbcType=INTEGER}
 			</if>
@@ -65,46 +71,40 @@
 	<select id="selectByServiceId" resultMap="BaseResultMap">
 		SELECT A.CASE_ID,A.SUITE_ID,A.METHOD_ADDRESS,A.CASE_DES,A.CASE_DATA,A.CASE_ASSERT_TYPE,A.CASE_ASSERT_VALUE,A.BEFORE_RUN,A.AFTER_RUN,A.CASE_RUN_NUM,A.IS_DEL
 		FROM TEST_CASE A,TEST_SUITE B,TEST_METHOD C, TEST_SERVICE D
-		<where>
-			A.SUITE_ID = B.SUITE_ID
+		<where> A.SUITE_ID = B.SUITE_ID
 			AND B.METHOD_ID = C.METHOD_ID
 			AND C.SERVICE_ID = D.SERVICE_ID
+			AND A.IS_DEL = 0
+			AND B.IS_DEL = 0
+			AND C.IS_DEL = 0
+			AND D.IS_DEL = 0
 			<if test="service_id != null">
 				AND D.SERVICE_ID = #{service_id,jdbcType=INTEGER}
 			</if>
    		</where>
 	</select>
 	
+	<select id="selectAll" resultMap="BaseResultMap">
+		select 
+    	<include refid="Base_Column_List" />
+   		from TEST_CASE
+   		where IS_DEL = 0
+	</select>
+	
 	<update id="update" parameterType="com.uusoft.atp.model.TestCaseInfo">
 		update TEST_CASE
         set 
+        	METHOD_ADDRESS = #{method_address,jdbcType=VARCHAR},
         	CASE_DES = #{case_des,jdbcType=VARCHAR},
         	CASE_DATA = #{case_data,jdbcType=VARCHAR},
         	CASE_ASSERT_TYPE = #{case_assert_type,jdbcType=INTEGER},
         	CASE_ASSERT_VALUE = #{case_assert_value,jdbcType=VARCHAR},
+        	BEFORE_RUN = #{before_run,jdbcType=INTEGER},
+        	AFTER_RUN = #{after_run,jdbcType=INTEGER},
+        	CASE_RUN_NUM = #{case_run_num,jdbcType=INTEGER},
         	IS_RUN = #{is_run,jdbcType=INTEGER}
         where CASE_ID = #{case_id,jdbcType=INTEGER}
 	</update>
-	
-	<select id ="selectDatasByMethodId"  resultType="java.lang.String">
-		select CASE_DATA from TEST_CASE
-		<where>
-   			<if test="suite_id != null">
-   				suite_id = #{suite_id,jdbcType=INTEGER}
-   			</if>
-   			and IS_DEL = 0
-   		</where>
-	</select>
-	
-	<select id ="selectDataById"  resultType="string">
-		select CASE_DATA from TEST_CASE
-		<where>
-   			<if test="case_id != null">
-   				CASE_ID = #{case_id,jdbcType=INTEGER}
-   			</if>
-   			and IS_DEL = 0
-   		</where>
-	</select>
 	
 	<update id="deleteById">
 		update TEST_CASE

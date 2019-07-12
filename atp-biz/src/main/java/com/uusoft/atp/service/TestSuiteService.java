@@ -2,6 +2,7 @@ package com.uusoft.atp.service;
 import java.util.List;
 
 import com.uusoft.atp.model.TestSuiteInfo;
+import com.uusoft.atp.utils.ResultTool;
 
 public interface TestSuiteService {
 	
@@ -25,5 +26,11 @@ public interface TestSuiteService {
 	 * 查所有suite用例组
 	 */
 	List<TestSuiteInfo> selectAll();
+	
+	int update(TestSuiteInfo testSuiteInfo);
+	
+	int deleteById(int suite_id);
+	
+	ResultTool<String> runBySuiteId(int suite_id);
 	
 }

@@ -65,13 +65,13 @@ public class InitMethodServiceImpl implements InitMethodService {
 	public ParameterVo getparameterVo(String serviceName,String method, String jsonData){
 		ParameterVo vo = new ParameterVo();
 		
-		List<LinkedHashMap<String, String>> paramTypes = testCaseServiceImpl.selectParasByMethod(serviceName,method);
+//		List<LinkedHashMap<String, String>> paramTypes = testCaseServiceImpl.selectParasByMethod(serviceName,method);
 		LinkedHashMap<String, String> paraType = new LinkedHashMap<String, String>();//用来存储paramTypes里面与json对应的参数类型的
 		JSONObject jsonobj = JSONObject.parseObject(jsonData);
 		int jsonLenth = jsonobj.size();
-		if(paramTypes.isEmpty())
+//		if(paramTypes.isEmpty())
 			LOGGER.info("返回的参数类型为空！");
-		else{
+//		else{
 			//paramTypes is :
 			//[{para_name=arg0, para_type=java.math.BigDecimal}, {para_name=arg1, para_type=java.lang.String}, {para_name=arg2, para_type=java.lang.String}, {para_name=arg3, para_type=java.lang.String}, {para_name=arg4, para_type=java.lang.String}]
 			/*for(LinkedHashMap<String, String> ptype:paramTypes)//遍历Map
@@ -98,7 +98,7 @@ public class InitMethodServiceImpl implements InitMethodService {
 			LOGGER.info("传入jsonData和paraTyeList，转换成obj数组，打印开始");
 			Object[] paramValues = JsonUtil.fastjson2Object2(jsonData, paraType);
 			vo.setParamValues(paramValues);
-		}
+//		}
 		return vo;
 	}
 	

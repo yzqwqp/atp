@@ -1,6 +1,5 @@
 package com.uusoft.atp.web.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -13,11 +12,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.uusoft.atp.model.TestCaseInfo;
 import com.uusoft.atp.model.TestMethodInfo;
 import com.uusoft.atp.model.TestServiceInfo;
 import com.uusoft.atp.model.TestSuiteInfo;
-import com.uusoft.atp.service.InitServiceService;
 import com.uusoft.atp.service.TestCaseService;
 import com.uusoft.atp.service.TestMethodService;
 import com.uusoft.atp.service.TestServiceService;
@@ -33,14 +30,13 @@ public class TestSuiteController {
 	ResultTool<String> result = new ResultTool<String>("","","");
 	
 	@Resource
+	TestSuiteService testSuiteService;
+	@Resource
 	TestMethodService testMethodService;
 	@Resource
 	TestServiceService testServiceService;
 	@Resource
 	TestCaseService testCaseService;
-	@Resource
-	TestSuiteService testSuiteService;
-	
 	
 	@RequestMapping("/index")
 	public String index(HttpServletRequest request) {
@@ -81,57 +77,34 @@ public class TestSuiteController {
 	
 	@RequestMapping("/selectById")
     @ResponseBody
-    public TestCaseInfo selectById(Integer sid){
+    public TestSuiteInfo selectById(Integer sid){
 		LOGGER.info("******TestCaseController开始查询caseId :" +sid+" *****");
-		TestCaseInfo result = testCaseService.selectByCaseId(sid);
+		TestSuiteInfo result = testSuiteService.selectBySuiteId(sid);
         return result;
     }
 	
-	@RequestMapping("/selectByMethodId")
-	public String selectByMethodId(HttpServletRequest request, int sid) {
-		
-		//--1--从method页面，根据methodId查询出来的testcase结果集
-		LOGGER.info("✈--TestCase--selectByMethodId--begin--✈");
-		List<TestCaseInfo> caseData = testCaseService.selectByMethodId(sid);
-		request.setAttribute("caseList", caseData);
-		
-		//--3--根据methodId搜索的method结果集
-		List<TestMethodInfo> listMethod = new ArrayList<TestMethodInfo>();
-//		listMethod.add(testMethodService.selectById(sid).getObj());
-		request.setAttribute("initMethodList", listMethod);
-		
-		//--2--根据methodId搜索的service结果集
-//		int serviceId = testMethodService.selectById(sid).getObj().getService_id();
-//		ResultTool<TestServiceInfo> res = testServiceService.selectById(serviceId);
-		List<TestServiceInfo> listService = new ArrayList<TestServiceInfo>();
-//		listService.add(res.getObj());
-		request.setAttribute("initServiceList", listService);
-		
-		return "testcase/index";
-	}
-	
 	@RequestMapping("/add")
 	@ResponseBody
-    public ResultTool<String> add(TestCaseInfo testCaseInfo) {
-		int i = testCaseService.insert(testCaseInfo);
+    public ResultTool<String> add(TestSuiteInfo testSuiteInfo) {
+		int i = testSuiteService.insert(testSuiteInfo);
 		if (i>0) {
-			result.setObj("【"+testCaseInfo.getCase_des()+"】新增成功");;
+			result.setObj("【"+testSuiteInfo.getSuite_des()+"】新增成功");;
 		} else {
-			result.setObj("【"+testCaseInfo.getCase_des()+"】新增失败");;
+			result.setObj("【"+testSuiteInfo.getSuite_des()+"】新增失败");;
 		}
         return result;
     }
 	
 	@RequestMapping("/updateById")
 	@ResponseBody
-    public ResultTool<String> update(TestCaseInfo testCaseInfo) {
-		LOGGER.info("******TestCaseController开始updateById :" +testCaseInfo.getCase_id()+" *****");
-		LOGGER.info(testCaseInfo.toString());
-		int i = testCaseService.update(testCaseInfo);
+    public ResultTool<String> update(TestSuiteInfo testSuiteInfo) {
+		LOGGER.info("******TestCaseController开始updateById :" +testSuiteInfo.getSuite_id()+" *****");
+		LOGGER.info(testSuiteInfo.toString());
+		int i = testSuiteService.update(testSuiteInfo);
 		if (i>0) {
-			result.setObj("【"+testCaseInfo.getCase_des()+"】更新成功");;
+			result.setObj("【"+testSuiteInfo.getSuite_des()+"】更新成功");;
 		} else {
-			result.setObj("【"+testCaseInfo.getCase_des()+"】更新失败");;
+			result.setObj("【"+testSuiteInfo.getSuite_des()+"】更新失败");;
 		}
         return result;
     }
@@ -140,7 +113,7 @@ public class TestSuiteController {
     @ResponseBody
     public ResultTool<String> deleteById(int sid){
 		LOGGER.info("******TestCaseController开始deleteById :" +sid+" *****");
-		int i = testCaseService.deleteById(sid);
+		int i = testSuiteService.deleteById(sid);
 		if (i>0) {
 			result.setObj("【"+sid+"】删除成功");;
 		} else {
@@ -153,7 +126,7 @@ public class TestSuiteController {
     @ResponseBody
     public ResultTool<String> run(int sid){
 		LOGGER.info("******TestCaseController开始run :" +sid+" *****");
-		ResultTool<String> result = testCaseService.runById(sid);
+		ResultTool<String> result = testSuiteService.runBySuiteId(sid);
 		LOGGER.info(result.toString());
 		return result;
     }

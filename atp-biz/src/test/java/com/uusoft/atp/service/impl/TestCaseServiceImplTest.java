@@ -53,11 +53,6 @@ public class TestCaseServiceImplTest {
 	public void setUp() throws Exception {
 	}
 
-	@Test
-	public void test() {
-		String data = testCaseImp.getDataById(4);
-		System.out.println(data);
-	}
 	/*@Test
 	public void testJson2Object(){
 		String json = caseMapper.selectDataById(6);
@@ -69,16 +64,16 @@ public class TestCaseServiceImplTest {
 		}
 	}*/
 	
-	@Test
-	public void testGetParaTypes(){
-		String method2="merchantCheck";
-		String service2="merchantService";
-		String jsonData ="{merchantno:LT001,tradeflag:0}";
-		List<LinkedHashMap<String, String>> ll=testCaseImp.selectParasByMethod(service2,method2);
-		for(int i=0;i<ll.size();i++){
-			System.out.println(ll.get(i));
-		}
-	}
+//	@Test
+//	public void testGetParaTypes(){
+//		String method2="merchantCheck";
+//		String service2="merchantService";
+//		String jsonData ="{merchantno:LT001,tradeflag:0}";
+//		List<LinkedHashMap<String, String>> ll=testCaseImp.selectParasByMethod(service2,method2);
+//		for(int i=0;i<ll.size();i++){
+//			System.out.println(ll.get(i));
+//		}
+//	}
 	
 	@Test
 	public void testrun(){

@@ -57,19 +57,6 @@ public class TestCaseMapperTest {
 	}
 	
 	@Test
-	public void test02(){
-		String ss = testCaseMapper.selectDataById(11);
-		System.out.println(ss);
-	}
-	
-	@Test
-	public void test03(){
-		List<String> sList = testCaseMapper.selectDatasByMethodId(2);
-		for(String ss:sList){
-			System.out.println(ss);
-		}
-	}
-	@Test
 	public void testInsert(){
 		
 	}

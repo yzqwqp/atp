@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.uusoft.atp.model.TestCaseInfo;
 import com.uusoft.atp.model.TestMethodInfo;
 import com.uusoft.atp.model.TestServiceInfo;
-import com.uusoft.atp.service.InitServiceService;
 import com.uusoft.atp.service.TestCaseService;
 import com.uusoft.atp.service.TestMethodService;
 import com.uusoft.atp.service.TestServiceService;
@@ -31,13 +30,11 @@ public class TestCaseController {
 	ResultTool<String> result = new ResultTool<String>("","","");
 	
 	@Resource
+	TestCaseService testCaseService;
+	@Resource
 	TestMethodService testMethodService;
 	@Resource
 	TestServiceService testServiceService;
-	@Resource
-	TestCaseService testCaseService;
-	@Resource
-	InitServiceService initServiceService;
 	
 	@RequestMapping("/index")
 	public String index(HttpServletRequest request) {
