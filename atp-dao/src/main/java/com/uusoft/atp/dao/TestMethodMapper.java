@@ -11,22 +11,14 @@ public interface TestMethodMapper {
 	
 	int insert(TestMethodInfo testMethodInfo);
 	
-
 	TestMethodInfo selectByMethodId(@Param("method_id") int method_id);
-
-	List<TestMethodInfo> selectAll();
-	
-	TestMethodInfo selectByServiceNameAndMethodName(@Param("service_name") String service_name, @Param("method_name") String method_name);
-	
-	int updateById(TestMethodInfo testMethodInfo);
-	
-	int selectMethodIdByNameAndService(@Param("methodName") String methodName,@Param("serviceId") int serviceId);
-
-	int selectMethodIdByName(@Param("method")String method);
 
 	List<TestMethodInfo> selectByServiceId(@Param("service_id") int service_id);
 	
+	List<TestMethodInfo> selectAll();
+	
+	int updateById(TestMethodInfo testMethodInfo);
+	
 	int deleteById(@Param("method_id") int method_id);
 	
-	List<String> unCreateMethod(@Param("service_name")String service_name);
 }

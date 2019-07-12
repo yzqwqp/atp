@@ -33,7 +33,7 @@
 	function edit(id){
 		var data={};
 		data.sid=id;
-		var url=path+"/testmethod/selectById.do";
+		var url=path+"/testmethod/selectByMethodId.do";
 		// ajaxReq(data, url, showSingle, "post");
 		$.post(url, data, function(res) {
 			showSingle(res);
@@ -41,23 +41,15 @@
 		});
 	}
 	function showSingle(data){
-		$("#methodname2").val(data.method_name);
-		$("#methodid2").val(data.method_id);
-		$("#methoddes2").val(data.method_des);
-		$("#methodaddress2").val(data.method_address);
-		$("#isrun2").val(data.is_run);
+		$("#method_id_2").val(data.method_id);
+		$("#method_name_2").val(data.method_name);
+		$("#method_des_2").val(data.method_des);
 	}
 	function update(){
-		if (!(chBlur('methodname2', 'methodname1', '服务描述不能为空')
-				 )) {
-			return;
-		}
 		var data = {};
-		data.method_id = $("#methodid2").val();
-		data.method_name = $("#methodname2").val();
-		data.method_des = $("#methoddes2").val();
-		data.method_address = $("#methodaddress2").val();
-		data.is_run = $("#isrun2").val();
+		data.method_id = $("#method_id_2").val();
+		data.method_name = $("#method_name_2").val();
+		data.method_des = $("#method_des_2").val();
 		var url = path + "/testmethod/updateById.do";
 		// ajaxReq(data, url, doCall, "post");
 		$.post(url, data, function(res) {
@@ -79,12 +71,12 @@
 	}
 	function selectChangeService(event){
 		var value=$(event).val();
-		var url=path+"/testmethod/createdMethod.do";
+		var url=path+"/testmethod/selectById.do";
 		var data={sid:value};
 		ajaxReq(data, url, selectChangeServiceCall, "post");
 	}
 	function selectChangeServiceCall(result){
-		var data = result.obj;
+		var data = result;
 		var options = "";
 		for(var i=0;i<data.length;i++){
 			options+=("<option value='"+data[i].method_id+"'>"+data[i].method_name+"</option>");
@@ -109,8 +101,8 @@
 	}
 	function selectChangeMethod(event){
 		var value=$(event).val();
-		var url=path+"/testmethod/createdMethod.do";
-		var data={sid: value};
+		var url=path+"/testmethod/selectById.do";
+		var data={smid: value};
 		// ajaxReq(data, url, selectChangeServiceCall, "post");
 		query();
 	}
@@ -147,33 +139,11 @@
 			}
 		$("#allService").html(options);
 	}
-	function changeService(event){
-		var value=$(event).val();
-		var url=path+"/testmethod/unCreateMethod.do";
-		var data={};
-		if(value==""){
-			data.sname="";
-		}else{
-			data.sname=value;
-		}
-		ajaxReq(data, url, changeServiceCall, "post");
-	}
-	function changeServiceCall(result){
-		var data = result.obj;
-		var options = "";
-		for(var i=0;i<data.length;i++){
-			options+=("<option value='"+data[i]+"'>"+data[i]+"</option>");
-		}
-		$("#unCreateMethod").html(options);
-	}
-	
 	function add() {
 		var data = {};
 		data.service_id = $("#allService").val();
 		data.method_name = $("#method_name").val();
 		data.method_des = $("#method_des").val();
-		data.method_address = $("#method_address").val();
-		data.is_run = $("#method_isrun").val();
 		var url = path + "/testmethod/add.do";
 		ajaxReq(data, url, doCall, "post");
 	}
@@ -210,9 +180,6 @@
 											<option value="${item.method_id }" <c:if test="${param.initmethodselect == item.method_id }">selected</c:if> >${item.method_name }</option>
 										</c:forEach>
 								</select></li>
-								<li><a href="javascript:void(0)" class="sxbtn" onclick="query()"> <span
-										class="glyphicon glyphicon-search"></span> 筛选
-								</a></li>
 								<li>
 									<button type="button" class="addnew" onclick="addBefore()">新增方法</button>
 									<!-- <button type="button" class="addnew" style="font-size:14px;dipslay:inline;" onclick="addBefore()">新增方法</button>  -->
@@ -252,18 +219,6 @@
 								<div class="fp">
 									<span><strong>*</strong>方法描述:</span> <input type="text" id="method_des" onblur="chBlur('method_des','method_des','方法描述不能为空')"/><span id="method_des_span" style="color: red;font-size:13px"></span>
 								</div>						
-								<div class="fp">
-									<span><strong>*</strong>方法地址:</span> <input type="text" id="method_address" onblur="chBlur('method_address','method_address','方法描述不能为空')"/><span id="method_address_span" style="color: red;font-size:13px"></span>
-								</div>	
-							</li>
-							<li class="clearfix bgwhite">
-								<div class="fp">
-									<span><strong>*</strong>是否运行:</span>
-									<select id="method_isrun" >
-										<option value="0">NO</option>
-										<option value="1">YES</option>
-									</select>
-								</div>
 							</li>
 						</ul>
 						<div class="modal-footer">
@@ -287,33 +242,21 @@
 		<div class="modal-dialog xinzm">
 			<div class="modal-content">
 				<div class="xzmain">
-					<h3>测试用例-编辑</h3>
+					<h3>测试集-编辑</h3>
 					<div class="bwarp">
 							<ul>
 							<li class="clearfix bgwhite">
 								<div class="fp">
-									<span><strong>*</strong>方法名称:</span> <input type="text"	id="methodname2"  disabled="disabled"/>
+									<span><strong>*</strong>方法id:</span> <input type="text"	 id="method_id_2"  disabled="disabled"/>
 								</div>
 								<div class="fp">
-									<span><strong>*</strong>方法id:</span> <input type="text"	 id="methodid2"  disabled="disabled"/>
+									<span><strong>*</strong>方法名称:</span> <input type="text" id="method_name_2" disabled="disabled"/>
 								</div>
 							</li>
 							<li class="clearfix bgwhite">
 								<div class="fp">
-									<span><strong>*</strong>方法描述:</span> <input type="text" id="methoddes2" onblur="chBlur('methoddes','methoddes1','服务描述不能为空')"/><span id="methoddes1" style="color: red;font-size:13px"></span>
+									<span><strong>*</strong>方法描述:</span> <input type="text" id="method_des_2" onblur="chBlur('method_des_2','method_des_2','服务描述不能为空')"/><span id="method_des_span_2" style="color: red;font-size:13px"></span>
 								</div>	
-								<div class="fp">
-									<span><strong>*</strong>方法地址:</span> <input type="text" id="methodaddress2" onblur="chBlur('methodaddress2','methodaddress2','服务描述不能为空')"/><span id="methodaddress2_span2" style="color: red;font-size:13px"></span>
-								</div>					
-							</li>
-							<li class="clearfix bgwhite">
-								<div class="fp">
-									<span><strong>*</strong>是否运行:</span>
-									<select id="isrun2" >
-										<option value="1">YES</option>
-										<option value="0">NO</option>
-									</select>
-								</div>
 							</li>
 						</ul>
 						<div class="modal-footer">

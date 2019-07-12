@@ -38,21 +38,18 @@ public class TestCaseController {
 	
 	@RequestMapping("/index")
 	public String index(HttpServletRequest request) {
-		LOGGER.info("******TestCase  index   begin******");
 		List<TestServiceInfo> initServiceList = testServiceService.selectAll();
 		List<TestCaseInfo> caseData = null;
 		List<TestMethodInfo> initMethodList = null;
 		String sid = request.getParameter("initserviceselect");
+		String initmethodselect = request.getParameter("initmethodselect");
+		LOGGER.info("******TestCase  index  ******sid:["+sid +"] initmethodselect:["+initmethodselect + "] begin******");
 		if (!StringUtils.isEmpty(sid))
 		{
-			ResultTool<List<TestMethodInfo>> res = testMethodService.createdMethod(Integer.parseInt(sid));
-			if (res.isSuccess())
-			{
-				initMethodList = res.getObj();
-			}
+			TestMethodInfo res = testMethodService.selectByMethodId(Integer.parseInt(sid));
+				initMethodList.add(res);
 		}
 		
-		String initmethodselect = request.getParameter("initmethodselect");
 		if (!StringUtils.isEmpty(initmethodselect))
 		{
 			caseData = testCaseService.selectByMethodId(Integer.parseInt(initmethodselect));//当前选中的methodid，查出所有methodid下的测试用例
@@ -154,22 +151,13 @@ public class TestCaseController {
 	
 	@RequestMapping("/createdMethod")
 	@ResponseBody
-	public ResultTool<List<TestMethodInfo>> createdMethod(int sid){
-		LOGGER.info("******开始查询serviceName :" +sid+" 对应的method *****");
-		ResultTool<List<TestMethodInfo>> result = testMethodService.createdMethod(sid);
-        return result;
+	public TestMethodInfo createdMethod(int sid){
+        return testMethodService.selectByMethodId(sid);
 	}
 	
 	@RequestMapping("/selectMethodId")
     @ResponseBody
-	public TestMethodInfo selectMethodId(Integer sid) {
-		if (sid != null) {
-			LOGGER.info("******开始查询methodId :" + sid + " *****");
-			List<TestMethodInfo> result = testMethodService.selectByMethodId(sid);
-			if (result != null && !result.isEmpty()) {
-				return result.get(0);
-			}
-		}
-		return null;
+	public List<TestCaseInfo> selectMethodId(Integer sid) {
+		return testCaseService.selectByMethodId(sid);
 	}
 }

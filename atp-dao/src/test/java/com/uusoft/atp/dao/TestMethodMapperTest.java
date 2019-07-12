@@ -27,12 +27,6 @@ public class TestMethodMapperTest {
 
 	@Resource
 	private TestMethodMapper methodMapper;
-
-	//@Test
-	public void test() {
-		int id = methodMapper.selectMethodIdByName("testMethod");
-		System.out.println("************"+id);
-	}
 	
 	@Test
 	public void test2() {

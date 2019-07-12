@@ -47,11 +47,8 @@ public class TestSuiteController {
 		String sid = request.getParameter("initserviceselect");
 		if (!StringUtils.isEmpty(sid))
 		{
-			ResultTool<List<TestMethodInfo>> res = testMethodService.createdMethod(Integer.parseInt(sid));
-			if (res.isSuccess())
-			{
-				initMethodList = res.getObj();
-			}
+			TestMethodInfo res = testMethodService.selectByMethodId(Integer.parseInt(sid));
+				initMethodList.add(res);
 		}
 		
 		String initmethodselect = request.getParameter("initmethodselect");
@@ -131,24 +128,10 @@ public class TestSuiteController {
 		return result;
     }
 	
-	@RequestMapping("/createdMethod")
-	@ResponseBody
-	public ResultTool<List<TestMethodInfo>> createdMethod(int sid){
-		LOGGER.info("******开始查询serviceName :" +sid+" 对应的method *****");
-		ResultTool<List<TestMethodInfo>> result = testMethodService.createdMethod(sid);
-        return result;
-	}
-	
 	@RequestMapping("/selectMethodId")
     @ResponseBody
-	public TestMethodInfo selectMethodId(Integer sid) {
-		if (sid != null) {
-			LOGGER.info("******开始查询methodId :" + sid + " *****");
-			List<TestMethodInfo> result = testMethodService.selectByMethodId(sid);
-			if (result != null && !result.isEmpty()) {
-				return result.get(0);
-			}
-		}
-		return null;
+	public List<TestSuiteInfo> selectMethodId(Integer sid) {
+		LOGGER.info("******开始查询methodId :" + sid + " *****");
+		return testSuiteService.selectByMethodId(sid);
 	}
 }
