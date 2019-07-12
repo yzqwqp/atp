@@ -16,7 +16,7 @@
 	</resultMap>
 	
 	<sql id="Base_Column_List" >
-    	METHOD_ID, SUITE_DES, IS_RUN
+    	SUITE_ID, METHOD_ID, SUITE_DES, IS_RUN
   	</sql>
 	
 	<insert id="insert" parameterType="com.uusoft.atp.model.TestSuiteInfo" useGeneratedKeys="true" keyProperty="test_id">
@@ -30,7 +30,7 @@
    		from TEST_SUITE
    		<where>
    			IS_DEL = 0
-   			<if test="case_id != null">
+   			<if test="suite_id != null">
    				and SUITE_ID = #{suite_id,jdbcType=INTEGER}
    			</if>
    		</where>

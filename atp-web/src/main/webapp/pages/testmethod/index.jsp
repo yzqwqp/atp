@@ -157,7 +157,7 @@
 		<%@include file="../common/left-menu.jsp"%>
 		<div class="main-content">
 			<div class="topv">
-				<h3>测试方法</h3>
+				<h3>测试集</h3>
 			</div>
 			<div class="row" style="padding-top: 50px;">
 				<div class="col-md-12">
