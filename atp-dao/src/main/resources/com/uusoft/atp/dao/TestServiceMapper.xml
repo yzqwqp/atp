@@ -22,14 +22,7 @@
 		insert into TEST_SERVICE (SERVICE_NAME, SERVICE_DES, IS_DEL)  values (#{service_name,jdbcType=VARCHAR},#{service_des,jdbcType=VARCHAR}, 0)
 	</insert>
 	
-	<select id="selectAll" resultMap="BaseResultMap">
-		select 
-    	<include refid="Base_Column_List" />
-   		from TEST_SERVICE
-   		where IS_DEL = 0
-	</select>
-		
-	<select id="selectById" resultMap="BaseResultMap">
+	<select id="selectByServiceId" resultMap="BaseResultMap">
 		select 
     	<include refid="Base_Column_List" />
    		from TEST_SERVICE
@@ -41,8 +34,11 @@
    		</where>
 	</select>
 	
-	<select id="selectUnCreateService" resultType ="String" >
-		SELECT DISTINCT SERVICE_NAME from INIT_SERVICE  where SERVICE_NAME  not in (select SERVICE_NAME from TEST_SERVICE)
+	<select id="selectAll" resultMap="BaseResultMap">
+		select 
+    	<include refid="Base_Column_List" />
+   		from TEST_SERVICE
+   		where IS_DEL = 0
 	</select>
 	
 	<update id="updateById" parameterType="com.uusoft.atp.model.TestServiceInfo">
@@ -57,14 +53,4 @@
         where SERVICE_ID = #{service_id,jdbcType=INTEGER}
 	</update>
 	
-	<select id="selectSeviceIdByName" resultType ="int" parameterType="java.lang.String">
-	select SERVICE_ID
-   		from TEST_SERVICE
-   		<where>
-   			<if test="service_name != null">
-   				SERVICE_NAME = #{service_name,jdbcType=VARCHAR}
-   			</if>
-   			and IS_DEL = 0
-   		</where>
-	</select>
 </mapper>

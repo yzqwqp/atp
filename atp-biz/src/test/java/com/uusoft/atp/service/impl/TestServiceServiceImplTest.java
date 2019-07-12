@@ -67,20 +67,6 @@ public class TestServiceServiceImplTest {
 	}
 	
 	/**
-	 * 测试TestServiceServiceImpl的SelectById方法
-	 */
-	@Test
-	public void test03SelectById() {
-		ResultTool<TestServiceInfo> info2 =impl.selectByServiceId(1);
-		TestServiceInfo info = info2.getObj();
-		LOGGER.info("###########################");
-		LOGGER.info(Thread.currentThread() .getStackTrace()[1].getMethodName());
-		LOGGER.info(info.getService_des());
-		LOGGER.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-		Assert.assertNotNull((info.toString()));
-	}
-	
-	/**
 	 * 测试TestServiceServiceImpl的UpdateById方法
 	 */
 	@Test
@@ -106,12 +92,6 @@ public class TestServiceServiceImplTest {
 		LOGGER.info(Thread.currentThread() .getStackTrace()[1].getMethodName());
 		LOGGER.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 //		Assert.assertTrue(i>0);
-	}
-	
-	@Test
-	public void test05selectById() {
-		ResultTool<TestServiceInfo> info = impl.selectByServiceId(1);
-		LOGGER.info(info.getObj().toString());
 	}
 	
 }

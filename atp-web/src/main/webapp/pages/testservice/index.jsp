@@ -37,11 +37,10 @@
 		ajaxReq(data, url, showSingle, "post");
 	}
 	function showSingle(result){
-		var data=result.obj;
-		$("#servicename2").val(data.service_name);
+		var data=result;
 		$("#serviceid2").val(data.service_id);
+		$("#servicename2").val(data.service_name);
 		$("#servicedes2").val(data.service_des);
-		$("#isrun2").val(data.is_run);
 		$(".edit").modal("show");
 	}
 	
@@ -79,40 +78,29 @@
 	}
 	function addBefore() {
 		$(".xinz").modal("show");
-		var data = {};
-		var url = path + "/testservice/addBefore.do";
-		ajaxReq(data, url, addBeforecall, "get");
-	}
-	function addBeforecall(result) {
-		var data = result.obj;
-		var options = "";
-		for(var i=0;i<data.length;i++){
-			options+=("<option value='"+data[i]+"'>"+data[i]+"</option>");
-			}
-		$("#unCreateService").html(options);
 	}
 	function add() {
 		var data = {};
-		data.service_name = $("#unCreateService").val();
+		data.service_name = $("#servicename").val();
 		data.service_des = $("#servicedes").val();
-		data.is_run = $("#isrun").val();
 		var url = path + "/testservice/add.do";
 		ajaxReq(data, url, doCall, "post");
 	}
 	function update(){
-		if (!(chBlur('servicename', 'servicename1', '服务描述不能为空')
-				 )) {
-			return;
-		}
 		var data = {};
 		data.service_id = $("#serviceid2").val();
 		data.service_name = $("#servicename2").val();
 		data.service_des = $("#servicedes2").val();
-		data.is_run = $("#isrun2").val();
 		var url = path + "/testservice/updateById.do";
 		ajaxReq(data, url, doCall, "post");
 	}
 	
+	function selectChangeService(event){
+		var data={};
+		data.sid=$("#initserviceselect").val();
+		var url=path+"/testservice/selectById.do";
+		$("#payForm").submit();
+	}
 	
 </script>
 </head>
@@ -132,17 +120,14 @@
 							<!--<div class="panel-options"> <a href="#"> <i class="linecons-cog"></i> </a> <a href="#" data-toggle="panel"> <span class="collapse-icon">–</span> <span class="expand-icon">+</span> </a> <a href="#" data-toggle="reload"> <i class="fa-rotate-right"></i> </a> <a href="#" data-toggle="remove"> × </a> </div>-->
 						</div>
 						<div class="screen">
-						<form action="<%=path %>/testcase/index.do" id="payForm" method="post">
+						<form action="<%=path %>/testservice/index.do" id="payForm" method="post">
 							<ul class="shaix clearfix">
-								<li><span>测试服务：</span> <select name="initserviceselect">
+								<li><span>服务名称：</span> <select name="initserviceselect" id="initserviceselect" onchange="selectChangeService(this)">
 										<option value="">全部服务</option>
-										<c:forEach items="${serviceList }" var="item">
-											<option value="${item.service_name }" <c:if test="${item.service_name !=null }">selected</c:if> >${item.service_name }</option>
+										<c:forEach items="${initServiceList }" var="item" >
+											<option value="${item.service_id }" <c:if test="${param.initserviceselect == item.service_id }">selected</c:if> >${item.service_name }</option>
 										</c:forEach>
 								</select></li>
-								<li><a href="javascript:void(0)" class="sxbtn" onclick="query()"> <span
-										class="glyphicon glyphicon-search"></span> 筛选
-								</a></li>
 								<li>
 									<button type="button" class="addnew" onclick="addBefore()">新增</button>
 								</li>
@@ -156,7 +141,6 @@
 									<th>服务id</th>
 									<th>服务名称</th>
 									<th>服务描述</th>
-									<th>是否运行</th>
 									<th>操作</th>
 								</tr>
 								<c:forEach var="item" items="${serviceList }">
@@ -164,7 +148,6 @@
 										<td>${item.service_id }</td>
 										<td>${item.service_name }</td>
 										<td>${item.service_des }</td>
-										<td>${item.is_run }</td>
 										<td>
 											<a href="javascript:edit('${item.service_id}')">编辑</a>
 											<a href="javascript:del('${item.service_id }','${item.service_name }')">删除</a>
@@ -189,34 +172,21 @@
 				<div class="xzmain">
 					<h3>测试服务-新增</h3>
 					<div class="bwarp">
-							<ul>
+						<ul>
 							<li class="clearfix bgwhite">
 								<div class="fp">
-									<span><strong>*</strong>服务名称:</span> <select id="unCreateService"></select>
+									<span><strong>*</strong>服务名称:</span>  <input type="text" id="servicename" onblur="chBlur('servicename','servicedes1','服务描述不能为空')"/><span id="servicename_span" style="color: red;font-size:13px"></span>
 								</div>
 								<div class="fp">
-									<span><strong>*</strong>服务id:</span> <input type="text"	id="serviceid"  disabled="disabled"/>
-								</div>
-							</li>
-							<li class="clearfix bgwhite">
-								<div class="fp">
-									<span><strong>*</strong>服务描述:</span> <input type="text" id="servicedes" onblur="chBlur('servicedes','servicedes1','服务描述不能为空')"/><span id="servicedes1" style="color: red;font-size:13px"></span>
-								</div>						
-								<div class="fp">
-									<span><strong>*</strong>是否运行:</span>
-									<select id="isrun" >
-										<option value="1">YES</option>
-										<option value="0">NO</option>
-									</select>
-								</div>
+									<span><strong>*</strong>服务描述:</span> <input type="text" id="servicedes" onblur="chBlur('servicedes','servicedes1','服务描述不能为空')"/><span id="servicedes_span" style="color: red;font-size:13px"></span>
+								</div>	
 							</li>
 						</ul>
-						<div class="modal-footer">
-							<p>
-								<button type="button" class="save" onclick="add()">保存</button>
-								<button type="button" class="closebtn" data-dismiss="modal">取消</button>
-							</p>
-						</div>
+					<div class="modal-footer">
+						<p><button type="button" class="save" onclick="add()">保存</button>
+							<button type="button" class="closebtn" data-dismiss="modal">取消</button>
+						</p>
+					</div>
 
 
 					</div>
@@ -238,24 +208,18 @@
 					<div class="bwarp">
 							<ul>
 							<li class="clearfix bgwhite">
-								<div class="fp">
-									<span><strong>*</strong>服务名称:</span> <input type="text"	id="servicename2"  disabled="disabled"/>
-								</div>
+								
 								<div class="fp">
 									<span><strong>*</strong>服务id:</span> <input type="text"	id="serviceid2"  disabled="disabled"/>
 								</div>
 							</li>
 							<li class="clearfix bgwhite">
 								<div class="fp">
-									<span><strong>*</strong>服务描述:</span> <input type="text" id="servicedes2" onblur="chBlur('servicedes','servicedes1','服务描述不能为空')"/><span id="servicedes1" style="color: red;font-size:13px"></span>
-								</div>						
-								<div class="fp">
-									<span><strong>*</strong>是否运行:</span>
-									<select id="isrun2" >
-										<option value="1">YES</option>
-										<option value="0">NO</option>
-									</select>
+									<span><strong>*</strong>服务名称:</span> <input type="text"	id="servicename2"  disabled="disabled"/>
 								</div>
+								<div class="fp">
+									<span><strong>*</strong>服务描述:</span> <input type="text" id="servicedes2" onblur="chBlur('servicedes2','servicedes2','服务描述不能为空')"/><span id="servicedes1" style="color: red;font-size:13px"></span>
+								</div>						
 							</li>
 						</ul>
 						<div class="modal-footer">

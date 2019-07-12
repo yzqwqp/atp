@@ -18,11 +18,4 @@ public interface TestServiceMapper {
 	
 	int deleteById(@Param("service_id") int service_id);
 	
-	int selectSeviceIdByName(@Param("service_name") String service_name);
-
-	TestServiceInfo selectByMethodId(int method_id);
-	
-	List<String> selectUnCreateService();
-	
-	
 }

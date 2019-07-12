@@ -76,11 +76,11 @@ public class TestMethodController {
 	public String selectByServiceId(HttpServletRequest request, int sid) {
 		LOGGER.info("******TestMethod  selectByServiceId   begin******");
 		List<TestMethodInfo> methodData = testMethodService.selectByServiceId(sid);
-		ResultTool<TestServiceInfo> res = testServiceService.selectByServiceId(sid);
-		String serviceName = res.getObj().getService_name();
+		TestServiceInfo res = testServiceService.selectByServiceId(sid);
+		String serviceName = res.getService_name();
 		List<InitServiceInfo> initMethodData = initServiceService.selectByName(serviceName);
 		List<TestServiceInfo> listService = new ArrayList<TestServiceInfo>();
-		listService.add(res.getObj());
+		listService.add(res);
 		LOGGER.info("***打印initData***");
 		for (InitServiceInfo is : initMethodData) {
 			LOGGER.info(is.getMethod_name());
