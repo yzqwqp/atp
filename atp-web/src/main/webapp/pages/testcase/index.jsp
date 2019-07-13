@@ -32,8 +32,8 @@
 	var path='<%=path%>';
 	function edit(id){
 		var data={};
-		data.sid=id;
-		var url=path+"/testcase/selectById.do";
+		data.caseId=id;
+		var url=path+"/testcase/selectByCaseId.do";
 		// ajaxReq(data, url, showSingle, "post");
 		$.post(url, data, function(res) {
 			showSingle(res);
@@ -41,23 +41,40 @@
 		});
 	}
 	function showSingle(data){
+		
+		$("#suite_id2").val(data.suite_id);
+		$("#suite_des2").val(data.suite_des);
+		
+		$("#case_run_num2").val(data.case_run_num);
+
 		$("#case_id2").val(data.case_id);
 		$("#case_des2").val(data.case_des);
+		
+		$("#method_address2").val(data.method_address);
 		$("#case_data2").val(data.case_data);
-		$("#case_assert_type2").val(data.case_assert_type);
+		
+		$("#case_assert_tpye2").val(data.case_assert_type);
 		$("#case_assert_value2").val(data.case_assert_value);
+		
+		$("#after_run2").val(data.after_run);
+		$("#before_run2").val(data.before_run);
 	}
 	function update(){
 		var data = {};
+		data.suite_id = $("#suiteselect2").val();
 		data.case_id = $("#case_id2").val();
+		data.method_address = $("#method_address2").val();
 		data.case_des = $("#case_des2").val();
 		data.case_data = $("#case_data2").val();
-		data.case_assert_type = $("#case_assert_type2").val();
+		data.case_assert_type = $("#case_assert_tpye2").val();
 		data.case_assert_value = $("#case_assert_value2").val();
+		data.before_run = $("#before_run2").val();
+		data.after_run = $("#after_run2").val();
+		data.case_run_num = $("#case_run_num2").val();
 		var url = path + "/testcase/updateById.do";
 		// ajaxReq(data, url, doCall, "post");
 		$.post(url, data, function(res) {
-			$("#methodname4").html(res.obj);
+			$("#msgshow").html(res.obj);
 			$(".xinxi").modal('show');
 		});
 	}
@@ -75,12 +92,12 @@
 	}
 	function selectChangeService(event){
 		var value=$(event).val();
-		var url=path+"/testcase/createdMethod.do";
+		var url=path+"/testmethod/selectByServiceId.do";
 		var data={sid:value};
 		ajaxReq(data, url, selectChangeServiceCall, "post");
 	}
 	function selectChangeServiceCall(result){
-		var data = result.obj;
+		var data = result;
 		var options = "";
 		for(var i=0;i<data.length;i++){
 			options+=("<option value='"+data[i].method_id+"'>"+data[i].method_name+"</option>");
@@ -90,9 +107,9 @@
 		query();
 	}
 	function query(){
-		var data={};
-		data.sid=$("#initmethodselect").val();
-		var url=path+"/testcase/selectMethodId.do";
+		//var data={};
+		//data.sid=$("#initmethodselect").val();
+		//var url=path+"/testmethod/selectMethodId.do";
 		// ajaxReq(data, url, query_result, "post");
 		// $.post(url, data, function(res) {
 		//	query_result(res);
@@ -104,9 +121,16 @@
 		$("#table_list").html(data);
 	}
 	function selectChangeMethod(event){
-		var value=$(event).val();
-		var url=path+"/testcase/createdMethod.do";
-		var data={sid: value};
+		//var value=$(event).val();
+		//var url=path+"/testcase/createdMethod.do";
+		//var data={sid: value};
+		// ajaxReq(data, url, selectChangeServiceCall, "post");
+		query();
+	}
+	function selectChangeSuite(event){
+		//var value=$(event).val();
+		//var url=path+"/testcase/createdMethod.do";
+		//var data={sid: value};
 		// ajaxReq(data, url, selectChangeServiceCall, "post");
 		query();
 	}
@@ -119,7 +143,7 @@
 		return true;
 	}
 	function doCall(result){
-		$("#methodname4").html(result.obj);
+		$("#msgshow").html(result.obj);
 		$(".xinxi").modal('show');
 	}
 	function skipIndex(){
@@ -127,18 +151,31 @@
 	}
 	function addBefore() {
 		$(".xinz").modal("show");
+		var a = $("#initserviceselect").val();
+		var b = $("#initserviceselect").find("option:selected").html();
+		$("#serviceselect option").val(a);
+		$("#serviceselect option").html(b);
 		var a = $("#initmethodselect").val();
 		var b = $("#initmethodselect").find("option:selected").html();
 		$("#methodselect option").val(a);
 		$("#methodselect option").html(b);
+		var a = $("#initsuiteselect").val();
+		var b = $("#initsuiteselect").find("option:selected").html();
+		$("#suiteselect option").val(a);
+		$("#suiteselect option").html(b);
+		
 	}
 	function add() {
 		var data = {};
-		data.method_id = $("#methodselect").val();
+		data.suite_id = $("#suiteselect").val();
+		data.case_run_num = $("#case_run_num").val();
 		data.case_des = $("#case_des").val();
+		data.method_address = $("#method_address").val();
 		data.case_data = $("#case_data").val();
 		data.case_assert_type = $("#case_assert_tpye").val();
 		data.case_assert_value = $("#case_assert_value").val();
+		data.before_run = $("#before_run").val();
+		data.after_run = $("#after_run").val();
 		var url = path + "/testcase/add.do";
 		ajaxReq(data, url, doCall, "post");
 	}
@@ -148,7 +185,7 @@
 		var url = path + "/testcase/run.do";
 		//ajaxReq(data, url, doCall, "post");
 		$.post(url, data, function(res) {
-			$("#methodname4").html(res.obj);
+			$("#msgshow").html(res.obj);
 			$(".xinxi").modal('show');
 		});
 	}
@@ -162,7 +199,7 @@
 		<%@include file="../common/left-menu.jsp"%>
 		<div class="main-content">
 			<div class="topv">
-				<h3>测试用例</h3>
+				<h3>用例步骤</h3>
 			</div>
 			<div class="row" style="padding-top: 50px;">
 				<div class="col-md-12">
@@ -174,23 +211,25 @@
 						<form action="<%=path %>/testcase/index.do" id="payForm" method="post">
 							<ul class="shaix clearfix">
 								<li><span>服务名称：</span> <select name="initserviceselect" id="initserviceselect" onchange="selectChangeService(this)">
-										<option value="">全部服务</option>
 										<c:forEach items="${initServiceList }" var="item" >
 											<option value="${item.service_id }" <c:if test="${param.initserviceselect == item.service_id }">selected</c:if> >${item.service_name }</option>
 										</c:forEach>
 								</select></li>
-								<li><span>方法名称：</span> <select name="initmethodselect" id="initmethodselect" onchange="selectChangeMethod(this)">
-										<option value="">全部方法</option>
+								<li><span>测试用例集：</span> <select name="initmethodselect" id="initmethodselect" onchange="selectChangeMethod(this)">
 										<c:forEach items="${initMethodList }" var="item">
 											<option value="${item.method_id }" <c:if test="${param.initmethodselect == item.method_id }">selected</c:if> >${item.method_name }</option>
+										</c:forEach>
+								</select></li>
+								<li><span>测试用例：</span> <select name="initsuiteselect" id="initsuiteselect" onchange="selectChangeSuite(this)">
+										<c:forEach items="${initSuiteList }" var="item">
+											<option value="${item.suite_id }" <c:if test="${param.initsuiteselect == item.suite_id }">selected</c:if> >${item.suite_des }</option>
 										</c:forEach>
 								</select></li>
 								<li><a href="javascript:void(0)" class="sxbtn" onclick="query()"> <span
 										class="glyphicon glyphicon-search"></span> 筛选
 								</a></li>
 								<li>
-									<button type="button" class="addnew" onclick="addBefore()">新增方法</button>
-									<!-- <button type="button" class="addnew" style="font-size:14px;dipslay:inline;" onclick="addBefore()">新增方法</button>  -->
+									<button type="button" class="addnew" onclick="addBefore()">新增用例步骤</button>
 								</li>
 							</ul>
 						</form>
@@ -212,20 +251,47 @@
 		<div class="modal-dialog xinzm">
 			<div class="modal-content">
 				<div class="xzmain">
-					<h3>测试用例-新增</h3>
+					<h3>测试用例步骤-新增</h3>
 					<div class="bwarp">
 							<ul>
 							<li class="clearfix bgwhite">
 								<div class="fp">
-									<span><strong>*</strong>方法名称:</span> <select id="methodselect" ><option value=""></option></select>
-								</div>
-								<div class="fp">
-									<span><strong>*</strong>用例描述:</span> <input type="text" id="case_des" onblur="chBlur('case_des','case_des','方法名称不能为空')"/><span id="case_des_span" style="color: red;font-size:13px"></span>
+									<span><strong>*</strong>服务名称:</span> <select id="serviceselect" ><option value=""></option></select>
 								</div>
 							</li>
 							<li class="clearfix bgwhite">
 								<div class="fp">
-									<span><strong>*</strong>用例数据json:</span><input type="text" id="case_data" onblur="chBlur('case_data','case_data','方法描述不能为空')"/><span id="case_data_span" style="color: red;font-size:13px"></span>
+									<span><strong>*</strong>测试用例集:</span> <select id="methodselect" ><option value=""></option></select>
+								</div>
+								<div class="fp">
+									<span><strong>*</strong>测试用例:</span> <select id="suiteselect" ><option value=""></option></select>
+								</div>
+							</li>
+							<li class="clearfix bgwhite">
+								<div class="fp">
+									<span><strong>*</strong>用例执行顺序:</span> 
+									<select id="case_run_num" >
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="6">6</option>
+										<option value="7">7</option>
+										<option value="8">8</option>
+										<option value="9">9</option>
+									</select>
+								</div>
+								<div class="fp">
+									<span><strong>*</strong>用例描述:</span> <input type="text" id="case_des" onblur="chBlur('case_des','case_des','用例描述不能为空')"/><span id="case_des_span" style="color: red;font-size:13px"></span>
+								</div>					
+							</li>
+							<li class="clearfix bgwhite">
+								<div class="fp">
+									<span><strong>*</strong>请求地址:</span> <input type="text" id="method_address" onblur="chBlur('method_address','method_address','方法地址不能为空')"/><span id="method_address_span" style="color: red;font-size:13px"></span>
+								</div>
+								<div class="fp">
+									<span><strong>*</strong>用例数据json:</span><input type="text" id="case_data" onblur="chBlur('case_data','case_data','用例数据不能为空')"/><span id="case_data_span" style="color: red;font-size:13px"></span>
 								</div>						
 							</li>
 							<li class="clearfix bgwhite">
@@ -237,8 +303,16 @@
 									</select>
 								</div>
 								<div class="fp">
-									<span><strong>*</strong>断言值:</span> <input type="text" id="case_assert_value" onblur="chBlur('case_assert_value','case_assert_value','方法名称不能为空')"/><span id="case_assert_value_span" style="color: red;font-size:13px"></span>
+									<span>断言值:</span> <input type="text" id="case_assert_value" onblur="chBlur('case_assert_value','case_assert_value','方法名称不能为空')"/><span id="case_assert_value_span" style="color: red;font-size:13px"></span>
 								</div>
+							</li>
+							<li class="clearfix bgwhite">
+								<div class="fp">
+									<span>执行前处理:</span> <input type="text" id="before_run"/><span id="before_run_span" style="color: red;font-size:13px"></span>
+								</div>
+								<div class="fp">
+									<span>执行后处理:</span><input type="text" id="after_run"/><span id="after_run_span" style="color: red;font-size:13px"></span>
+								</div>						
 							</li>
 							</ul>
 						<div class="modal-footer">
@@ -267,28 +341,59 @@
 							<ul>
 							<li class="clearfix bgwhite">
 								<div class="fp">
-									<span><strong>*</strong>用例ID:</span> <input type="text" id="case_id2" disabled="disabled"/>
+									<span><strong>*</strong>用例ID:</span> <input type="text" id="suite_id2" disabled="disabled"/>
 								</div>
 								<div class="fp">
-									<span><strong>*</strong>用例描述:</span> <input type="text" id="case_des2" onblur="chBlur('case_des2','case_des2','用例描述不能为空')"/><span id="case_des_span2" style="color: red;font-size:13px"></span>
+									<span><strong>*</strong>用例名称:</span> <input type="text" id="suite_des2" disabled="disabled"/>
 								</div>
 							</li>
 							<li class="clearfix bgwhite">
 								<div class="fp">
-									<span><strong>*</strong>用例数据json:</span><input type="text" id="case_data2" onblur="chBlur('case_data2','case_data2','用例数据json不能为空')"/><span id="case_data_span2" style="color: red;font-size:13px"></span>
+									<span><strong>*</strong>步骤顺序:</span> 
+									<select id="case_run_num2" >
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="6">6</option>
+										<option value="7">7</option>
+										<option value="8">8</option>
+										<option value="9">9</option>
+									</select>
+									<input type="hidden" id="case_id2" disabled="disabled"/>
+								</div>
+								<div class="fp">
+									<span><strong>*</strong>步骤描述:</span> <input type="text" id="case_des2" onblur="chBlur('case_des2','case_des2','用例描述不能为空')"/><span id="case_des2_span" style="color: red;font-size:13px"></span>
+								</div>					
+							</li>
+							<li class="clearfix bgwhite">
+								<div class="fp">
+									<span><strong>*</strong>请求地址:</span> <input type="text" id="method_address2" onblur="chBlur('method_address2','method_address2','方法地址不能为空')"/><span id="method_address2_span" style="color: red;font-size:13px"></span>
+								</div>
+								<div class="fp">
+									<span><strong>*</strong>数据json:</span><input type="text" id="case_data2" onblur="chBlur('case_data2','case_data2','用例数据不能为空')"/><span id="case_data2_span" style="color: red;font-size:13px"></span>
 								</div>						
 							</li>
 							<li class="clearfix bgwhite">
 								<div class="fp">
 									<span><strong>*</strong>断言类型:</span>
-									<select id="case_assert_type2" >
+									<select id="case_assert_tpye2" >
 										<option value="0">不断言</option>
 										<option value="1">断言返回结果</option>
 									</select>
 								</div>
 								<div class="fp">
-									<span><strong>*</strong>断言值:</span> <input type="text" id="case_assert_value2" onblur="chBlur('case_assert_value2','case_assert_value2','方法名称不能为空')"/><span id="case_assert_value_span2" style="color: red;font-size:13px"></span>
+									<span>断言值:</span> <input type="text" id="case_assert_value2" onblur="chBlur('case_assert_value2','case_assert_value2','方法名称不能为空')"/><span id="case_assert_value2_span" style="color: red;font-size:13px"></span>
 								</div>
+							</li>
+							<li class="clearfix bgwhite">
+								<div class="fp">
+									<span>执行前处理:</span> <input type="text" id="before_run2"/><span id="before_run2_span" style="color: red;font-size:13px"></span>
+								</div>
+								<div class="fp">
+									<span>执行后处理:</span><input type="text" id="after_run2"/><span id="after_run2_span" style="color: red;font-size:13px"></span>
+								</div>						
 							</li>
 							</ul>
 						<div class="modal-footer">
@@ -318,7 +423,7 @@
 					<div class="xints">
 						<h4 id="msg"></h4>
 						<p>
-							<span>测试用例:<strong id="methodname4"></strong></span>
+							<span>测试用例:<strong id="msgshow"></strong></span>
 						</p>
 					</div>
 				</div>

@@ -11,8 +11,8 @@ public  final class StringUtil {
 	/**
      * 判断字符串不为空，且不是空白字符，且不为Null
      */
-    public static boolean isNotBlank(String str) {
-        return !StringUtils.isBlank(str);
+    public static boolean isBlank(String str) {
+        return StringUtils.isBlank(str);
     }
     
     /**
@@ -20,6 +20,6 @@ public  final class StringUtil {
      * 
      */
     public static String[] splitList(String str) {
-    	return str.split(",");
+    	return str.split("=");
     }
 }

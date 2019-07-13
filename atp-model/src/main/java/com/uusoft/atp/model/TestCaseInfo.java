@@ -1,50 +1,60 @@
 package com.uusoft.atp.model;
 
 public class TestCaseInfo {
+
 	/**
      * 用例id
      */
-	private int case_id;
-	/**
-     * 用例组id
-     */
 	private int suite_id;
+	/**
+     * 用例名称
+     */
+	private String suite_des;
 	/**
      * 方法地址
      */
 	private String method_address;
 	/**
-     * 用例描述
+     * 用例操作步骤id
+     */
+	private int case_id;
+	/**
+     * 用例操作步骤描述
      */
 	private String case_des;
 	/**
-     * 用例数据（json格式）
+     * 数据（json格式）
      */
 	private String case_data;
 	/**
-     * 用例断言类型
+     * 断言类型
      */
 	private int case_assert_type;
 	/**
-     * 用例断言的值
+     * 断言的值
      */
 	private String case_assert_value;
 	/**
      * 执行前处理
      */
-	private int before_run;
+	private Integer before_run;
 	/**
      * 执行后处理
      */
-	private int after_run;
+	private Integer after_run;
 	/**
-     * 用例执行顺序 从  [before_run开始]-0-1-3-4
+     * 执行顺序 从  [before_run开始]-0-1-3-4
      */
-	private int case_run_num;
+	private Integer case_run_num;
 	/**
      * 是否删除
      */
 	private int is_del;
+	
+	@Override
+	public String toString() {
+		return "TestCaseInfo : {case_id=" + case_id +", suite_id=" + suite_id +", method_address=" + method_address + ", case_des=" + case_des + ", case_data=" + case_data + ", case_assert_type=" + case_assert_type + ", case_assert_value=" + case_assert_value + ", before_run=" + before_run + ", after_run=" + after_run+ ", case_run_num=" + case_run_num+ ", is_del=" + is_del + "}";
+	}
 	
 	public int getSuite_id() {
 		return suite_id;
@@ -94,26 +104,28 @@ public class TestCaseInfo {
 	public void setMethod_address(String method_address) {
 		this.method_address = method_address;
 	}
-	public int getBefore_run() {
+	public Integer getBefore_run() {
 		return before_run;
 	}
-	public void setBefore_run(int before_run) {
+	public void setBefore_run(Integer before_run) {
 		this.before_run = before_run;
 	}
-	public int getAfter_run() {
+	public Integer getAfter_run() {
 		return after_run;
 	}
-	public void setAfter_run(int after_run) {
+	public void setAfter_run(Integer after_run) {
 		this.after_run = after_run;
 	}
-	public int getCase_run_num() {
+	public Integer getCase_run_num() {
 		return case_run_num;
 	}
-	public void setCase_run_num(int case_run_num) {
+	public void setCase_run_num(Integer case_run_num) {
 		this.case_run_num = case_run_num;
 	}
-	@Override
-	public String toString() {
-		return "TestCaseInfo : {case_id=" + case_id +", suite_id=" + suite_id +", method_address=" + method_address + ", case_des=" + case_des + ", case_data=" + case_data + ", case_assert_type=" + case_assert_type + ", case_assert_value=" + case_assert_value + ", is_del=" + is_del + ", case_assert_value=" + case_assert_value + "}";
+	public String getSuite_des() {
+		return suite_des;
+	}
+	public void setSuite_des(String suite_des) {
+		this.suite_des = suite_des;
 	}
 }

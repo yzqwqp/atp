@@ -1,4 +1,6 @@
 package com.uusoft.atp.service.impl;
+import java.util.Collections;
+import java.util.Comparator;
 /** 
 * 类说明 ：
 * 	TestCaseService实现类
@@ -14,23 +16,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
-import com.alibaba.fastjson.JSONObject;
-import com.uusoft.atp.dao.InitParaMapper;
-import com.uusoft.atp.dao.InitServiceMapper;
 import com.uusoft.atp.dao.TestCaseMapper;
 import com.uusoft.atp.dao.TestMethodMapper;
-import com.uusoft.atp.dao.TestReportMapper;
 import com.uusoft.atp.dao.TestSuiteMapper;
 import com.uusoft.atp.model.TestCaseInfo;
-import com.uusoft.atp.model.TestMethodInfo;
-import com.uusoft.atp.model.TestResultInfo;
-import com.uusoft.atp.model.TestSuiteInfo;
-import com.uusoft.atp.service.InitMethodService;
 import com.uusoft.atp.service.TestCaseService;
-import com.uusoft.atp.utils.HttpClientUtil;
-import com.uusoft.atp.utils.ResultTool;
 
 
 @Service("TestCaseService")
@@ -45,18 +36,6 @@ public class TestCaseServiceImpl implements TestCaseService {
 	TestSuiteMapper suiteMapper;	
 	@Resource
 	TestMethodMapper methodMapper;
-	@Resource
-	private InitParaMapper paraMapper;
-	@Resource
-	private TestReportMapper testReportMapper;
-	@Resource
-	private InitMethodService initMethodService;
-	@Resource
-	private InitServiceMapper serviceMapper;
-	@Resource
-	private TestDataServiceImpl testDataService;
-	@Resource
-	private TestResultServiceImpl testResultService;
 
 	
 //	/** 
@@ -97,7 +76,18 @@ public class TestCaseServiceImpl implements TestCaseService {
 
 	@Override
 	public List<TestCaseInfo> selectBySuiteId(int suite_id) {
-		return mapper.selectBySuiteId(suite_id);
+		List<TestCaseInfo> caseInfo = mapper.selectBySuiteId(suite_id);
+		Collections.sort(caseInfo, new Comparator<TestCaseInfo>() {
+			@Override
+			public int compare(TestCaseInfo o1, TestCaseInfo o2) {
+				int i = o1.getCase_run_num() - o2.getCase_run_num();
+				if(i == 0){
+					return o1.getCase_id() - o2.getCase_id();
+				}
+				return i;
+			}
+		});
+		return caseInfo;
 	}
 	
 	@Override
@@ -189,172 +179,6 @@ public class TestCaseServiceImpl implements TestCaseService {
 
 	
 
-	@Override
-	public ResultTool<String> runById(int case_id) {
-		TestCaseInfo caseInfo = mapper.selectByCaseId(case_id);
-		// TODO
-		TestSuiteInfo suiteInfo = suiteMapper.selectBySuiteId(1);
-		// TODO
-		TestMethodInfo methodInfo =  methodMapper.selectByMethodId(suiteInfo.getMethod_id());
-		TestResultInfo testResultInfo = new TestResultInfo();
-		String httpOrgCreateTestRtn = "";
-		int httpStatus = 0;//0-初始化 1-成功 2失败
-		String httpError = "";
-		int assertStatus = 0;
-		String assertError = "";
-		String responseAssertValue = "";
-		JSONObject jsonobj = null;
-		
-		testResultInfo.setCase_id(caseInfo.getCase_id());
-		testResultInfo.setCase_des(caseInfo.getCase_des());
-		// TODO
-		testResultInfo.setMethod_address(caseInfo.getMethod_address());
-		testResultInfo.setCase_data(caseInfo.getCase_data());
-		testResultInfo.setCase_assert_type(caseInfo.getCase_assert_type());
-		testResultInfo.setCase_assert_value(caseInfo.getCase_assert_value());
-		testResultInfo.setResponse_assert_value(responseAssertValue);
-		
-		// --1--开始处理请求
-		try {
-			// TODO
-			httpOrgCreateTestRtn = HttpClientUtil.doPost(caseInfo.getMethod_address(), caseInfo.getCase_data(), "utf-8");
-			httpStatus = 10;
-			testResultInfo.setHttp_status(httpStatus);
-			testResultInfo.setResponse_data(httpOrgCreateTestRtn);
-		} catch (Exception e) {
-			LOGGER.error("", e);
-			httpError = e.getMessage();
-			httpStatus = 20;
-			assertStatus = 20;
-			testResultInfo.setHttp_status(httpStatus);
-			testResultInfo.setHttp_error(httpError);
-			testResultInfo.setAssert_status(assertStatus);
-			testResultInfo.setAssert_error(assertError);
-		}
-		
-		// --2--请求失败处理
-		if (httpStatus != 10)
-		{
-			// throw 记录结果（执行ID，用例ID，用例data，返回结果，httpStatus,httpError）
-			// httpStatue不等于1，说明请求不成功，直接执行不成功插入test_result结果表
-			testResultService.insert(testResultInfo);
-			return ResultTool.setResult("9999", "http请求异常，执行失败", null);
-		}
-		
-		// --3--请求返回为空处理
-		if (StringUtils.isEmpty(httpOrgCreateTestRtn))
-		{
-			// throw
-			// 如果http请求返回值为空，这里需要判断断言，如果不断言，则用例执行成功
-			if (caseInfo.getCase_assert_type() == 0) {
-				httpStatus = 10;
-				assertStatus = 11;
-				testResultInfo.setHttp_status(httpStatus);
-				testResultInfo.setAssert_status(assertStatus);
-				testResultInfo.setHttp_error("");
-				testResultInfo.setAssert_error("http响应无返回，用例无断言，成功");
-				testResultService.insert(testResultInfo);
-				return ResultTool.setResult("1011", "http请求无返回值，不断言，执行成功", null);
-			} else {
-				httpStatus = 30;
-				assertStatus = 30;
-				testResultInfo.setHttp_status(httpStatus);
-				testResultInfo.setAssert_status(assertStatus);
-				testResultInfo.setHttp_error("http请求无返回值，异常");
-				testResultInfo.setAssert_error("http响应无返回值，用例有断言，无法断言，断言执行失败");
-				testResultService.insert(testResultInfo);
-				return ResultTool.setResult("3030", "http请求无返回值，断言执行失败", null);
-			}
-		}
-		
-		// --4--请求返回不为空，解析返回值
-		try {
-			jsonobj = JSONObject.parseObject(httpOrgCreateTestRtn);
-		} catch (Exception e) {
-			LOGGER.error("", e);
-			assertError = e.getMessage();
-			assertStatus = 40;
-			testResultInfo.setAssert_status(assertStatus);
-			testResultInfo.setAssert_error(assertError);
-			testResultService.insert(testResultInfo);
-			return ResultTool.setResult("1040", "json解析异常，断言失败", null);
-		}
-		
-		// --5--请求返回不为空，解析返回值为空处理
-		if (jsonobj == null)
-		{
-			// 如果断言code值为空，这里需要判断断言，如果不断言，则用例执行成功
-			if (caseInfo.getCase_assert_type() == 0) {
-				assertStatus = 12;
-				testResultInfo.setAssert_status(assertStatus);
-				testResultInfo.setAssert_error("解析json为空，无断言，执行成功");
-				testResultService.insert(testResultInfo);
-				return ResultTool.setResult("1012", "解析json为空，无断言，执行成功", null);
-			} else {
-				assertStatus = 41;
-				testResultInfo.setAssert_status(assertStatus);
-				testResultInfo.setAssert_error("解析json为空，断言失败");
-				testResultService.insert(testResultInfo);
-				return ResultTool.setResult("1041", "解析json为空，断言失败", null);
-			}
-			
-		}
-		// --6--请求返回不为空，解析返回值不为空，code字段找不到处理
-		if (!jsonobj.containsKey("code"))
-		{
-			if (caseInfo.getCase_assert_type() == 0) {
-				assertStatus = 13;
-				testResultInfo.setAssert_status(assertStatus);
-				testResultInfo.setAssert_error("解析json的code字段找不到，无断言，执行成功");
-				testResultService.insert(testResultInfo);
-				return ResultTool.setResult("1013", "解析json的code字段找不到，无断言，执行成功", null);
-			} else {
-				assertStatus = 42;
-				testResultInfo.setAssert_status(assertStatus);
-				testResultInfo.setAssert_error("解析json的code字段找不到，断言失败");
-				testResultService.insert(testResultInfo);
-				return ResultTool.setResult("1042", "解析json的code字段找不到，断言失败", null);
-			}
-		}
-		
-		// --7--请求返回不为空，解析返回值不为空，code字段值为空处理
-		responseAssertValue = jsonobj.getString("code");
-		testResultInfo.setResponse_assert_value(responseAssertValue);
-		if (StringUtils.isEmpty(responseAssertValue))
-		{
-			if (caseInfo.getCase_assert_type() == 0) {
-				assertStatus = 14;
-				testResultInfo.setAssert_status(assertStatus);
-				testResultInfo.setAssert_error("解析json的code字段值为空，无断言，执行成功");
-				testResultService.insert(testResultInfo);
-				return ResultTool.setResult("1014", "解析json的code字段值为空，无断言，执行成功", null);
-			} else if (caseInfo.getCase_assert_type() == 1 && caseInfo.getCase_assert_value().isEmpty()) {
-				//断言类型是字符串断言，且断言值为空
-				assertStatus = 15;
-				testResultInfo.setAssert_status(assertStatus);
-				testResultInfo.setAssert_error("json解析code值为空，断言成功");
-				testResultService.insert(testResultInfo);
-				return ResultTool.setResult("1014", "json解析code值为空，断言成功", null);
-			}
-		} 
-		// --8--请求返回不为空，解析返回值不为空，code字段值不为空，做字符串比对处理
-		if (caseInfo.getCase_assert_type() == 1 && caseInfo.getCase_assert_value().equals(responseAssertValue)) {	
-			//断言类型是字符串断言，且断言值相等
-			assertStatus = 10;
-			testResultInfo.setAssert_status(assertStatus);
-			testResultInfo.setAssert_error(" 断言成功! 断言值为：["+caseInfo.getCase_assert_value()+"] ; json解析code值为:["+ responseAssertValue +"]; ");
-			testResultService.insert(testResultInfo);
-			return ResultTool.setResult("1010", " 断言成功! 断言值为：["+caseInfo.getCase_assert_value()+"] ; json解析code值为:["+ responseAssertValue +"]; ", null);
-		} else {
-			//断言类型是字符串断言，且断言值不相等
-			assertStatus = 43;
-			testResultInfo.setAssert_status(assertStatus);
-			testResultInfo.setAssert_error("json解析code值不相等，断言失败");
-			testResultService.insert(testResultInfo);
-			return ResultTool.setResult("1043", "json解析code值不相等，断言失败", null);
-		}
-		
-	}
-
+	
 	
 }

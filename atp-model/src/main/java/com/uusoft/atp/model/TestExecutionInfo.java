@@ -12,6 +12,10 @@ public class TestExecutionInfo {
      */
 	private int execution_type;
 	/**
+     * 执行类型的名称
+     */
+	private String execution_type_name;
+	/**
      * 执行的[服务ID]/[测试集ID][测试组ID][测试用例ID]
      */
 	private int execution_type_value;
@@ -46,7 +50,7 @@ public class TestExecutionInfo {
 	
 	@Override
 	public String toString() {
-		return "TestExecutionInfo : {execution_id=" + execution_id +", execution_type=" + execution_type + ", execution_type_value=" + execution_type_value + ", execution_start_time=" + execution_start_time + ", execution_end_time=" + execution_end_time + ", total_num=" + total_num  + ", true_num=" + true_num  + ", failure_num=" + failure_num  + ", unrun_num=" + unrun_num  + ", execution_time=" + execution_time  + ", 11=" + 11 +"}";
+		return "TestExecutionInfo : {execution_id=" + execution_id +", execution_type=" + execution_type +", execution_type_name=" + execution_type_name + ", execution_type_value=" + execution_type_value + ", execution_start_time=" + execution_start_time + ", execution_end_time=" + execution_end_time + ", total_num=" + total_num  + ", true_num=" + true_num  + ", failure_num=" + failure_num  + ", unrun_num=" + unrun_num  + ", execution_time=" + execution_time  + ", 11=" + 11 +"}";
 	}
 	public int getExecution_id() {
 		return execution_id;
@@ -107,6 +111,12 @@ public class TestExecutionInfo {
 	}
 	public void setExecution_time(Date execution_time) {
 		this.execution_time = execution_time;
+	}
+	public String getExecution_type_name() {
+		return execution_type_name;
+	}
+	public void setExecution_type_name(String execution_type_name) {
+		this.execution_type_name = execution_type_name;
 	}
 
 }

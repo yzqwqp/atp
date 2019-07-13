@@ -30,7 +30,4 @@ public interface TestSuiteService {
 	int update(TestSuiteInfo testSuiteInfo);
 	
 	int deleteById(int suite_id);
-	
-	ResultTool<String> runBySuiteId(int suite_id);
-	
 }

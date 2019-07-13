@@ -9,11 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.uusoft.atp.model.InitServiceInfo;
 import com.uusoft.atp.model.TestMethodInfo;
 import com.uusoft.atp.model.TestServiceInfo;
 import com.uusoft.atp.service.InitServiceService;
@@ -72,11 +70,11 @@ public class TestMethodController {
 //		}
 
 		//slid选择不为空
-		if (StringUtil.isNotBlank(slid)) {
+		if (!StringUtil.isBlank(slid)) {
 			
 			initMethodList = testMethodService.selectByServiceId(Integer.parseInt(slid));
 			// mlid选择不为空，查单条
-			if (StringUtil.isNotBlank(mlid)) {
+			if (!StringUtil.isBlank(mlid)) {
 				LOGGER.info("******TestMethod selectByMethodId -1- [slid] :["+ slid +"] [mlid] :["+ mlid +"]  begin******");
 				methodData.add(testMethodService.selectByMethodId(Integer.parseInt(mlid)));
 			} else {
@@ -88,7 +86,7 @@ public class TestMethodController {
 		//slid选择为空
 		else {
 			// mlid选择不为空
-			if (StringUtil.isNotBlank(mlid)) {
+			if (!StringUtil.isBlank(mlid)) {
 				LOGGER.info("******TestMethod selectByMethodId -3- [slid] :["+ slid +"] [mlid] :["+ mlid +"]  begin******");
 				TestMethodInfo minfo = testMethodService.selectByMethodId(Integer.parseInt(mlid));
 				initMethodList.add(minfo);

@@ -9,15 +9,16 @@
 <mapper namespace="com.uusoft.atp.dao.TestCaseMapper">
 	<resultMap id="BaseResultMap" type="com.uusoft.atp.model.TestCaseInfo" >
 	    <result column="CASE_ID" property="case_id" jdbcType="INTEGER" />
+	    <result column="SUITE_DES" property="suite_des" jdbcType="INTEGER" />
 	    <result column="SUITE_ID" property="suite_id" jdbcType="INTEGER" />
 	    <result column="METHOD_ADDRESS" property="method_address" jdbcType="VARCHAR" />
 	    <result column="CASE_DES" property="case_des" jdbcType="VARCHAR" />
 	    <result column="CASE_DATA" property="case_data" jdbcType="VARCHAR" />
 	    <result column="CASE_ASSERT_TYPE" property="case_assert_type" jdbcType="INTEGER" />
 	    <result column="CASE_ASSERT_VALUE" property="case_assert_value" jdbcType="VARCHAR" />
-	    <result column="before_run" property="before_run" jdbcType="INTEGER" />
-	    <result column="after_run" property="after_run" jdbcType="INTEGER" />
-	    <result column="case_run_num" property="case_run_num" jdbcType="INTEGER" />
+	    <result column="BEFORE_RUN" property="before_run" jdbcType="INTEGER" />
+	    <result column="AFTER_RUN" property="after_run" jdbcType="INTEGER" />
+	    <result column="CASE_RUN_NUM" property="case_run_num" jdbcType="INTEGER" />
 	    <result column="IS_DEL" property="is_del" jdbcType="INTEGER" />
 	</resultMap>
 	
@@ -31,31 +32,32 @@
 	</insert>
 	
 	<select id="selectByCaseId" resultMap="BaseResultMap">
-		select 
-    	<include refid="Base_Column_List" />
-   		from TEST_CASE
-   		<where>
-   			IS_DEL = 0
-   			<if test="case_id != null">
-   				and CASE_ID = #{case_id,jdbcType=INTEGER}
-   			</if>
-   		</where>
+		SELECT A.CASE_ID,A.SUITE_ID,B.SUITE_DES,A.METHOD_ADDRESS,A.CASE_DES,A.CASE_DATA,A.CASE_ASSERT_TYPE,A.CASE_ASSERT_VALUE,A.BEFORE_RUN,A.AFTER_RUN,A.CASE_RUN_NUM,A.IS_DEL 
+		FROM TEST_CASE A, TEST_SUITE B
+			<where> A.SUITE_ID = B.SUITE_ID
+				AND A.IS_DEL = 0
+				AND B.IS_DEL = 0
+				<if test="case_id != null">
+					AND A.CASE_ID = #{case_id,jdbcType=INTEGER}
+				</if>
+			</where>
 	</select>
 	
 	<select id="selectBySuiteId" resultMap="BaseResultMap">
-		SELECT A.CASE_ID,A.SUITE_ID,A.METHOD_ADDRESS,A.CASE_DES,A.CASE_DATA,A.CASE_ASSERT_TYPE,A.CASE_ASSERT_VALUE,A.BEFORE_RUN,A.AFTER_RUN,A.CASE_RUN_NUM,A.IS_DEL 
+		SELECT A.CASE_ID,A.SUITE_ID,B.SUITE_DES,A.METHOD_ADDRESS,A.CASE_DES,A.CASE_DATA,A.CASE_ASSERT_TYPE,A.CASE_ASSERT_VALUE,A.BEFORE_RUN,A.AFTER_RUN,A.CASE_RUN_NUM,A.IS_DEL 
 		FROM TEST_CASE A, TEST_SUITE B
 			<where> A.SUITE_ID = B.SUITE_ID
 				AND A.IS_DEL = 0
 				AND B.IS_DEL = 0
 				<if test="suite_id != null">
-					AND b.SUITE_ID = = #{suite_id,jdbcType=INTEGER}
+					AND b.SUITE_ID = #{suite_id,jdbcType=INTEGER}
 				</if>
+				ORDER BY A.CASE_RUN_NUM ASC
 			</where>
 	</select>
 	
 	<select id="selectByMethodId" resultMap="BaseResultMap">
-		SELECT A.CASE_ID,A.SUITE_ID,A.METHOD_ADDRESS,A.CASE_DES,A.CASE_DATA,A.CASE_ASSERT_TYPE,A.CASE_ASSERT_VALUE,A.BEFORE_RUN,A.AFTER_RUN,A.CASE_RUN_NUM,A.IS_DEL
+		SELECT A.CASE_ID,A.SUITE_ID,B.SUITE_DES,A.METHOD_ADDRESS,A.CASE_DES,A.CASE_DATA,A.CASE_ASSERT_TYPE,A.CASE_ASSERT_VALUE,A.BEFORE_RUN,A.AFTER_RUN,A.CASE_RUN_NUM,A.IS_DEL
 		FROM TEST_CASE A,TEST_SUITE B,TEST_METHOD C
 			<where> A.SUITE_ID = B.SUITE_ID
 				AND B.METHOD_ID = C.METHOD_ID
@@ -69,7 +71,7 @@
 	</select>
 	
 	<select id="selectByServiceId" resultMap="BaseResultMap">
-		SELECT A.CASE_ID,A.SUITE_ID,A.METHOD_ADDRESS,A.CASE_DES,A.CASE_DATA,A.CASE_ASSERT_TYPE,A.CASE_ASSERT_VALUE,A.BEFORE_RUN,A.AFTER_RUN,A.CASE_RUN_NUM,A.IS_DEL
+		SELECT A.CASE_ID,A.SUITE_ID,B.SUITE_DES,A.METHOD_ADDRESS,A.CASE_DES,A.CASE_DATA,A.CASE_ASSERT_TYPE,A.CASE_ASSERT_VALUE,A.BEFORE_RUN,A.AFTER_RUN,A.CASE_RUN_NUM,A.IS_DEL
 		FROM TEST_CASE A,TEST_SUITE B,TEST_METHOD C, TEST_SERVICE D
 		<where> A.SUITE_ID = B.SUITE_ID
 			AND B.METHOD_ID = C.METHOD_ID
@@ -85,24 +87,25 @@
 	</select>
 	
 	<select id="selectAll" resultMap="BaseResultMap">
-		select 
-    	<include refid="Base_Column_List" />
-   		from TEST_CASE
-   		where IS_DEL = 0
+		SELECT A.CASE_ID,A.SUITE_ID,B.SUITE_DES,A.METHOD_ADDRESS,A.CASE_DES,A.CASE_DATA,A.CASE_ASSERT_TYPE,A.CASE_ASSERT_VALUE,A.BEFORE_RUN,A.AFTER_RUN,A.CASE_RUN_NUM,A.IS_DEL 
+		FROM TEST_CASE A, TEST_SUITE B
+		<where> A.SUITE_ID = B.SUITE_ID
+			AND A.IS_DEL = 0
+			AND B.IS_DEL = 0
+		</where>
 	</select>
 	
 	<update id="update" parameterType="com.uusoft.atp.model.TestCaseInfo">
 		update TEST_CASE
         set 
-        	METHOD_ADDRESS = #{method_address,jdbcType=VARCHAR},
         	CASE_DES = #{case_des,jdbcType=VARCHAR},
+        	METHOD_ADDRESS = #{method_address,jdbcType=VARCHAR},
         	CASE_DATA = #{case_data,jdbcType=VARCHAR},
         	CASE_ASSERT_TYPE = #{case_assert_type,jdbcType=INTEGER},
         	CASE_ASSERT_VALUE = #{case_assert_value,jdbcType=VARCHAR},
         	BEFORE_RUN = #{before_run,jdbcType=INTEGER},
         	AFTER_RUN = #{after_run,jdbcType=INTEGER},
-        	CASE_RUN_NUM = #{case_run_num,jdbcType=INTEGER},
-        	IS_RUN = #{is_run,jdbcType=INTEGER}
+        	CASE_RUN_NUM = #{case_run_num,jdbcType=INTEGER}
         where CASE_ID = #{case_id,jdbcType=INTEGER}
 	</update>
 	

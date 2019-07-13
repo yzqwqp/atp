@@ -61,17 +61,4 @@ public class TestSuiteServiceImpl implements TestSuiteService {
 	public int deleteById(int suite_id) {
 		return mapper.deleteById(suite_id);
 	}
-
-	@Override
-	public ResultTool<String> runBySuiteId(int suite_id) {
-		List<TestCaseInfo> caseInfoList = caseService.selectBySuiteId(suite_id);
-		for(TestCaseInfo caseInfo:caseInfoList){
-			LOGGER.info("### runBySuiteId ： " + suite_id + "### caseInfo is :" + caseInfo.toString());
-			caseService.runById(caseInfo.getCase_id());
-		}
-		return null;
-	}
-	
-	
-
 }

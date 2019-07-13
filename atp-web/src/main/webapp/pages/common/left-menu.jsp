@@ -46,9 +46,9 @@
 									<a href="#"><i class="linecons-cog"><img src="<%=path%>/img/icon01.png" /></i><span class="title">接口测试</span></a>
 									<ul>
 										<li><a href="<%=path%>/testservice/index.do"><span class="title">测试服务</span></a></li>
-										<li><a href="<%=path%>/testmethod/index.do"><span class="title">测试集</span></a></li>
-										<li><a href="<%=path%>/testsuite/index.do"><span class="title">测试用例组</span></a></li>
-										<li><a href="<%=path%>/testcase/index.do"><span class="title">测试用例</span></a></li>
+										<li><a href="<%=path%>/testmethod/index.do"><span class="title">测试用例集</span></a></li>
+										<li><a href="<%=path%>/testsuite/index.do"><span class="title">测试用例</span></a></li>
+										<li><a href="<%=path%>/testcase/index.do"><span class="title">用例步骤</span></a></li>
 										<li><a href="<%=path%>/jsoneditor/index.do"><span class="title">josn编辑页面</span></a></li>
 									</ul>
 								</li>

@@ -140,9 +140,10 @@
 		var url = path + "/testsuite/add.do";
 		ajaxReq(data, url, doCall, "post");
 	}
-	function run(id) {
+	function run(id,name) {
 		var data = {};
 		data.sid = id;
+		data.sname = name;
 		var url = path + "/testsuite/run.do";
 		//ajaxReq(data, url, doCall, "post");
 		$.post(url, data, function(res) {
@@ -160,7 +161,7 @@
 		<%@include file="../common/left-menu.jsp"%>
 		<div class="main-content">
 			<div class="topv">
-				<h3>用例组</h3>
+				<h3>测试用例</h3>
 			</div>
 			<div class="row" style="padding-top: 50px;">
 				<div class="col-md-12">
@@ -176,13 +177,13 @@
 											<option value="${item.service_id }" <c:if test="${param.initserviceselect == item.service_id }">selected</c:if> >${item.service_name }</option>
 										</c:forEach>
 								</select></li>
-								<li><span>测试集：</span> <select name="initmethodselect" id="initmethodselect" onchange="selectChangeMethod(this)">
+								<li><span>测试用例集：</span> <select name="initmethodselect" id="initmethodselect" onchange="selectChangeMethod(this)">
 										<c:forEach items="${initMethodList }" var="item">
 											<option value="${item.method_id }" <c:if test="${param.initmethodselect == item.method_id }">selected</c:if> >${item.method_name }</option>
 										</c:forEach>
 								</select></li>
 								<li>
-									<button type="button" class="addnew" onclick="addBefore()">新增方法</button>
+									<button type="button" class="addnew" onclick="addBefore()">新增测试用例</button>
 								</li>
 							</ul>
 						</form>

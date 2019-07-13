@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.uusoft.atp.model.TestMethodInfo;
 import com.uusoft.atp.model.TestServiceInfo;
 import com.uusoft.atp.model.TestSuiteInfo;
+import com.uusoft.atp.service.TestExecutionService;
 import com.uusoft.atp.service.TestMethodService;
 import com.uusoft.atp.service.TestServiceService;
 import com.uusoft.atp.service.TestSuiteService;
@@ -35,6 +36,8 @@ public class TestSuiteController {
 	TestMethodService testMethodService;
 	@Resource
 	TestServiceService testServiceService;
+	@Resource
+	TestExecutionService testExecutionService;
 	
 	@RequestMapping("/index")
 	public String index(HttpServletRequest request) {
@@ -45,11 +48,11 @@ public class TestSuiteController {
 		String mlid = request.getParameter("initmethodselect");
 
 		//slid选择不为空
-		if (StringUtil.isNotBlank(slid)) {
+		if (!StringUtil.isBlank(slid)) {
 			
 			initMethodList = testMethodService.selectByServiceId(Integer.parseInt(slid));// 1
 			// mlid选择不为空，查单条
-			if (StringUtil.isNotBlank(mlid)) {
+			if (!StringUtil.isBlank(mlid)) {
 				LOGGER.info("******TestMethod selectByMethodId -1- [slid] :["+ slid +"] [mlid] :["+ mlid +"]  begin******");
 				suiteData = testSuiteService.selectByMethodId(Integer.parseInt(mlid));
 			} else {
@@ -61,7 +64,7 @@ public class TestSuiteController {
 		//slid选择为空
 		else {
 			// mlid选择不为空
-			if (StringUtil.isNotBlank(mlid)) {
+			if (!StringUtil.isBlank(mlid)) {
 				LOGGER.info("******TestMethod selectByMethodId -3- [slid] :["+ slid +"] [mlid] :["+ mlid +"]  begin******");
 				TestMethodInfo minfo = testMethodService.selectByMethodId(Integer.parseInt(mlid));
 				initMethodList.add(minfo);// 1
@@ -142,9 +145,9 @@ public class TestSuiteController {
 	
 	@RequestMapping("/run")
     @ResponseBody
-    public ResultTool<String> run(int sid){
-		LOGGER.info("******TestSuiteController开始run :" +sid+" *****");
-		ResultTool<String> result = testSuiteService.runBySuiteId(sid);
+    public ResultTool<String> run(int sid, String sname){
+		LOGGER.info("******TestSuiteController开始run :" +sid+"+sname+"+sname+ "*****");
+		ResultTool<String> result = testExecutionService.execution(1, sid, sname);//1：testSuite测试用例 2：testMethod测试集 3：testService测试服务
 		LOGGER.info(result.toString());
 		return result;
     }

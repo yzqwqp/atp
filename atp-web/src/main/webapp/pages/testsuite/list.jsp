@@ -3,8 +3,8 @@
 <table class="table table-bordered" id="methodid" >
 	<tr>
 		<th>测试集id</th>
-		<th>用例组id</th>
-		<th>用例组描述</th>
+		<th>测试用例id</th>
+		<th>用例用例描述</th>
 		<th>是否运行</th>
 		<th>操作</th>
 	</tr>
@@ -17,7 +17,7 @@
 			<td>
 				<a href="javascript:edit('${item.suite_id}')">编辑</a>
 				<a href="javascript:del('${item.suite_id }','${item.suite_des }')">删除</a>
-				<a href="javascript:run('${item.suite_id}')">执行</a>
+				<a href="javascript:run('${item.suite_id}','${item.suite_des }')">执行</a>
 			</td>
 		</tr>
 	</c:forEach>

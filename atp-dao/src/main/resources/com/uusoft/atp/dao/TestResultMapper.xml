@@ -8,7 +8,9 @@
  -->
 <mapper namespace="com.uusoft.atp.dao.TestResultMapper">
 	<resultMap id="BaseResultMap" type="com.uusoft.atp.model.TestResultInfo" >
-	    <result column="TEST_ID" property="test_id" jdbcType="INTEGER" />
+	    <result column="RESULT_ID" property="result_id" jdbcType="INTEGER" />
+	    <result column="EXECUTION_ID" property="execution_id" jdbcType="INTEGER" />
+	    <result column="SUITE_ID" property="suite_id" jdbcType="INTEGER" />
 	    <result column="CASE_ID" property="case_id" jdbcType="INTEGER" />
 	    <result column="CASE_DES" property="case_des" jdbcType="VARCHAR" />
 	    <result column="METHOD_ADDRESS" property="method_address" jdbcType="VARCHAR" />
@@ -24,12 +26,12 @@
 	</resultMap>
 	
 	<sql id="Base_Column_List" >
-    	TEST_ID, CASE_ID, CASE_DES, METHOD_ADDRESS, CASE_DATA, RESPONSE_DATA, CASE_ASSERT_TYPE, CASE_ASSERT_VALUE, RESPONSE_ASSERT_VALUE, HTTP_STATUS, HTTP_ERROR, ASSERT_STATUS, ASSERT_ERROR
+    	RESULT_ID, EXECUTION_ID, SUITE_ID, CASE_ID, CASE_DES, METHOD_ADDRESS, CASE_DATA, RESPONSE_DATA, CASE_ASSERT_TYPE, CASE_ASSERT_VALUE, RESPONSE_ASSERT_VALUE, HTTP_STATUS, HTTP_ERROR, ASSERT_STATUS, ASSERT_ERROR
   	</sql>
 	
-	<insert id="insert" parameterType="com.uusoft.atp.model.TestResultInfo" useGeneratedKeys="true" keyProperty="test_id">
-		insert into TEST_RESULT (CASE_ID, CASE_DES, METHOD_ADDRESS, CASE_DATA, RESPONSE_DATA, CASE_ASSERT_TYPE, CASE_ASSERT_VALUE, RESPONSE_ASSERT_VALUE, HTTP_STATUS, HTTP_ERROR, ASSERT_STATUS, ASSERT_ERROR)
-			 values (#{case_id}, #{case_des}, #{method_address}, #{case_data}, #{response_data}, #{case_assert_type}, #{case_assert_value}, #{response_assert_value}, #{http_status}, #{http_error}, #{assert_status}, #{assert_error})
+	<insert id="insert" parameterType="com.uusoft.atp.model.TestResultInfo" useGeneratedKeys="true" keyProperty="result_id">
+		insert into TEST_RESULT (EXECUTION_ID, SUITE_ID, CASE_ID, CASE_DES, METHOD_ADDRESS, CASE_DATA, RESPONSE_DATA, CASE_ASSERT_TYPE, CASE_ASSERT_VALUE, RESPONSE_ASSERT_VALUE, HTTP_STATUS, HTTP_ERROR, ASSERT_STATUS, ASSERT_ERROR)
+			 values (#{execution_id}, #{suite_id}, #{case_id}, #{case_des}, #{method_address}, #{case_data}, #{response_data}, #{case_assert_type}, #{case_assert_value}, #{response_assert_value}, #{http_status}, #{http_error}, #{assert_status}, #{assert_error})
 	</insert>
 	
 	<select id="selectAll" resultMap="BaseResultMap">
@@ -45,8 +47,8 @@
    		from TEST_RESULT
    		<where>
    			IS_DEL = 0
-   			<if test="case_id != null">
-   				and TEST_ID = #{test_id,jdbcType=INTEGER}
+   			<if test="result_id != null">
+   				and RESULT_ID = #{result_id,jdbcType=INTEGER}
    			</if>
    		</where>
 	</select>

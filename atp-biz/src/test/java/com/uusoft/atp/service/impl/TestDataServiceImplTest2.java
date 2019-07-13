@@ -46,7 +46,8 @@ public class TestDataServiceImplTest2 {
 	private TestDataServiceImpl testDataImp;
 	@Resource
 	private TestDataMapper dataMapper;
-	
+	@Resource
+	TestExecutionServiceImpl testExecutionService;
 	
 	@Test
 	public void test(){
@@ -69,7 +70,6 @@ public class TestDataServiceImplTest2 {
 	
 	@Test
 	public void test02(){
-		String json = "{\"69\":\"12\",\"70\":\"23\",\"71\":\"null\"}";
-		testDataImp.updateMap(json);
+		LOGGER.info(testExecutionService.execution(1, 2, "3").getMessage());
 	}
 }
