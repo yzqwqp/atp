@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.uusoft.atp.model.TestExecutionInfo;
 import com.uusoft.atp.model.TestMethodInfo;
 import com.uusoft.atp.model.TestServiceInfo;
 import com.uusoft.atp.model.TestSuiteInfo;
@@ -145,11 +146,9 @@ public class TestSuiteController {
 	
 	@RequestMapping("/run")
     @ResponseBody
-    public ResultTool<String> run(int sid, String sname){
-		LOGGER.info("******TestSuiteController开始run :" +sid+"+sname+"+sname+ "*****");
-		ResultTool<String> result = testExecutionService.execution(1, sid, sname);//1：testSuite测试用例 2：testMethod测试集 3：testService测试服务
-		LOGGER.info(result.toString());
-		return result;
+    public ResultTool<TestExecutionInfo> run(int sid, String sname){
+		LOGGER.info("******开始执行【测试用例】 suiteId :[" +sid+"] suiteDes : ["+sname+ "]*****");
+		return  testExecutionService.execution(1, sid, sname);//1：testSuite测试用例 2：testMethod测试集 3：testService测试服务
     }
 	
 }

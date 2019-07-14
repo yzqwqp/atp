@@ -9,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.uusoft.atp.model.TestExecutionInfo;
 import com.uusoft.atp.utils.ResultTool;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -28,9 +29,9 @@ public class TestExecutionServiceImplTest {
 //	}
 	
 	@Test
-	public void testrunBySuiteId(){
-		ResultTool<String> res = testExecutionService.runBySuiteId(35,3);
-		LOGGER.info(res.getObj());
+	public void executionTest(){
+		ResultTool<TestExecutionInfo> res = testExecutionService.execution(1, 27, "tset");
+		LOGGER.info(res.getObj().toString());
 	}
 
 }

@@ -34,6 +34,8 @@ public class TestExecutionServiceImpl implements TestExecutionService {
 	TestCaseService testCaseService;
 	@Resource
 	TestResultService testResultService;
+
+	private TestExecutionInfo testExecutionInfo;
 	
 	private TestResultInfo runByCaseId(TestCaseInfo caseInfo) {
 		
@@ -189,63 +191,108 @@ public class TestExecutionServiceImpl implements TestExecutionService {
 		}
 	}
 
-	
-	public ResultTool<String> runBySuiteId(int execution_id, int suite_id) {
+	/**
+	 * runBySuiteId
+	 * executionInfo : 执行的实体对象
+	 * suite_id : testSuite测试用例的ID
+	 * author : qiupeng
+	 * date: 2019-07-14
+	 * */
+	private TestExecutionInfo runBySuiteId(int suite_id) {
+//		int runFlag = 0; // 判断执行是否成功
 		
+		if((testExecutionInfo == null)){
+			return runFail();
+		}
+			
+		int execution_id = testExecutionInfo.getExecution_id();
 		List<TestCaseInfo> caseInfoList = testCaseService.selectBySuiteId(suite_id);
 		// 如果caseInfoList是空 TODO
-		
+		if (caseInfoList.isEmpty()){
+			return runFail();
+		}
 		// 开始执行suite下的测试用例
 		for(TestCaseInfo caseInfo:caseInfoList){
-			LOGGER.info("### execution_id :"+execution_id+"###runBySuiteId ： " + suite_id + "### caseInfo is :" + caseInfo.toString());
-			
-//			if (!StringUtil.isBlank(String.valueOf(caseInfo.getBefore_run())) && (caseInfo.getBefore_run() == 0)) {
 			if ((null != caseInfo.getBefore_run()) && (caseInfo.getBefore_run()) > 0) {
 				// --1--执行before
 				TestCaseInfo beforeCaseInfo = testCaseService.selectByCaseId(caseInfo.getBefore_run());
-				if(!beforeCaseInfo.equals(null)){
+				// 如果beforeCase找不到，执行suite失败返回
+				if(beforeCaseInfo == null){
+					return runFail();
+				} 
+				else {
 					TestResultInfo beforeResultInfo = runByCaseId(beforeCaseInfo);
 					beforeResultInfo.setExecution_id(execution_id);
 					beforeResultInfo.setSuite_id(suite_id);
 					testResultService.insert(beforeResultInfo);
+					LOGGER.info("###--1-- execution_id :"+execution_id+"###runBySuiteId ： " + suite_id + "### beforeCaseInfo is :" + beforeCaseInfo.toString());
+					
+					//判断执行结果，断言不成功，直接退出本次suite执行
+					if (beforeResultInfo.getAssert_status() != 10) {
+						return runFail();
+					}
 				}
 				// --2--执行本case
 				TestResultInfo testResultInfo1 = runByCaseId(caseInfo);
 				testResultInfo1.setExecution_id(execution_id);
 				testResultInfo1.setSuite_id(suite_id);
 				testResultService.insert(testResultInfo1);
-			} else {
+				LOGGER.info("###--2-- execution_id :"+execution_id+"###runBySuiteId ： " + suite_id + "### caseInfo is :" + caseInfo.toString());
+				//判断执行结果，断言不成功，直接退出本次suite执行
+				if (testResultInfo1.getAssert_status() != 10) {
+					return runFail();
+				}
+			} 
+			else {
 				// --1--执行本case
 				TestResultInfo testResultInfo2 = runByCaseId(caseInfo);
 				testResultInfo2.setExecution_id(execution_id);
 				testResultInfo2.setSuite_id(suite_id);
 				testResultService.insert(testResultInfo2);
+				LOGGER.info("###--0-- execution_id :"+execution_id+"###runBySuiteId ： " + suite_id + "### caseInfo is :" + caseInfo.toString());
+				if (testResultInfo2.getAssert_status() != 10) {
+					return runFail();
+				}
 			}
 		}
-		return ResultTool.setResult("0000", execution_id+"已经执行", null);
+		
+		return runTrue();
 	}
 
-	public ResultTool<String> runByMethodId(int execution_id, int method_id) {
+	private ResultTool<String> runByMethodId(int method_id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public ResultTool<String> runByServiceId(int execution_id, int service_id) {
+	private ResultTool<String> runByServiceId(int service_id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
+	private TestExecutionInfo runFail(){
+		testExecutionInfo.setTotal_num(testExecutionInfo.getTotal_num()+1);
+		testExecutionInfo.setFailure_num(testExecutionInfo.getFailure_num()+1);
+		LOGGER.info("###执行Error   testExecutionInfo：" + testExecutionInfo.toString());
+		return testExecutionInfo;
+	}
+	
+	private TestExecutionInfo runTrue(){
+		testExecutionInfo.setTotal_num(testExecutionInfo.getTotal_num()+1);
+		testExecutionInfo.setTrue_num(testExecutionInfo.getTrue_num()+1);
+		LOGGER.info("###执行OK   testExecutionInfo：" + testExecutionInfo.toString());
+		return testExecutionInfo;
+	}
 
 	/**
-	 * 
+	 * APP INTERFACE AUTOMATION TEST MANAGEMENT AND PRACTICE
 	 * execution_type : 1：testSuite测试用例 2：testMethod测试集 3：testService测试服务
 	 * execution_type_value : testSuite测试用例的ID / testMethod测试集的ID / testService测试服务的ID
+	 * execution_type_name : testSuite测试用例ID描述 / testMethod测试集ID描述 / testService测试服务ID描述
 	 * */
 	@Override
-	public ResultTool<String> execution(int execution_type, int execution_type_value, String execution_type_name) {
+	public ResultTool<TestExecutionInfo> execution(int execution_type, int execution_type_value, String execution_type_name) {
 		// --1--先插入1条记录(执行类型，执行类型的ID)
-		TestExecutionInfo testExecutionInfo = new TestExecutionInfo();
+//		TestExecutionInfo testExecutionInfo = new TestExecutionInfo();
 		testExecutionInfo.setExecution_type(execution_type);
 		testExecutionInfo.setExecution_type_value(execution_type_value);
 		testExecutionInfo.setExecution_type_name(execution_type_name);
@@ -253,13 +300,14 @@ public class TestExecutionServiceImpl implements TestExecutionService {
 		LOGGER.info("### execution_type = ["+execution_type+"] Execution_id = ["+testExecutionInfo.getExecution_id()+"] execution_type_value = "+execution_type_value+"] ###");
 		switch(execution_type){
 	    case 1 :
-	    	runBySuiteId(testExecutionInfo.getExecution_id(), execution_type_value);
+	    	runBySuiteId(execution_type_value); // execution_type_value = suite_id
 	    case 2 :
-	    	runByMethodId(testExecutionInfo.getExecution_id(), execution_type_value);
+	    	runByMethodId(execution_type_value); // execution_type_value = method_id
 	    case 3 :
-	    	runByServiceId(testExecutionInfo.getExecution_id(), execution_type_value);
+	    	runByServiceId(execution_type_value); // execution_type_value = service_id
 	    default : 
-	    	return ResultTool.setResult("000", String.valueOf(testExecutionInfo.getExecution_id()), null);
+	    	testExecutionMapper.updateById(testExecutionInfo);
+	    	return ResultTool.setResult("0000", String.valueOf(testExecutionInfo.getExecution_id())+"已执行完成！", testExecutionInfo);
 		}
 	}
 

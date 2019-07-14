@@ -26,8 +26,8 @@
   	</sql>
   	
 	<insert id="insert" useGeneratedKeys="true" keyProperty="execution_id" parameterType="com.uusoft.atp.model.TestExecutionInfo">
-		insert into TEST_execution (EXECUTION_TYPE, EXECUTION_TYPE_NAME, EXECUTION_TYPE_VALUE, EXECUTION_START_TIME, EXECUTION_END_TIME, EXECUTION_TIME, TOTAL_NUM, TRUE_NUM, FAILURE_NUM, UNRUN_NUM)
-			 values (#{execution_type}, #{execution_type_name}, #{execution_type_value}, now(), #{execution_end_time}, #{execution_time}, #{total_num}, #{true_num}, #{failure_num}, #{unrun_num})
+		insert into TEST_execution (EXECUTION_TYPE, EXECUTION_TYPE_NAME, EXECUTION_TYPE_VALUE, EXECUTION_START_TIME, TOTAL_NUM, TRUE_NUM, FAILURE_NUM, UNRUN_NUM)
+			 values (#{execution_type}, #{execution_type_name}, #{execution_type_value}, now(), 0, 0, 0, 0)
 	</insert>
 	
 	<select id="selectByExecutionId" resultMap="BaseResultMap">
@@ -42,8 +42,17 @@
 	<select id="selectAll" resultMap="BaseResultMap">
 		select 
     	<include refid="Base_Column_List" />
-   		from TEST_Execution
+   		from TEST_EXECUTION
 	</select>
-	
+
+	<update id="updateById" parameterType="com.uusoft.atp.model.TestExecutionInfo">
+		update TEST_EXECUTION
+        set EXECUTION_END_TIME = now(),
+        	TOTAL_NUM = #{total_num,jdbcType=INTEGER},
+        	TRUE_NUM = #{true_num,jdbcType=INTEGER},
+        	FAILURE_NUM = #{failure_num,jdbcType=INTEGER},
+        	UNRUN_NUM = #{unrun_num,jdbcType=INTEGER}
+        where EXECUTION_ID = #{execution_id,jdbcType=INTEGER}
+	</update>
 	
 </mapper>

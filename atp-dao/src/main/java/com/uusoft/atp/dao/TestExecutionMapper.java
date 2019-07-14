@@ -12,9 +12,12 @@ import com.uusoft.atp.model.TestExecutionInfo;
  */
 public interface TestExecutionMapper {
 	
-	long insert(TestExecutionInfo TestExecutionInfo);
+	int insert(TestExecutionInfo TestExecutionInfo);
 
 	TestExecutionInfo selectByExecutionId(@Param("execution_id") int execution_id);
 
 	List<TestExecutionInfo> selectAll();
+	
+	int updateById(TestExecutionInfo TestExecutionInfo);
+	
 }
