@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.uusoft.atp.dao.TestExecutionMapper;
+import com.uusoft.atp.dao.TestResultMapper;
 import com.uusoft.atp.model.TestCaseInfo;
 import com.uusoft.atp.model.TestExecutionInfo;
 import com.uusoft.atp.model.TestResultInfo;
@@ -31,6 +32,8 @@ public class TestExecutionServiceImpl implements TestExecutionService {
 	
 	@Resource
 	TestExecutionMapper testExecutionMapper;
+	@Resource
+	TestResultMapper testResultMapper;
 	@Resource
 	TestCaseService testCaseService;
 	@Resource
@@ -349,5 +352,21 @@ public class TestExecutionServiceImpl implements TestExecutionService {
 		}
 	}
 
+	@Override
+	public TestExecutionInfo selectByExecutionId(int method_id) {
+		return testExecutionMapper.selectByExecutionId(method_id);
+	}
+
+	@Override
+	public List<TestExecutionInfo> selectAll() {
+		return testExecutionMapper.selectAll();
+	}
+
+	@Override
+	public List<TestResultInfo> selectResultByExecutionId(int execution_id) {
+		return testResultMapper.selectByExecutionId(execution_id);
+	}
+
+	
 
 }

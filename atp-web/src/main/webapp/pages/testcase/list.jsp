@@ -27,7 +27,7 @@
 			<td>${item.case_assert_type == '0' ? '不断言' : '断言返回结果'  }</td>
 			<td>${item.case_assert_value }</td>
 			<td>${item.before_run }</td>
-			<td>${item.after_run }</td>
+			<td>${item.after_run == '1' ? '处理token' : '不处理'  }</td>
 			<td>${item.case_id }</td>
 			<td style="display:none">${item.case_id }</td>
 			<td>

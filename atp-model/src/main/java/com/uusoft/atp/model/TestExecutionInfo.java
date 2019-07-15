@@ -30,7 +30,7 @@ public class TestExecutionInfo {
 	/**
      * 执行耗时
      */
-	private Date execution_time;
+	private int execution_time;
 	/**
      * 执行总数
      */
@@ -106,10 +106,10 @@ public class TestExecutionInfo {
 	public void setUnrun_num(int unrun_num) {
 		this.unrun_num = unrun_num;
 	}
-	public Date getExecution_time() {
+	public int getExecution_time() {
 		return execution_time;
 	}
-	public void setExecution_time(Date execution_time) {
+	public void setExecution_time(int execution_time) {
 		this.execution_time = execution_time;
 	}
 	public String getExecution_type_name() {

@@ -222,7 +222,7 @@
 								</select></li>
 								<li><span>测试用例：</span> <select name="initsuiteselect" id="initsuiteselect" onchange="selectChangeSuite(this)">
 										<c:forEach items="${initSuiteList }" var="item">
-											<option value="${item.suite_id }" <c:if test="${param.initsuiteselect == item.suite_id }">selected</c:if> >${item.suite_des }</option>
+											<option value="${item.suite_id }" <c:if test="${param.initsuiteselect == item.suite_id }">selected</c:if> >${item.suite_id }-${item.suite_des }</option>
 										</c:forEach>
 								</select></li>
 								<li><a href="javascript:void(0)" class="sxbtn" onclick="query()"> <span
@@ -310,9 +310,14 @@
 								<div class="fp">
 									<span>执行前处理:</span> <input type="text" id="before_run"/><span id="before_run_span" style="color: red;font-size:13px"></span>
 								</div>
+								
 								<div class="fp">
-									<span>执行后处理:</span><input type="text" id="after_run"/><span id="after_run_span" style="color: red;font-size:13px"></span>
-								</div>						
+									<span><strong>*</strong>执行后处理:</span>
+									<select id="after_run" >
+										<option value="0">不处理</option>
+										<option value="1">处理token</option>
+									</select>
+								</div>
 							</li>
 							</ul>
 						<div class="modal-footer">
@@ -392,8 +397,12 @@
 									<span>执行前处理:</span> <input type="text" id="before_run2"/><span id="before_run2_span" style="color: red;font-size:13px"></span>
 								</div>
 								<div class="fp">
-									<span>执行后处理:</span><input type="text" id="after_run2"/><span id="after_run2_span" style="color: red;font-size:13px"></span>
-								</div>						
+									<span><strong>*</strong>执行后处理:</span>
+									<select id="after_run2" >
+										<option value="0">不处理</option>
+										<option value="1">处理token</option>
+									</select>
+								</div>
 							</li>
 							</ul>
 						<div class="modal-footer">

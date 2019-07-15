@@ -52,11 +52,12 @@
 										<li><a href="<%=path%>/jsoneditor/index.do"><span class="title">josn编辑页面</span></a></li>
 									</ul>
 								</li>
+								<!--  
 								<li><a href="#"><i class="linecons-desktop"><img src="<%=path%>/img/icon06.png" /></i><span class="title">测试常量</span></a>
 									<ul>
 										<li><a href="<%=path%>/configmethod/index.do"><span class="title">定位方式</span></a></li>
 										<li><a href="<%=path%>/configmethod/index.do"><span class="title">定位元素</span></a></li>
-										<li><a href="<%=path%>/configway/index.do"><span class="title">测试方法</span></a></li>
+										<li><a href="<%=path%>/configway/index.do"><span class="title">测试方法</span></a></li>  
 									</ul>
 								</li>
 								
@@ -64,21 +65,21 @@
 									<ul>
 										<li><a href="<%=path%>/initService/index.do"><span class="title">初始服务</span></a></li>
 										<li><a href="<%=path%>/configmethod/index.do"><span class="title">初始入参</span></a></li>
-										<li><a href="<%=path%>/configway/index.do"><span class="title">初始属性</span></a></li>
+										<li><a href="<%=path%>/configway/index.do"><span class="title">初始属性</span></a></li>  
 									</ul>
 								</li>
-								
-								<li><a href="#"><i class="linecons-desktop"><img src="<%=path%>/img/icon07.png" /></i><span class="title">测试报告</span></a>
-									<ul>
-										<li><a href="<%=path%>/regulator/bindcard/index.do"><span class="title">用例执行报告</span></a></li>
-									</ul>
-								</li>
-			
 								<li><a href="#"><i class="linecons-note"><img src="<%=path%>/img/icon06.png" /></i><span class="title">系统管理</span></a>
 									<ul>
 									<li class="active"> <a href="<%=path%>/toPwd.do"> <span class="title">修改密码</span> </a> </li>
 									</ul>
 								</li>
+								-->
+								<li><a href="#"><i class="linecons-desktop"><img src="<%=path%>/img/icon07.png" /></i><span class="title">测试报告</span></a>
+									<ul>
+										<li><a href="<%=path%>/testexecution/index.do"><span class="title">用例执行报告</span></a></li>
+									</ul>
+								</li>
+			
 		</ul>
 	</div>
 </div>

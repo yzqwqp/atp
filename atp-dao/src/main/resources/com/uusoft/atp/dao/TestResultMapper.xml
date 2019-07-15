@@ -39,7 +39,6 @@
 		select 
     	<include refid="Base_Column_List" />
    		from TEST_RESULT
-   		where IS_DEL = 0
 	</select>
 		
 	<select id="selectById" resultMap="BaseResultMap">
@@ -47,10 +46,16 @@
     	<include refid="Base_Column_List" />
    		from TEST_RESULT
    		<where>
-   			IS_DEL = 0
-   			<if test="result_id != null">
-   				and RESULT_ID = #{result_id,jdbcType=INTEGER}
-   			</if>
+   			ESULT_ID = #{result_id,jdbcType=INTEGER}
+   		</where>
+	</select>
+	
+	<select id="selectByExecutionId" resultMap="BaseResultMap">
+		select 
+    	<include refid="Base_Column_List" />
+   		from TEST_RESULT
+   		<where>
+   			EXECUTION_ID = #{execution_id,jdbcType=INTEGER}
    		</where>
 	</select>
 	
