@@ -1,5 +1,7 @@
 package com.uusoft.atp.model;
 
+import java.util.Date;
+
 public class TestCaseInfo {
 
 	/**
@@ -50,10 +52,18 @@ public class TestCaseInfo {
      * 是否删除
      */
 	private int is_del;
+	/**
+     * 创建时间
+     */
+	private Date create_date;
+	/**
+     * 更新时间
+     */
+	private Date update_date;
 	
 	@Override
 	public String toString() {
-		return "TestCaseInfo : {case_id=" + case_id +", suite_id=" + suite_id +", method_address=" + method_address + ", case_des=" + case_des + ", case_data=" + case_data + ", case_assert_type=" + case_assert_type + ", case_assert_value=" + case_assert_value + ", before_run=" + before_run + ", after_run=" + after_run+ ", case_run_num=" + case_run_num+ ", is_del=" + is_del + "}";
+		return "TestCaseInfo : {case_id=" + case_id +", suite_id=" + suite_id +", method_address=" + method_address + ", case_des=" + case_des + ", case_data=" + case_data + ", case_assert_type=" + case_assert_type + ", case_assert_value=" + case_assert_value + ", before_run=" + before_run + ", after_run=" + after_run+ ", case_run_num=" + case_run_num+ ", is_del=" + is_del  +",create_date=" +create_date+ ",update_date=" +update_date+  "}";
 	}
 	
 	public int getSuite_id() {
@@ -127,5 +137,21 @@ public class TestCaseInfo {
 	}
 	public void setSuite_des(String suite_des) {
 		this.suite_des = suite_des;
+	}
+
+	public Date getCreate_date() {
+		return create_date;
+	}
+
+	public void setCreate_date(Date create_date) {
+		this.create_date = create_date;
+	}
+
+	public Date getUpdate_date() {
+		return update_date;
+	}
+
+	public void setUpdate_date(Date update_date) {
+		this.update_date = update_date;
 	}
 }

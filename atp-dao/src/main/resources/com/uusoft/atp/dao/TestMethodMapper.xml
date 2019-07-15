@@ -12,15 +12,17 @@
 	    <result column="SERVICE_ID" property="service_id" jdbcType="INTEGER" />
 	    <result column="METHOD_NAME" property="method_name" jdbcType="VARCHAR" />
 	    <result column="METHOD_DES" property="method_des" jdbcType="VARCHAR" />
+	    <result column="CREATE_DATE" property="create_date" jdbcType="TIMESTAMP" />
+	    <result column="UPDATE_DATE" property="update_date" jdbcType="TIMESTAMP" />
 	    <result column="IS_DEL" property="is_del" jdbcType="INTEGER" />
 	</resultMap>
 	
 	<sql id="Base_Column_List" >
-    	SERVICE_ID, METHOD_ID, METHOD_NAME, METHOD_DES, IS_DEL
+    	SERVICE_ID, METHOD_ID, METHOD_NAME, METHOD_DES, CREATE_DATE, UPDATE_DATE, IS_DEL
   	</sql>
 	
 	<insert id="insert" parameterType="com.uusoft.atp.model.TestMethodInfo">
-		insert into TEST_METHOD (SERVICE_ID, METHOD_NAME ,METHOD_DES, IS_DEL)  values (#{service_id}, #{method_name}, #{method_des}, 0)
+		insert into TEST_METHOD (SERVICE_ID, METHOD_NAME ,METHOD_DES, CREATE_DATE, IS_DEL)  values (#{service_id}, #{method_name}, #{method_des}, now(), 0)
 	</insert>
 	
 	<select id="selectAll" resultMap="BaseResultMap">
@@ -62,37 +64,10 @@
         where METHOD_ID = #{method_id,jdbcType=INTEGER}
 	</update>
 	
-	<select id="selectMethodIdByNameAndService" resultType="int" >
-		select METHOD_ID
-   		from TEST_METHOD
-   		<where>
-   				METHOD_NAME = #{methodName,jdbcType=VARCHAR}
-   		</where>
-   		and SERVICE_ID =#{serviceId,jdbcType=INTEGER}
-	</select>
-	
 	<update id="deleteById">
 		update TEST_METHOD
         set IS_DEL = 1
         where METHOD_ID = #{method_id,jdbcType=INTEGER}
 	</update>
-	
-	<select id="unCreateMethod" resultType="String" >
-		select  method_name from init_service 
-		where SERVICE_NAME = #{service_name,jdbcType=VARCHAR} 
-		and method_name not in (
-			select method_name 
-			from test_method a, test_service b 
-			where a.service_id = b.service_id and b.SERVICE_NAME = #{service_name,jdbcType=VARCHAR} 
-		)
-	</select>
-	
-	<select id="selectByServiceNameAndMethodName" resultMap="BaseResultMap">
-		select b.* from TEST_SERVICE a,TEST_METHOD b 
-		where a.SERVICE_ID = b.SERVICE_ID
-		and a.SERVICE_NAME = #{service_name,jdbcType=VARCHAR} 
-		and b.METHOD_NAME = #{method_name,jdbcType=VARCHAR} 
-	</select>
-	
 	
 </mapper>

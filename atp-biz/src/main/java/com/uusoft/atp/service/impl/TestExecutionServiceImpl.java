@@ -1,5 +1,6 @@
 package com.uusoft.atp.service.impl;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -35,9 +36,9 @@ public class TestExecutionServiceImpl implements TestExecutionService {
 	@Resource
 	TestResultService testResultService;
 
-	private TestExecutionInfo testExecutionInfo;
+	private TestExecutionInfo testExecutionInfo = new TestExecutionInfo();
 	
-	private TestResultInfo runByCaseId(TestCaseInfo caseInfo) {
+	private TestResultInfo runByCaseId(TestCaseInfo caseInfo, String tkStr) {
 		
 		TestResultInfo testResultInfo = new TestResultInfo();
 		String httpResponseStr = "";
@@ -59,10 +60,11 @@ public class TestExecutionServiceImpl implements TestExecutionService {
 		testResultInfo.setCase_assert_value(caseInfo.getCase_assert_value());
 		testResultInfo.setResponse_assert_value(responseAssertValue);
 		
+		// 开始请求		##########################################################################################
 		// --1--开始处理请求
 		try {
 			// TODO
-			httpResponseStr = HttpClientUtil.doPost(caseInfo.getMethod_address(), caseInfo.getCase_data(), "utf-8");
+			httpResponseStr = HttpClientUtil.doPost(caseInfo.getMethod_address(), caseInfo.getCase_data(), tkStr);
 			httpStatus = 10;
 			testResultInfo.setHttp_status(httpStatus);
 			testResultInfo.setResponse_data(httpResponseStr);
@@ -89,7 +91,6 @@ public class TestExecutionServiceImpl implements TestExecutionService {
 		// --3--请求返回为空处理
 		if (StringUtils.isEmpty(httpResponseStr))
 		{
-			// throw
 			// 如果http请求返回值为空，这里需要判断断言，如果不断言，则用例执行成功
 			if (caseInfo.getCase_assert_type() == 0) {
 				httpStatus = 10;
@@ -138,11 +139,41 @@ public class TestExecutionServiceImpl implements TestExecutionService {
 			return testResultInfo;
 		}
 		
+		// 开始寻找token		##########################################################################################
+		// 如果用例有执行后处理token的，需要截取token TODO
+		if ((null != caseInfo.getAfter_run()) && (caseInfo.getAfter_run()) == 1) {
+			
+//			if (!jsonobj.containsKey("tk")){
+//				// token找不到
+//				testResultInfo.setAssert_status(44);
+//				testResultInfo.setAssert_error("1044解析response的json中寻找tk值找不到");
+//				return testResultInfo;
+//			}
+//			String tokenStr = jsonobj.getString("tk");
+			 
+			Map<String, Object> paramsMap = (Map<String, Object>) jsonobj.get("data");
+			String tokenStr = (String) paramsMap.get("tk");
+			
+			
+			if (StringUtils.isEmpty(tokenStr)){
+				// token找不到
+				testResultInfo.setAssert_status(44);
+				testResultInfo.setAssert_error("1044解析response的json中寻找tk值找不到");
+				return testResultInfo;
+			}
+			
+			// tk的值既不为空，又不为null，那么我们把tk的值返回给上级
+			testResultInfo.setTokenFlag(1); // 找到token，把testResultInfo中的tokenFlage设为1
+			testResultInfo.setToken("tk="+tokenStr);
+		}
+		
+		// 开始判断断言		##########################################################################################
 		if (caseInfo.getCase_assert_type() == 1) {
 			String[] a = StringUtil.splitList(caseInfo.getCase_assert_value());
 			assertValue_k=a[0]; // 需要断言的字段
 			assertValue_v=a[1]; // 需要断言字段的值
 		}
+		
 		// --6--请求返回不为空，解析返回值不为空，code字段找不到处理
 		if (!jsonobj.containsKey(assertValue_k))
 		{
@@ -175,8 +206,9 @@ public class TestExecutionServiceImpl implements TestExecutionService {
 			}
 			return testResultInfo;
 		} 
+		
 		// --8--请求返回不为空，解析返回值不为空，code字段值不为空，做字符串比对处理
-		if (caseInfo.getCase_assert_type() == 1 && assertValue_v.equals(responseAssertValue)) {	
+		if (caseInfo.getCase_assert_type() == 1 && assertValue_v.equals(responseAssertValue)) {
 			//断言类型是字符串断言，且断言值相等
 			assertStatus = 10;
 			testResultInfo.setAssert_status(assertStatus);
@@ -189,6 +221,7 @@ public class TestExecutionServiceImpl implements TestExecutionService {
 			testResultInfo.setAssert_error("1043 断言失败! 断言值为：["+caseInfo.getCase_assert_value()+"] ; json解析"+assertValue_k+"值为:["+ responseAssertValue +"]; ");
 			return testResultInfo;
 		}
+		// 断言结束	##########################################################################################
 	}
 
 	/**
@@ -199,7 +232,7 @@ public class TestExecutionServiceImpl implements TestExecutionService {
 	 * date: 2019-07-14
 	 * */
 	private TestExecutionInfo runBySuiteId(int suite_id) {
-//		int runFlag = 0; // 判断执行是否成功
+		String tokenStr = ""; // token
 		
 		if((testExecutionInfo == null)){
 			return runFail();
@@ -207,12 +240,14 @@ public class TestExecutionServiceImpl implements TestExecutionService {
 			
 		int execution_id = testExecutionInfo.getExecution_id();
 		List<TestCaseInfo> caseInfoList = testCaseService.selectBySuiteId(suite_id);
-		// 如果caseInfoList是空 TODO
+		// 如果caseInfoList是空
 		if (caseInfoList.isEmpty()){
 			return runFail();
 		}
 		// 开始执行suite下的测试用例
 		for(TestCaseInfo caseInfo:caseInfoList){
+			
+			// --1--如有beforeRun，需要先执行beforeRun	##########################################################################################
 			if ((null != caseInfo.getBefore_run()) && (caseInfo.getBefore_run()) > 0) {
 				// --1--执行before
 				TestCaseInfo beforeCaseInfo = testCaseService.selectByCaseId(caseInfo.getBefore_run());
@@ -221,35 +256,40 @@ public class TestExecutionServiceImpl implements TestExecutionService {
 					return runFail();
 				} 
 				else {
-					TestResultInfo beforeResultInfo = runByCaseId(beforeCaseInfo);
+					TestResultInfo beforeResultInfo = runByCaseId(beforeCaseInfo,tokenStr);
 					beforeResultInfo.setExecution_id(execution_id);
 					beforeResultInfo.setSuite_id(suite_id);
 					testResultService.insert(beforeResultInfo);
-					LOGGER.info("###--1-- execution_id :"+execution_id+"###runBySuiteId ： " + suite_id + "### beforeCaseInfo is :" + beforeCaseInfo.toString());
-					
 					//判断执行结果，断言不成功，直接退出本次suite执行
 					if (beforeResultInfo.getAssert_status() != 10) {
 						return runFail();
 					}
+					//判断是否有tokenFlag
+					if (beforeResultInfo.getTokenFlag() ==  1) {
+						tokenStr = beforeResultInfo.getToken();
+					}
+					LOGGER.info("###--1-- execution_id :"+execution_id+"###runBySuiteId ： " + suite_id + "已执行 ### beforeResultInfo is :" + beforeResultInfo.toString());
 				}
-				// --2--执行本case
-				TestResultInfo testResultInfo1 = runByCaseId(caseInfo);
+				
+				// --2--执行beforeRun后再执行本case	##########################################################################################
+				TestResultInfo testResultInfo1 = runByCaseId(caseInfo,tokenStr);
 				testResultInfo1.setExecution_id(execution_id);
 				testResultInfo1.setSuite_id(suite_id);
 				testResultService.insert(testResultInfo1);
 				LOGGER.info("###--2-- execution_id :"+execution_id+"###runBySuiteId ： " + suite_id + "### caseInfo is :" + caseInfo.toString());
-				//判断执行结果，断言不成功，直接退出本次suite执行
+				// 判断执行结果，断言不成功，直接退出本次suite执行
 				if (testResultInfo1.getAssert_status() != 10) {
 					return runFail();
 				}
+				
 			} 
 			else {
 				// --1--执行本case
-				TestResultInfo testResultInfo2 = runByCaseId(caseInfo);
+				LOGGER.info("###--0-- execution_id :"+execution_id+"###runBySuiteId ： " + suite_id + "### caseInfo is :" + caseInfo.toString());
+				TestResultInfo testResultInfo2 = runByCaseId(caseInfo,tokenStr);
 				testResultInfo2.setExecution_id(execution_id);
 				testResultInfo2.setSuite_id(suite_id);
 				testResultService.insert(testResultInfo2);
-				LOGGER.info("###--0-- execution_id :"+execution_id+"###runBySuiteId ： " + suite_id + "### caseInfo is :" + caseInfo.toString());
 				if (testResultInfo2.getAssert_status() != 10) {
 					return runFail();
 				}
@@ -260,12 +300,10 @@ public class TestExecutionServiceImpl implements TestExecutionService {
 	}
 
 	private ResultTool<String> runByMethodId(int method_id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	private ResultTool<String> runByServiceId(int service_id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

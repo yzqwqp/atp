@@ -12,16 +12,18 @@
 	    <result column="METHOD_ID" property="method_id" jdbcType="INTEGER" />
 	    <result column="SUITE_DES" property="suite_des" jdbcType="VARCHAR" />
 	    <result column="IS_RUN" property="is_run" jdbcType="INTEGER" />
+	    <result column="CREATE_DATE" property="create_date" jdbcType="TIMESTAMP" />
+	    <result column="UPDATE_DATE" property="update_date" jdbcType="TIMESTAMP" />
 	    <result column="IS_DEL" property="is_del" jdbcType="INTEGER" />
 	</resultMap>
 	
 	<sql id="Base_Column_List" >
-    	SUITE_ID, METHOD_ID, SUITE_DES, IS_RUN
+    	SUITE_ID, METHOD_ID, SUITE_DES, IS_RUN, CREATE_DATE, UPDATE_DATE, IS_DEL
   	</sql>
 	
 	<insert id="insert" parameterType="com.uusoft.atp.model.TestSuiteInfo" useGeneratedKeys="true" keyProperty="test_id">
-		insert into TEST_SUITE (METHOD_ID, SUITE_DES, IS_RUN, is_del)
-			 values (#{method_id}, #{suite_des}, #{is_run}, 0)
+		insert into TEST_SUITE (METHOD_ID, SUITE_DES, IS_RUN,CREATE_DATE, is_del)
+			 values (#{method_id}, #{suite_des}, #{is_run}, now(), 0)
 	</insert>
 	
 	<select id="selectBySuiteId" resultMap="BaseResultMap">

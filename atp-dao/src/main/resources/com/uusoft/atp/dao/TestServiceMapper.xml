@@ -11,15 +11,17 @@
 	    <result column="SERVICE_ID" property="service_id" jdbcType="INTEGER" />
 	    <result column="SERVICE_NAME" property="service_name" jdbcType="VARCHAR" />
 	    <result column="SERVICE_DES" property="service_des" jdbcType="VARCHAR" />
+	    <result column="CREATE_DATE" property="create_date" jdbcType="TIMESTAMP" />
+	    <result column="UPDATE_DATE" property="update_date" jdbcType="TIMESTAMP" />
 	    <result column="IS_DEL" property="is_del" jdbcType="INTEGER" />
 	</resultMap>
 	
 	<sql id="Base_Column_List" >
-    	SERVICE_ID, SERVICE_NAME, SERVICE_DES, IS_DEL
+    	SERVICE_ID, SERVICE_NAME, SERVICE_DES, CREATE_DATE, UPDATE_DATE, IS_DEL
   	</sql>
 	
 	<insert id="insert" parameterType="com.uusoft.atp.model.TestServiceInfo">
-		insert into TEST_SERVICE (SERVICE_NAME, SERVICE_DES, IS_DEL)  values (#{service_name,jdbcType=VARCHAR},#{service_des,jdbcType=VARCHAR}, 0)
+		insert into TEST_SERVICE (SERVICE_NAME, SERVICE_DES, CREATE_DATE, IS_DEL)  values (#{service_name,jdbcType=VARCHAR},#{service_des,jdbcType=VARCHAR}, now(), 0)
 	</insert>
 	
 	<select id="selectByServiceId" resultMap="BaseResultMap">

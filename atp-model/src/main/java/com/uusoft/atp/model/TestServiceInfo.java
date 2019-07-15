@@ -1,6 +1,7 @@
 package com.uusoft.atp.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class TestServiceInfo implements Serializable {
 	/**
@@ -23,6 +24,19 @@ public class TestServiceInfo implements Serializable {
      * 是否删除
      */
 	private int is_del;
+	/**
+     * 创建时间
+     */
+	private Date create_date;
+	/**
+     * 更新时间
+     */
+	private Date update_date;
+	
+	@Override
+	public String toString() {
+		return "TestServiceInfo ： {service_id=" + service_id + ", service_name=" + service_name + ", service_des=" + service_des + ", is_del=" + is_del +",create_date=" +create_date+ ",update_date=" +update_date+ "}";
+	}
 	
 	public int getIs_del() {
 		return is_del;
@@ -48,8 +62,16 @@ public class TestServiceInfo implements Serializable {
 	public void setService_des(String service_des) {
 		this.service_des = service_des;
 	}
-	@Override
-	public String toString() {
-		return "TestServiceInfo ： {service_id=" + service_id + ", service_name=" + service_name + ", service_des=" + service_des + ", is_del=" + is_del + "}";
+	public Date getCreate_date() {
+		return create_date;
+	}
+	public void setCreate_date(Date create_date) {
+		this.create_date = create_date;
+	}
+	public Date getUpdate_date() {
+		return update_date;
+	}
+	public void setUpdate_date(Date update_date) {
+		this.update_date = update_date;
 	}
 }

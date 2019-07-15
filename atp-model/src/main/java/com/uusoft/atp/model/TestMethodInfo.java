@@ -1,5 +1,7 @@
 package com.uusoft.atp.model;
 
+import java.util.Date;
+
 public class TestMethodInfo {
 	/**
 	 * 测试集id
@@ -21,7 +23,19 @@ public class TestMethodInfo {
      * 是否删除
      */
 	private int is_del;
+	/**
+     * 创建时间
+     */
+	private Date create_date;
+	/**
+     * 更新时间
+     */
+	private Date update_date;
 	
+	@Override
+	public String toString() {
+		return "TestMethodInfo ：{service_id=" + service_id +  ", method_id=" + method_id + ", method_name=" + method_name + ", method_des=" + method_des + ", is_run=" +", is_del=" + is_del  +",create_date=" +create_date+ ",update_date=" +update_date+ "}";
+	}
 	
 	public int getService_id() {
 		return service_id;
@@ -53,9 +67,17 @@ public class TestMethodInfo {
 	public void setIs_del(int is_del) {
 		this.is_del = is_del;
 	}
-	@Override
-	public String toString() {
-		return "TestMethodInfo ：{service_id=" + service_id +  ", method_id=" + method_id + ", method_name=" + method_name + ", method_des=" + method_des + ", is_run=" +", is_del=" + is_del + "}";
+	public Date getCreate_date() {
+		return create_date;
+	}
+	public void setCreate_date(Date create_date) {
+		this.create_date = create_date;
+	}
+	public Date getUpdate_date() {
+		return update_date;
+	}
+	public void setUpdate_date(Date update_date) {
+		this.update_date = update_date;
 	}
 	
 }

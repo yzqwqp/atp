@@ -46,8 +46,9 @@
 	</select>
 
 	<update id="updateById" parameterType="com.uusoft.atp.model.TestExecutionInfo">
-		update TEST_EXECUTION
+        update TEST_EXECUTION 
         set EXECUTION_END_TIME = now(),
+			EXECUTION_TIME = (SELECT TIMESTAMPDIFF(SECOND, EXECUTION_START_TIME, now())),
         	TOTAL_NUM = #{total_num,jdbcType=INTEGER},
         	TRUE_NUM = #{true_num,jdbcType=INTEGER},
         	FAILURE_NUM = #{failure_num,jdbcType=INTEGER},

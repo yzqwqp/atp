@@ -1,5 +1,7 @@
 package com.uusoft.atp.model;
 
+import java.util.Date;
+
 public class TestResultInfo {
 	/**
      * 执行结果id
@@ -61,10 +63,22 @@ public class TestResultInfo {
      * 断言状态异常信息
      */
 	private String assert_error;
+	/**
+     * 创建时间
+     */
+	private Date create_date;
+	/**
+     * token
+     */
+	private int tokenFlag;
+	/**
+     * token
+     */
+	private String token;
 	
 	@Override
 	public String toString() {
-		return "TestResultInfo : {result_id=" + result_id + ", execution_id=" + execution_id + ", suite_id=" + suite_id + ", case_id=" + case_id + ", case_des=" + case_des + ", method_address=" + method_address + ", case_data=" + case_data + ", response_data=" + response_data + ", case_assert_type=" + case_assert_type + ", case_assert_value=" + case_assert_value + ", response_assert_value=" + response_assert_value + ", http_status=" + http_status+ ", assert_status=" + assert_status+ ", http_error=" + http_error+ ", assert_error=" + assert_error+ ", 11=" + 11+ ", 11=" + 11 +"}";
+		return "TestResultInfo : {result_id=" + result_id + ", execution_id=" + execution_id + ", suite_id=" + suite_id + ", case_id=" + case_id + ", case_des=" + case_des + ", method_address=" + method_address + ", case_data=" + case_data + ", response_data=" + response_data + ", case_assert_type=" + case_assert_type + ", case_assert_value=" + case_assert_value + ", response_assert_value=" + response_assert_value + ", http_status=" + http_status+ ", assert_status=" + assert_status+ ", http_error=" + http_error+ ", assert_error=" + assert_error+ ", create_date=" + create_date+ ", 11=" + 11 +"}";
 	}
 	
 	public int getCase_id() {
@@ -156,6 +170,30 @@ public class TestResultInfo {
 	}
 	public void setSuite_id(int suite_id) {
 		this.suite_id = suite_id;
+	}
+
+	public Date getCreate_date() {
+		return create_date;
+	}
+
+	public void setCreate_date(Date create_date) {
+		this.create_date = create_date;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public int getTokenFlag() {
+		return tokenFlag;
+	}
+
+	public void setTokenFlag(int tokenFlag) {
+		this.tokenFlag = tokenFlag;
 	}
 	
 }

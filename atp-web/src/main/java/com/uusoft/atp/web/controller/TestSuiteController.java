@@ -147,7 +147,7 @@ public class TestSuiteController {
 	@RequestMapping("/run")
     @ResponseBody
     public ResultTool<TestExecutionInfo> run(int sid, String sname){
-		LOGGER.info("******开始执行【测试用例】 suiteId :[" +sid+"] suiteDes : ["+sname+ "]*****");
+		LOGGER.info("******开始执行【测试用例】，类型是：[testSuite], suiteId :[" +sid+"], suiteDes : ["+sname+ "]*****");
 		return  testExecutionService.execution(1, sid, sname);//1：testSuite测试用例 2：testMethod测试集 3：testService测试服务
     }
 	
