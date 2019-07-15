@@ -58,12 +58,12 @@ public class TestExecutionController {
 	@RequestMapping("/selectResultByExecutionId")
 //    @ResponseBody
     public ModelAndView  selectResultByExecutionId(HttpServletRequest request,Integer executionId){
-		 ModelAndView modelAndView = new ModelAndView();
 		LOGGER.info("******selectResultByExecutionId :" +executionId+" *****");
 		List<TestResultInfo> resultInfoList =  testExecutionService.selectResultByExecutionId(executionId);
 		for (TestResultInfo t : resultInfoList) {
 			LOGGER.info(t.toString());
 		}
+		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("resultList", resultInfoList);
 		modelAndView.setViewName("testexecution/resultlist");
 		return modelAndView;
