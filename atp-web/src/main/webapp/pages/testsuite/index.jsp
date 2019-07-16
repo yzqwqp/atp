@@ -147,9 +147,13 @@
 		var url = path + "/testsuite/run.do";
 		//ajaxReq(data, url, doCall, "post");
 		$.post(url, data, function(res) {
-			$("#methodname4").html(res.obj);
-			$(".xinxi").modal('show');
+			$("#runmsg").html(res.message);
+			$("#runmsgexecutionid").html(res.obj.execution_id);
+			$(".zhixing").modal('show');
 		});
+	}
+	function see(id){
+		window.location.href=path+"/testmethod/selectByServiceId.do?sid="+id
 	}
 	
 </script>
@@ -300,7 +304,7 @@
 					<div class="xints">
 						<h4 id="msg"></h4>
 						<p>
-							<span>用例组:<strong id="methodname4"></strong></span>
+							<span>用例:<strong id="methodname4"></strong></span>
 						</p>
 					</div>
 				</div>
@@ -319,7 +323,7 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title" id="myModalLabel">信息提示</h4>
+					<h4 class="modal-title" id="myModalLabel2">信息提示</h4>
 				</div>
 				<div class="modal-body">
 					<div class="xints">
@@ -332,6 +336,33 @@
 				<div class="modal-footer">
 					<p>
 						<button type="button" class="save" id="delyes">是</button>
+						<button type="button" class="closebtn" data-dismiss="modal">取消</button>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 执行成功后的提示 -->
+	<div class="modal fade zhixing" id="" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="myModalLabel3">信息提示</h4>
+				</div>
+				<div class="modal-body">
+					<div class="xints">
+						<h4 id="msg2"></h4>
+						<p>
+							<span>用例:<strong id="runmsg"></strong></span>
+							<strong id="runmsgexecutionid" style="display:none"></strong>
+						</p>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<p>
+						<button type="button" class="save" data-dismiss="modal" onclick="see('${runmsgexecutionid}')">去查看</button>
 						<button type="button" class="closebtn" data-dismiss="modal">取消</button>
 					</p>
 				</div>

@@ -348,7 +348,7 @@ public class TestExecutionServiceImpl implements TestExecutionService {
 	    	runByServiceId(execution_type_value); // execution_type_value = service_id
 	    default : 
 	    	testExecutionMapper.updateById(testExecutionInfo);
-	    	return ResultTool.setResult("0000", String.valueOf(testExecutionInfo.getExecution_id())+"已执行完成！", testExecutionInfo);
+	    	return ResultTool.setResult("0000", "【"+execution_type_value+"】"+execution_type_name+"已执行完成！执行编号：【"+String.valueOf(testExecutionInfo.getExecution_id())+"】", testExecutionInfo);
 		}
 	}
 

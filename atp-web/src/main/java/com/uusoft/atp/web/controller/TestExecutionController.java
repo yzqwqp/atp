@@ -37,10 +37,11 @@ public class TestExecutionController {
 	}
 	
 	@RequestMapping("/selectByExecutionId")
-    @ResponseBody
-    public TestExecutionInfo selectByExecutionId(Integer executionId){
-		LOGGER.info("******selectByExecutionId查询suiteId :" +executionId+" *****");
-        return testExecutionService.selectByExecutionId(executionId);
+    //@ResponseBody
+    public String selectByExecutionId(HttpServletRequest request, Integer executionId){
+		TestExecutionInfo testExecutionInfo = testExecutionService.selectByExecutionId(executionId);
+		request.setAttribute("executionInfoList", testExecutionInfo);//筛选列的[服务名称]数据
+		return "testexecution/index";
     }
 	
 //	@RequestMapping("/selectResultByExecutionId")
@@ -68,4 +69,6 @@ public class TestExecutionController {
 		modelAndView.setViewName("testexecution/resultlist");
 		return modelAndView;
     }
+	
+	
 }
