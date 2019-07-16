@@ -15,10 +15,14 @@ import com.uusoft.atp.dao.TestExecutionMapper;
 import com.uusoft.atp.dao.TestResultMapper;
 import com.uusoft.atp.model.TestCaseInfo;
 import com.uusoft.atp.model.TestExecutionInfo;
+import com.uusoft.atp.model.TestMethodInfo;
 import com.uusoft.atp.model.TestResultInfo;
+import com.uusoft.atp.model.TestSuiteInfo;
 import com.uusoft.atp.service.TestCaseService;
 import com.uusoft.atp.service.TestExecutionService;
+import com.uusoft.atp.service.TestMethodService;
 import com.uusoft.atp.service.TestResultService;
+import com.uusoft.atp.service.TestSuiteService;
 import com.uusoft.atp.utils.HttpClientUtil;
 import com.uusoft.atp.utils.ResultTool;
 import com.uusoft.atp.utils.StringUtil;
@@ -38,6 +42,11 @@ public class TestExecutionServiceImpl implements TestExecutionService {
 	TestCaseService testCaseService;
 	@Resource
 	TestResultService testResultService;
+	@Resource
+	TestSuiteService testSuiteService;
+	@Resource
+	TestMethodService testMethodService;
+	
 
 	private TestExecutionInfo testExecutionInfo = new TestExecutionInfo();
 	
@@ -66,7 +75,6 @@ public class TestExecutionServiceImpl implements TestExecutionService {
 		// 开始请求		##########################################################################################
 		// --1--开始处理请求
 		try {
-			// TODO
 			httpResponseStr = HttpClientUtil.doPost(caseInfo.getMethod_address(), caseInfo.getCase_data(), tkStr);
 			httpStatus = 10;
 			testResultInfo.setHttp_status(httpStatus);
@@ -143,7 +151,7 @@ public class TestExecutionServiceImpl implements TestExecutionService {
 		}
 		
 		// 开始寻找token		##########################################################################################
-		// 如果用例有执行后处理token的，需要截取token TODO
+		// 如果用例有执行后处理token的，需要截取token
 		if ((null != caseInfo.getAfter_run()) && (caseInfo.getAfter_run()) == 1) {
 			
 //			if (!jsonobj.containsKey("tk")){
@@ -154,6 +162,7 @@ public class TestExecutionServiceImpl implements TestExecutionService {
 //			}
 //			String tokenStr = jsonobj.getString("tk");
 			 
+			@SuppressWarnings("unchecked")
 			Map<String, Object> paramsMap = (Map<String, Object>) jsonobj.get("data");
 			String tokenStr = (String) paramsMap.get("tk");
 			
@@ -302,25 +311,37 @@ public class TestExecutionServiceImpl implements TestExecutionService {
 		return runTrue();
 	}
 
-	private ResultTool<String> runByMethodId(int method_id) {
-		return null;
+	private void runByMethodId(int method_id) {
+		// 执行用例集
+		// 按照用例集的id，查出所有用例
+		List<TestSuiteInfo> testSuiteListInfo = testSuiteService.selectCanRunByMethodId(method_id);
+		for (TestSuiteInfo t : testSuiteListInfo) {
+			runBySuiteId(t.getSuite_id());
+		}
+//		return testExecutionInfo;
 	}
 
-	private ResultTool<String> runByServiceId(int service_id) {
-		return null;
+	private void runByServiceId(int service_id) {
+		// 执行测试模块
+		// 按照模块的id，查出所有用例集
+		List<TestMethodInfo> testServiceInfoList = testMethodService.selectByServiceId(service_id);
+		for (TestMethodInfo t : testServiceInfoList) {
+			runByMethodId(t.getMethod_id());
+		}
+//		return null;
 	}
 
 	private TestExecutionInfo runFail(){
 		testExecutionInfo.setTotal_num(testExecutionInfo.getTotal_num()+1);
 		testExecutionInfo.setFailure_num(testExecutionInfo.getFailure_num()+1);
-		LOGGER.info("###执行Error   testExecutionInfo：" + testExecutionInfo.toString());
+		LOGGER.info("###执行【ERROR】，执行的ID是：["+testExecutionInfo.getExecution_id()+"]，执行第["+testExecutionInfo.getTotal_num()+"]个失败 ，testExecutionInfo：" + testExecutionInfo.toString());
 		return testExecutionInfo;
 	}
 	
 	private TestExecutionInfo runTrue(){
 		testExecutionInfo.setTotal_num(testExecutionInfo.getTotal_num()+1);
 		testExecutionInfo.setTrue_num(testExecutionInfo.getTrue_num()+1);
-		LOGGER.info("###执行OK   testExecutionInfo：" + testExecutionInfo.toString());
+		LOGGER.info("###执行【OK】，执行的ID是：["+testExecutionInfo.getExecution_id()+"]，执行第["+testExecutionInfo.getTotal_num()+"]个成功 ，testExecutionInfo：" + testExecutionInfo.toString());
 		return testExecutionInfo;
 	}
 
@@ -337,8 +358,11 @@ public class TestExecutionServiceImpl implements TestExecutionService {
 		testExecutionInfo.setExecution_type(execution_type);
 		testExecutionInfo.setExecution_type_value(execution_type_value);
 		testExecutionInfo.setExecution_type_name(execution_type_name);
+		testExecutionInfo.setTotal_num(0);
+		testExecutionInfo.setFailure_num(0);
+		testExecutionInfo.setTrue_num(0);
+		testExecutionInfo.setUnrun_num(0);
 		testExecutionMapper.insert(testExecutionInfo);
-		LOGGER.info("### execution_type = ["+execution_type+"] Execution_id = ["+testExecutionInfo.getExecution_id()+"] execution_type_value = "+execution_type_value+"] ###");
 		switch(execution_type){
 	    case 1 :
 	    	runBySuiteId(execution_type_value); // execution_type_value = suite_id

@@ -148,12 +148,17 @@
 		//ajaxReq(data, url, doCall, "post");
 		$.post(url, data, function(res) {
 			$("#runmsg").html(res.message);
+			$("#runmsgexecutionid").val(res.obj.execution_id);
 			$("#runmsgexecutionid").html(res.obj.execution_id);
 			$(".zhixing").modal('show');
 		});
 	}
-	function see(id){
-		window.location.href=path+"/testmethod/selectByServiceId.do?sid="+id
+	function hrefExecutionIndex(){
+		var id = $("#runmsgexecutionid").val();
+		window.location.href=path+"/testexecution/selectByExecutionId.do?sid="+id
+	}
+	function hrefCaseIndex(id){
+		window.location.href=path+"/testcase/selectBySuiteIdToCase.do?sid="+id
 	}
 	
 </script>
@@ -362,7 +367,7 @@
 				</div>
 				<div class="modal-footer">
 					<p>
-						<button type="button" class="save" data-dismiss="modal" onclick="see('${runmsgexecutionid}')">去查看</button>
+						<button type="button" class="save" data-dismiss="modal" onclick="hrefExecutionIndex()">去查看</button>
 						<button type="button" class="closebtn" data-dismiss="modal">取消</button>
 					</p>
 				</div>

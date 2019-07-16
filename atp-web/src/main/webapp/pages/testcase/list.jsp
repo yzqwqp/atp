@@ -3,6 +3,7 @@
 <table class="table table-bordered" id="methodid" >
 	<tr>
 		<th>用例Id</th>
+		<th>步骤Id</th>
 		<th>用例名称</th>
 		<th>步骤顺序</th>
 		<th>步骤描述</th>
@@ -12,13 +13,13 @@
 		<th>断言的值</th>
 		<th>执行前处理</th>
 		<th>执行后处理</th>
-		<th>操作步骤Id</th>
 		<th style="display:none">操作步骤Id</th>
 		<th>操作</th>
 	</tr>
 	<c:forEach var="item" items="${caseList }" >
 		<tr class="">
 			<td>${item.suite_id }</td>
+			<td>${item.case_id }</td>
 			<td>${item.suite_des }</td>
 			<td>${item.case_run_num }</td>
 			<td>${item.case_des }</td>
@@ -28,7 +29,6 @@
 			<td>${item.case_assert_value }</td>
 			<td>${item.before_run }</td>
 			<td>${item.after_run == '1' ? '处理token' : '不处理'  }</td>
-			<td>${item.case_id }</td>
 			<td style="display:none">${item.case_id }</td>
 			<td>
 				<a href="javascript:edit('${item.case_id}')">编辑</a>

@@ -17,6 +17,7 @@
 			<td>
 				<a href="javascript:edit('${item.suite_id}')">编辑</a>
 				<a href="javascript:del('${item.suite_id }','${item.suite_des }')">删除</a>
+				<a href="javascript:hrefCaseIndex('${item.suite_id}')">查看步骤</a>
 				<a href="javascript:run('${item.suite_id}','${item.suite_des }')">执行</a>
 			</td>
 		</tr>

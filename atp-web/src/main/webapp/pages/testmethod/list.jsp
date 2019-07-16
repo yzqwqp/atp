@@ -15,7 +15,8 @@
 			<td>
 				<a href="javascript:edit('${item.method_id}')">编辑</a>
 				<a href="javascript:del('${item.method_id }','${item.method_name }')">删除</a>
-				<a href="javascript:hrefCaseIndex('${item.method_id}')">用例</a>
+				<a href="javascript:hrefSuiteIndex('${item.method_id}')">查看用例</a>
+				<a href="javascript:run('${item.method_id}','${item.method_des }')">执行</a>
 			</td>
 		</tr>
 	</c:forEach>

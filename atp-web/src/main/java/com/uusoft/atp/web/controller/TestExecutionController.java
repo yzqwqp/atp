@@ -1,5 +1,6 @@
 package com.uusoft.atp.web.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.uusoft.atp.model.TestExecutionInfo;
 import com.uusoft.atp.model.TestResultInfo;
+import com.uusoft.atp.model.TestSuiteInfo;
 import com.uusoft.atp.service.TestExecutionService;
 import com.uusoft.atp.utils.ResultTool;
 
@@ -38,9 +40,11 @@ public class TestExecutionController {
 	
 	@RequestMapping("/selectByExecutionId")
     //@ResponseBody
-    public String selectByExecutionId(HttpServletRequest request, Integer executionId){
-		TestExecutionInfo testExecutionInfo = testExecutionService.selectByExecutionId(executionId);
-		request.setAttribute("executionInfoList", testExecutionInfo);//筛选列的[服务名称]数据
+    public String selectByExecutionId(HttpServletRequest request, Integer sid){
+		TestExecutionInfo testExecutionInfo = testExecutionService.selectByExecutionId(sid);
+		List<TestExecutionInfo> executionInfoList = new ArrayList<TestExecutionInfo>();
+		executionInfoList.add(testExecutionInfo);
+		request.setAttribute("executionInfoList", executionInfoList);//筛选列的[服务名称]数据
 		return "testexecution/index";
     }
 	

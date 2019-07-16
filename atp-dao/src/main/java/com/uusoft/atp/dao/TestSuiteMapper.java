@@ -25,4 +25,6 @@ public interface TestSuiteMapper {
 	int update(TestSuiteInfo testSuiteInfo);
 	
 	int deleteById(@Param("suite_id") int suite_id);
+	
+	List<TestSuiteInfo> selectCanRunByMethodId(@Param("method_id")int method_id);
 }

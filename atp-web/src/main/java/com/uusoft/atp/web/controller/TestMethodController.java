@@ -12,9 +12,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.uusoft.atp.model.TestExecutionInfo;
 import com.uusoft.atp.model.TestMethodInfo;
 import com.uusoft.atp.model.TestServiceInfo;
-import com.uusoft.atp.service.InitServiceService;
+import com.uusoft.atp.model.TestSuiteInfo;
+import com.uusoft.atp.service.TestExecutionService;
 import com.uusoft.atp.service.TestMethodService;
 import com.uusoft.atp.service.TestServiceService;
 import com.uusoft.atp.utils.ResultTool;
@@ -33,7 +35,7 @@ public class TestMethodController {
 	@Resource
 	TestServiceService testServiceService;
 	@Resource
-	InitServiceService initServiceService;
+	TestExecutionService testExecutionService;
 
 	@RequestMapping("/index")
 	public String index(HttpServletRequest request) {
@@ -196,5 +198,23 @@ public class TestMethodController {
 	@ResponseBody
 	public TestMethodInfo selectByMethodId(int sid){
         return testMethodService.selectByMethodId(sid);
+	}
+	
+	@RequestMapping("/run")
+    @ResponseBody
+    public ResultTool<TestExecutionInfo> run(int sid, String sname){
+		LOGGER.info("******开始执行【测试用例】，类型是：[testSuite], suiteId :[" +sid+"], suiteDes : ["+sname+ "]*****");
+		return  testExecutionService.execution(2, sid, sname);//1：testSuite测试用例 2：testMethod测试集 3：testService测试服务
+    }
+	
+	@RequestMapping("/selectByServiceIdToMethod")
+	public String selectByServiceIdToMethod(HttpServletRequest request, int sid) {
+		// 【测试用例集】页面直接跳转到【测试用例】页面
+		List<TestServiceInfo> initServiceList = testServiceService.selectAll();
+		List<TestMethodInfo> initMethodList = testMethodService.selectByServiceId(sid);
+		request.setAttribute("initServiceList", initServiceList);//筛选列的[服务名称]数据
+		request.setAttribute("initMethodList", initMethodList);//筛选列的[方法名称]数据
+		request.setAttribute("methodList", initMethodList);//筛选列的[方法名称]数据
+		return "testmethod/index";
 	}
 }

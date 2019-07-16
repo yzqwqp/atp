@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.dubbo.common.utils.StringUtils;
+import com.uusoft.atp.model.TestExecutionInfo;
 import com.uusoft.atp.model.TestServiceInfo;
-import com.uusoft.atp.service.InitServiceService;
+import com.uusoft.atp.service.TestExecutionService;
 import com.uusoft.atp.service.TestServiceService;
 import com.uusoft.atp.utils.ResultTool;
 
@@ -29,7 +30,7 @@ public class TestServiceController {
 	@Resource
 	TestServiceService testServiceService;
 	@Resource
-	InitServiceService initServiceService;
+	TestExecutionService testExecutionService;
 
 	@RequestMapping("/index")
 	public String index(HttpServletRequest request) {
@@ -98,4 +99,10 @@ public class TestServiceController {
         return result;
     }
 	
+	@RequestMapping("/run")
+    @ResponseBody
+    public ResultTool<TestExecutionInfo> run(int sid, String sname){
+		LOGGER.info("******开始执行【测试用例】，类型是：[testSuite], suiteId :[" +sid+"], suiteDes : ["+sname+ "]*****");
+		return  testExecutionService.execution(3, sid, sname);//1：testSuite测试用例 2：testMethod测试集 3：testService测试服务
+    }
 }

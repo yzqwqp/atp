@@ -185,4 +185,18 @@ public class TestCaseController {
 		}
         return result;
     }
+	
+	@RequestMapping("/selectBySuiteIdToCase")
+	public String selectBySuiteIdToCase(HttpServletRequest request, int sid) {
+		// 【测试用例集】页面直接跳转到【测试用例】页面
+		List<TestServiceInfo> initServiceList = testServiceService.selectAll();
+		List<TestMethodInfo> initMethodList = testMethodService.selectAll();
+		List<TestSuiteInfo> initSuiteList = testSuiteService.selectAll();
+		List<TestCaseInfo> caseData = testCaseService.selectBySuiteId(sid);
+		request.setAttribute("initServiceList", initServiceList);//筛选列的[服务名称]数据
+		request.setAttribute("initMethodList", initMethodList);//筛选列的[方法名称]数据
+		request.setAttribute("initSuiteList", initSuiteList);//筛选列的[方法名称]数据
+		request.setAttribute("caseList", caseData);//查询结果列的数据
+		return "testcase/index";
+	}
 }

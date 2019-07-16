@@ -74,7 +74,7 @@
 		window.location.href=path+"/testservice/index.do"
 	}
 	function hrefMethodIndex(id){
-		window.location.href=path+"/testmethod/selectByServiceId.do?sid="+id
+		window.location.href=path+"/testmethod/selectByServiceIdToMethod.do?sid="+id
 	}
 	function addBefore() {
 		$(".xinz").modal("show");
@@ -101,7 +101,23 @@
 		var url=path+"/testservice/selectById.do";
 		$("#payForm").submit();
 	}
-	
+	function run(id,name) {
+		var data = {};
+		data.sid = id;
+		data.sname = name;
+		var url = path + "/testservice/run.do";
+		//ajaxReq(data, url, doCall, "post");
+		$.post(url, data, function(res) {
+			$("#runmsg").html(res.message);
+			$("#runmsgexecutionid").val(res.obj.execution_id);
+			$("#runmsgexecutionid").html(res.obj.execution_id);
+			$(".zhixing").modal('show');
+		});
+	}
+	function hrefExecutionIndex(){
+		var id = $("#runmsgexecutionid").val();
+		window.location.href=path+"/testexecution/selectByExecutionId.do?sid="+id
+	}
 </script>
 </head>
 <body class="page-body">
@@ -151,7 +167,8 @@
 										<td>
 											<a href="javascript:edit('${item.service_id}')">编辑</a>
 											<a href="javascript:del('${item.service_id }','${item.service_name }')">删除</a>
-											<a href="javascript:hrefMethodIndex('${item.service_id}')">方法</a>
+											<a href="javascript:hrefMethodIndex('${item.service_id}')">查看用例集</a>
+											<a href="javascript:run('${item.service_id}','${item.service_des }')">执行</a>
 										</td>
 									</tr>
 								</c:forEach>
@@ -281,6 +298,33 @@
 				<div class="modal-footer">
 					<p>
 						<button type="button" class="save" id="delyes">是</button>
+						<button type="button" class="closebtn" data-dismiss="modal">取消</button>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+		<!-- 执行成功后的提示 -->
+	<div class="modal fade zhixing" id="" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="myModalLabel3">信息提示</h4>
+				</div>
+				<div class="modal-body">
+					<div class="xints">
+						<h4 id="msg2"></h4>
+						<p>
+							<span>用例:<strong id="runmsg"></strong></span>
+							<strong id="runmsgexecutionid" style="display:none"></strong>
+						</p>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<p>
+						<button type="button" class="save" data-dismiss="modal" onclick="hrefExecutionIndex()">去查看</button>
 						<button type="button" class="closebtn" data-dismiss="modal">取消</button>
 					</p>
 				</div>

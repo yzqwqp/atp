@@ -84,5 +84,17 @@
         where SUITE_ID = #{suite_id,jdbcType=INTEGER}
 	</update>
 	
+	<select id="selectCanRunByMethodId" resultMap="BaseResultMap">
+		select 
+    	<include refid="Base_Column_List" />
+   		from TEST_SUITE
+   		<where>
+   			IS_DEL = 0 
+   		and IS_RUN = 1
+   			<if test="method_id != null">
+   				and METHOD_ID = #{method_id,jdbcType=INTEGER}
+   			</if>
+   		</where>
+	</select>
 	
 </mapper>

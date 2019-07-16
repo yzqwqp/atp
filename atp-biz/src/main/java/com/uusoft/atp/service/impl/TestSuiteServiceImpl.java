@@ -9,11 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.uusoft.atp.dao.TestSuiteMapper;
-import com.uusoft.atp.model.TestCaseInfo;
 import com.uusoft.atp.model.TestSuiteInfo;
 import com.uusoft.atp.service.TestCaseService;
 import com.uusoft.atp.service.TestSuiteService;
-import com.uusoft.atp.utils.ResultTool;
 
 
 @Service("TestSuiteService")
@@ -60,5 +58,10 @@ public class TestSuiteServiceImpl implements TestSuiteService {
 	@Override
 	public int deleteById(int suite_id) {
 		return mapper.deleteById(suite_id);
+	}
+
+	@Override
+	public List<TestSuiteInfo> selectCanRunByMethodId(int method_id) {
+		return mapper.selectCanRunByMethodId(method_id);
 	}
 }
