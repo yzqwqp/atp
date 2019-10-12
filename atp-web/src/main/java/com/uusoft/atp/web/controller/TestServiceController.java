@@ -5,9 +5,11 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,9 +25,14 @@ import com.uusoft.atp.utils.ResultTool;
 @RequestMapping("/testservice")
 public class TestServiceController {
 	
+	@Autowired
+	private HttpSession session;
+	
 	private final static Logger LOGGER = LoggerFactory.getLogger(TestServiceController.class);
 	
 	ResultTool<String> result = new ResultTool<String>("","","");
+	
+//	UserInfo userInfo = (UserInfo)session.getAttribute("user");
 	
 	@Resource
 	TestServiceService testServiceService;
@@ -53,6 +60,10 @@ public class TestServiceController {
 		request.setAttribute("initServiceList", initServiceList);//筛选列的[服务名称]数据
 		request.setAttribute("serviceList", serviceList);//查询结果列的数据
 		return "testservice/index";
+	}
+	@RequestMapping("/login")
+	public String login(HttpServletRequest request) {
+		return "/login";
 	}
 	
 	@RequestMapping("/selectById")

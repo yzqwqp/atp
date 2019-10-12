@@ -122,9 +122,6 @@
 		$("#methodname4").html(result.obj);
 		$(".xinxi").modal('show');
 	}
-	function skipIndex(){
-		window.location.href=path+"/testsuite/index.do"
-	}
 	function addBefore() {
 		$(".xinz").modal("show");
 		var a = $("#initmethodselect").val();
@@ -133,8 +130,16 @@
 		$("#methodselect option").html(b);
 	}
 	function add() {
+		if ($("#methodid1").val() == "") {
+			alert("测试用例集不能为空");
+			return;
+		}
+		if ($("#suite_des").val() == "") {
+			alert("用例描述不能为空");
+			return;
+		}
 		var data = {};
-		data.method_id = $("#methodselect").val();
+		data.method_id = $("#methodid1").val();
 		data.suite_des = $("#suite_des").val();
 		data.is_run = $("#suite_isrun").val();
 		var url = path + "/testsuite/add.do";
@@ -153,12 +158,26 @@
 			$(".zhixing").modal('show');
 		});
 	}
+	function skipIndex(){
+		if (typeof($("#method_id").html()) == "undefined"){ 
+			window.location.href=path+"/testsuite/index.do"
+		} else {
+			var id = $("#method_id").html();
+			window.location.href=path+"/testsuite/selectByMethodIdToSuite.do?sid="+id
+		}
+	}
 	function hrefExecutionIndex(){
 		var id = $("#runmsgexecutionid").val();
 		window.location.href=path+"/testexecution/selectByExecutionId.do?sid="+id
 	}
 	function hrefCaseIndex(id){
 		window.location.href=path+"/testcase/selectBySuiteIdToCase.do?sid="+id
+	}
+	function addBefore2() {
+		var a = $("#method_id").html();
+		$("#methodid1").val(a);
+		$("#methodid1").html(a);
+		$(".xinz").modal("show");
 	}
 	
 </script>
@@ -178,9 +197,11 @@
 						<div class="panel-heading">
 							<!--<div class="panel-options"> <a href="#"> <i class="linecons-cog"></i> </a> <a href="#" data-toggle="panel"> <span class="collapse-icon">–</span> <span class="expand-icon">+</span> </a> <a href="#" data-toggle="reload"> <i class="fa-rotate-right"></i> </a> <a href="#" data-toggle="remove"> × </a> </div>-->
 						</div>
+
 						<div class="screen">
 						<form action="<%=path %>/testsuite/index.do" id="payForm" method="post">
 							<ul class="shaix clearfix">
+								<!-- 
 								<li><span>服务名称：</span> <select name="initserviceselect" id="initserviceselect" onchange="selectChangeService(this)">
 										<c:forEach items="${initServiceList }" var="item" >
 											<option value="${item.service_id }" <c:if test="${param.initserviceselect == item.service_id }">selected</c:if> >${item.service_name }</option>
@@ -191,8 +212,16 @@
 											<option value="${item.method_id }" <c:if test="${param.initmethodselect == item.method_id }">selected</c:if> >${item.method_name }</option>
 										</c:forEach>
 								</select></li>
+								 -->
 								<li>
-									<button type="button" class="addnew" onclick="addBefore()">新增测试用例</button>
+								<c:forEach var="item" items="${methodInfo }" >
+									<span><strong id="method_id"  style="display:none">${item.method_id } </strong></span>
+									<span><strong>*用例集：</strong><strong id="method_name" >${item.method_name } </strong></span>
+									<span><strong id="method_des" style="display:none">${item.method_des }</strong></span>
+								</c:forEach>
+								</li>
+								<li>
+									<button type="button" class="addnew" onclick="addBefore2()">新增测试用例</button>
 								</li>
 							</ul>
 						</form>
@@ -219,17 +248,18 @@
 						<ul>
 							<li class="clearfix bgwhite">
 								<div class="fp">
-									<span><strong>*</strong>测试集:</span> <select id="methodselect" ><option value=""></option></select>
+									<span><strong>*</strong>模块Id:</span><input type="text" id="methodid1"  disabled="disabled" />
+									<!-- <span><strong>*</strong>测试用例集ID:</span> <select id="methodselect" ><option value=""></option></select>  -->
 								</div>
 								
 							</li>
 							<li class="clearfix bgwhite">
 								<div class="fp">
-									<span><strong>*</strong>用例组描述:</span> <input type="text" id="suite_des" onblur="chBlur('case_des','case_des','方法名称不能为空')"/><span id="case_des_span" style="color: red;font-size:13px"></span>
+									<span><strong>*</strong>用例组描述:</span> <input type="text" id="suite_des" onblur="chBlur('suite_des','case_des_span','方法名称不能为空')"/><span id="case_des_span" style="color: red;font-size:13px"></span>
 								</div>					
 								<div class="fp">
 									<span><strong>*</strong>是否运行:</span>
-									<select id="case_isrun" >
+									<select id="suite_isrun" >
 										<option value="0">NO</option>
 										<option value="1">YES</option>
 									</select>
@@ -262,15 +292,12 @@
 							<ul>
 							<li class="clearfix bgwhite">
 								<div class="fp">
-									<span><strong>*</strong>测试集:</span> <select id="methodselect2" ><option value=""></option></select>
-								</div>
-								<div class="fp">
-									<span><strong>*</strong>用例组ID:</span> <input type="text" id="suite_id2" disabled="disabled"/>
+									<span><strong>*</strong>测试用例ID:</span> <input type="text" id="suite_id2" disabled="disabled"/>
 								</div>
 							</li>
 							<li class="clearfix bgwhite">
 								<div class="fp">
-									<span><strong>*</strong>用例组描述:</span> <input type="text" id="suite_des2" onblur="chBlur('suite_des2','suite_des2','用例描述不能为空')"/><span id="suite_des_span2" style="color: red;font-size:13px"></span>
+									<span><strong>*</strong>测试用例描述:</span> <input type="text" id="suite_des2" onblur="chBlur('suite_des2','suite_des_span2','用例描述不能为空')"/><span id="suite_des_span2" style="color: red;font-size:13px"></span>
 								</div>
 														
 								<div class="fp">
@@ -361,7 +388,7 @@
 						<h4 id="msg2"></h4>
 						<p>
 							<span>用例:<strong id="runmsg"></strong></span>
-							<strong id="runmsgexecutionid" style="display:none"></strong>
+							<strong id="runmsgexecutionid" style="display:none">${caseList }</strong>
 						</p>
 					</div>
 				</div>

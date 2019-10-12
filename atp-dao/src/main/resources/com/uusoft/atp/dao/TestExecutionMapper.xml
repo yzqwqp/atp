@@ -19,10 +19,11 @@
 	    <result column="TRUE_NUM" property="true_num" jdbcType="INTEGER" />
 	    <result column="FAILURE_NUM" property="failure_num" jdbcType="INTEGER" />
 	    <result column="UNRUN_NUM" property="unrun_num" jdbcType="INTEGER" />
+	    <result column="EXECUTION_DETAIL" property="execution_detail" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<sql id="Base_Column_List" >
-    	EXECUTION_ID, EXECUTION_TYPE, EXECUTION_TYPE_NAME, EXECUTION_TYPE_VALUE, EXECUTION_START_TIME, EXECUTION_END_TIME, EXECUTION_TIME, TOTAL_NUM, TRUE_NUM, FAILURE_NUM, UNRUN_NUM
+    	EXECUTION_ID, EXECUTION_TYPE, EXECUTION_TYPE_NAME, EXECUTION_TYPE_VALUE, EXECUTION_START_TIME, EXECUTION_END_TIME, EXECUTION_TIME, TOTAL_NUM, TRUE_NUM, FAILURE_NUM, UNRUN_NUM, EXECUTION_DETAIL
   	</sql>
   	
 	<insert id="insert" useGeneratedKeys="true" keyProperty="execution_id" parameterType="com.uusoft.atp.model.TestExecutionInfo">
@@ -43,6 +44,7 @@
 		select 
     	<include refid="Base_Column_List" />
    		from TEST_EXECUTION
+   		order by EXECUTION_ID desc Limit 30;
 	</select>
 
 	<update id="updateById" parameterType="com.uusoft.atp.model.TestExecutionInfo">
@@ -52,8 +54,13 @@
         	TOTAL_NUM = #{total_num,jdbcType=INTEGER},
         	TRUE_NUM = #{true_num,jdbcType=INTEGER},
         	FAILURE_NUM = #{failure_num,jdbcType=INTEGER},
-        	UNRUN_NUM = #{unrun_num,jdbcType=INTEGER}
+        	UNRUN_NUM = #{unrun_num,jdbcType=INTEGER},
+        	EXECUTION_DETAIL = #{execution_detail,jdbcType=VARCHAR}
         where EXECUTION_ID = #{execution_id,jdbcType=INTEGER}
+	</update>
+	
+	<update id="updateBySql" parameterType="String">
+		${sqlStr}
 	</update>
 	
 </mapper>

@@ -31,6 +31,7 @@
 		<%@include file="common/left-menu.jsp" %>
 		<div class="main-content">
 			<div class="afloginbg">
+			<!-- welcome --> 
 				<img src="<%=path%>/img/afloginbg.jpg" />
 			</div>
 		</div>

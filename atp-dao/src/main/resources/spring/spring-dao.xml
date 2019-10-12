@@ -16,13 +16,7 @@
 
 	<context:property-placeholder location="classpath*:/dao.properties"/>    
      
- 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-		>
- 		<!-- destroy-method="close" -->
-		<property name="driverClassName" value="${datasource.driver}" />
-		<property name="url" value="${datasource.url}" />
-		<property name="username" value="${datasource.username}" />
-		<property name="password" value="${datasource.password}"/>
+ 	<bean id="parentDataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<!-- 池启动时创建的连接数量-->
 		<property name="initialSize" value="${datasource.initialSize}" />
 		<!-- 连接池最小空闲 -->
@@ -50,21 +44,70 @@
 		<property name="logAbandoned" value="true" />
 	</bean>
 	
-    <!-- transaction manager, use JtaTransactionManager for global tx -->
-    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource" />
+	<!--Atp dataSource-->
+	<bean id="atpDataSource" parent="parentDataSource" destroy-method="close">
+ 		<!-- destroy-method="close" -->
+		<property name="driverClassName" value="${datasource.driver}" />
+		<property name="url" value="${datasource.url}" />
+		<property name="username" value="${datasource.username}" />
+		<property name="password" value="${datasource.password}"/>
+	</bean>
+	<!--Apptms dataSource-->
+	<bean id="apptmsDataSource" parent="parentDataSource" destroy-method="close">
+ 		<!-- destroy-method="close" -->
+		<property name="driverClassName" value="${datasource2.driver}" />
+		<property name="url" value="${datasource2.url}" />
+		<property name="username" value="${datasource2.username}" />
+		<property name="password" value="${datasource2.password}"/>
+	</bean>
+	<!--动态数据源的配置-->
+    <bean id="dynamicDataSource" class="com.uusoft.atp.dao.utils.DynamicDataSource">
+        <property name="defaultTargetDataSource" ref="atpDataSource"/>
+        <property name="targetDataSources">
+            <map key-type="java.lang.String">
+                <entry key="atpDataSource" value-ref="atpDataSource"/>
+                <entry key="apptmsDataSource" value-ref="apptmsDataSource"/>
+            </map>
+        </property>
     </bean>
-    
-    <!-- enable transaction demarcation with annotations -->
-    <tx:annotation-driven proxy-target-class="true"/>
 
     <!-- define the SqlSessionFactory -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
+        <property name="dataSource" ref="dynamicDataSource" />
+        <!--
         <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        -->
+        <property name="mapperLocations" value="classpath:com/uusoft/atp/dao/*.xml"/>
     </bean>
+    
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
         <property name="basePackage" value="com.uusoft.atp.dao" />
     </bean>
+	
+    <!-- transaction manager, use JtaTransactionManager for global tx -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dynamicDataSource" />
+    </bean>
+    
+    <!-- enable transaction demarcation with annotations -->
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+
+	<!-- interception transatcion -->
+    <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="add*" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+    
+    <!-- 配置数据库注解aop -->
+    <bean id="dataSourceAspect" class="com.uusoft.atp.dao.utils.DataSourceAspect"/>
+    
+    <aop:config>
+        <aop:pointcut id="transactionPointcut" expression="execution(* com.uusoft.atp.service..*Impl.*(..))"/>
+        <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice" order="2"/>
+        <!--数据源选择切面,保证在事务开始之前执行-->
+        <aop:advisor pointcut-ref="transactionPointcut" advice-ref="dataSourceAspect"  order="1" />
+    </aop:config>
 </beans>

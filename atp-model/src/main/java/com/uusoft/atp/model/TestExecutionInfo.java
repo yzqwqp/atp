@@ -47,6 +47,10 @@ public class TestExecutionInfo {
      * 未执行数量
      */
 	private int unrun_num;
+	/**
+     * 执行类型的名称
+     */
+	private String execution_detail;
 	
 	@Override
 	public String toString() {
@@ -117,6 +121,12 @@ public class TestExecutionInfo {
 	}
 	public void setExecution_type_name(String execution_type_name) {
 		this.execution_type_name = execution_type_name;
+	}
+	public String getExecution_detail() {
+		return execution_detail;
+	}
+	public void setExecution_detail(String execution_detail) {
+		this.execution_detail = execution_detail;
 	}
 
 }

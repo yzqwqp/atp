@@ -20,4 +20,5 @@ public interface TestExecutionMapper {
 	
 	int updateById(TestExecutionInfo TestExecutionInfo);
 	
+	int updateBySql(@Param(value="sqlStr") String sqlStr);
 }

@@ -2,15 +2,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <table class="table table-bordered" id="methodid" >
 	<tr>
-		<th>测试集id</th>
-		<th>测试用例id</th>
-		<th>用例用例描述</th>
+		<th>测试用例Id</th>
+		<th>用例描述</th>
 		<th>是否运行</th>
 		<th>操作</th>
 	</tr>
 	<c:forEach var="item" items="${suiteList }" >
 		<tr class="">
-			<td>${item.method_id }</td>
 			<td>${item.suite_id }</td>
 			<td>${item.suite_des }</td>
 			<td>${item.is_run == '1' ? 'YES' : 'NO' }</td>

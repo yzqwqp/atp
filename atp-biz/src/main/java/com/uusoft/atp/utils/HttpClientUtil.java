@@ -56,8 +56,11 @@ public class HttpClientUtil {
             httpPost.addHeader("Content-Type", "application/json");
             if (!tokenStr.isEmpty()) {
             	httpPost.addHeader("Cookie", tokenStr);
+            } else {
+//            	httpPost.addHeader("Cookie", "ltk=MTQyOTQ5OjE1NjUwMDE2NDc4NDc6ODM1YzYyNzdmYmI2MmRhMGQ0ZWY3N2QzNjAzN2FkNTQ; Max-Age=1209600; Expires=Mon, 05-Aug-2019 10:40:47 GMT; Path=/v1; HttpOnly");
+            	httpPost.addHeader("Cookie", "tk=");
             }
-            StringEntity se = new StringEntity(jsonstr);
+            StringEntity se = new StringEntity(jsonstr,"UTF-8");
             se.setContentType("text/json");
             se.setContentEncoding(new BasicHeader("Content-Type", "application/json"));
             httpPost.setEntity(se);

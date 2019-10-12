@@ -48,31 +48,44 @@ public class TestExecutionController {
 		return "testexecution/index";
     }
 	
+	@RequestMapping("/selectResultByExecutionId")
+    //@ResponseBody
+    public String selectResultByExecutionId(HttpServletRequest request,Integer executionId){
+		List<TestResultInfo> resultInfoList =  testExecutionService.selectResultByExecutionId(executionId);
+		request.setAttribute("resultList", resultInfoList);
+		return "testexecution/resultlist";
+    }
+	
+	@RequestMapping("/selectFailureResultByExecutionId")
+    //@ResponseBody
+    public String selectFailureResultByExecutionId(HttpServletRequest request,Integer executionId){
+		List<TestResultInfo> resultInfoList =  testExecutionService.selectFailureResultByExecutionId(executionId);
+		request.setAttribute("resultList", resultInfoList);
+		return "testexecution/resultlist";
+    }
+	
+	@RequestMapping("/selectUnrunResultByExecutionId")
+    public String selectUnrunResultByExecutionId(HttpServletRequest request,Integer executionId){
+		List<TestResultInfo> resultInfoList =  testExecutionService.selectUnrunResultByExecutionId(executionId);
+		request.setAttribute("resultList", resultInfoList);
+		return "testexecution/resultlist";
+    }
+	
+	
+	
 //	@RequestMapping("/selectResultByExecutionId")
-//    @ResponseBody
-//    public String selectResultByExecutionId(HttpServletRequest request,Integer executionId){
+////    @ResponseBody
+//    public ModelAndView  selectResultByExecutionId(HttpServletRequest request,Integer executionId){
 //		LOGGER.info("******selectResultByExecutionId :" +executionId+" *****");
 //		List<TestResultInfo> resultInfoList =  testExecutionService.selectResultByExecutionId(executionId);
 //		for (TestResultInfo t : resultInfoList) {
 //			LOGGER.info(t.toString());
 //		}
-//		request.setAttribute("resultList", resultInfoList);
-//		return "testexecution/index";
+//		ModelAndView modelAndView = new ModelAndView();
+//		modelAndView.addObject("resultList", resultInfoList);
+//		modelAndView.setViewName("testexecution/resultlist");
+//		return modelAndView;
 //    }
-	
-	@RequestMapping("/selectResultByExecutionId")
-//    @ResponseBody
-    public ModelAndView  selectResultByExecutionId(HttpServletRequest request,Integer executionId){
-		LOGGER.info("******selectResultByExecutionId :" +executionId+" *****");
-		List<TestResultInfo> resultInfoList =  testExecutionService.selectResultByExecutionId(executionId);
-		for (TestResultInfo t : resultInfoList) {
-			LOGGER.info(t.toString());
-		}
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("resultList", resultInfoList);
-		modelAndView.setViewName("testexecution/resultlist");
-		return modelAndView;
-    }
 	
 	
 }

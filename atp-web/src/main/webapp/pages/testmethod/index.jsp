@@ -41,12 +41,14 @@
 		});
 	}
 	function showSingle(data){
+		$("#serviceid_2").val(data.service_id);
 		$("#method_id_2").val(data.method_id);
 		$("#method_name_2").val(data.method_name);
 		$("#method_des_2").val(data.method_des);
 	}
 	function update(){
 		var data = {};
+		data.service_id = $("#serviceid_2").val();
 		data.method_id = $("#method_id_2").val();
 		data.method_name = $("#method_name_2").val();
 		data.method_des = $("#method_des_2").val();
@@ -118,13 +120,22 @@
 		$("#methodname4").html(result.obj);
 		$(".xinxi").modal('show');
 	}
-	function skipIndex(){
+	function skipIndex2(){
 		window.location.href=path+"/testmethod/index.do"
+	}
+	function skipIndex(){
+		if (typeof($("#serviceid").html()) == "undefined"){ 
+			window.location.href=path+"/testmethod/index.do"
+		} else {
+			var id = $("#serviceid").html();
+			window.location.href=path+"/testmethod/selectByServiceIdToMethod.do?sid="+id
+		}
 	}
 	function hrefSuiteIndex(id){
 		window.location.href=path+"/testsuite/selectByMethodIdToSuite.do?sid="+id
 	}
 	function addBefore() {
+		
 		$(".xinz").modal("show");
 		var data = {};
 		var url = path + "/testmethod/addBefore.do";
@@ -138,9 +149,34 @@
 			}
 		$("#allService").html(options);
 	}
+	function addBefore2() {
+		var a = $("#serviceid").html();
+		var b = $("#servicename").html();
+		$("#serviceid1").val(a);
+		$("#serviceid1").html(a);
+		$("#servicename1").val(b);
+		$("#servicename1").html(b);
+		$(".xinz").modal("show");
+	}
 	function add() {
+		if ($("#serviceid1").val() == "") {
+			alert("测试模块不能为空");
+			return;
+		}
+		if ($("#servicename1").val() == "") {
+			alert("测试模块描述不能为空");
+			return;
+		}
+		if ($("#method_name").val() == "") {
+			alert("测试用例集名称不能为空");
+			return;
+		}
+		if ($("#method_des").val() == "") {
+			alert("测试用例集描述不能为空");
+			return;
+		}
 		var data = {};
-		data.service_id = $("#allService").val();
+		data.service_id = $("#serviceid1").val();
 		data.method_name = $("#method_name").val();
 		data.method_des = $("#method_des").val();
 		var url = path + "/testmethod/add.do";
@@ -173,7 +209,7 @@
 		<%@include file="../common/left-menu.jsp"%>
 		<div class="main-content">
 			<div class="topv">
-				<h3>测试集</h3>
+				<h3>测试用例集</h3>
 			</div>
 			<div class="row" style="padding-top: 50px;">
 				<div class="col-md-12">
@@ -181,29 +217,39 @@
 						<div class="panel-heading">
 							<!--<div class="panel-options"> <a href="#"> <i class="linecons-cog"></i> </a> <a href="#" data-toggle="panel"> <span class="collapse-icon">–</span> <span class="expand-icon">+</span> </a> <a href="#" data-toggle="reload"> <i class="fa-rotate-right"></i> </a> <a href="#" data-toggle="remove"> × </a> </div>-->
 						</div>
+						
 						<div class="screen">
 						<form action="<%=path %>/testmethod/index.do" id="payForm" method="post">
 							<ul class="shaix clearfix">
+							<!--
 								<li><span>服务名称：</span> <select name="initserviceselect" id="initserviceselect" onchange="selectChangeService(this)">
 										<option value="">全部服务</option>
 										<c:forEach items="${initServiceList }" var="item" >
 											<option value="${item.service_id }" <c:if test="${param.initserviceselect == item.service_id }">selected</c:if> >${item.service_name }</option>
 										</c:forEach>
 								</select></li>
-								<li><span>方法名称：</span> <select name="initmethodselect" id="initmethodselect" onchange="selectChangeMethod(this)">
-										<option value="">全部方法</option>
+								
+								<li><span>用例集名称：</span> <select name="initmethodselect" id="initmethodselect" onchange="selectChangeMethod(this)">
+										<option value="">全部用例集</option>
 										<c:forEach items="${initMethodList }" var="item">
 											<option value="${item.method_id }" <c:if test="${param.initmethodselect == item.method_id }">selected</c:if> >${item.method_name }</option>
 										</c:forEach>
 								</select></li>
+							-->	
 								<li>
-									<button type="button" class="addnew" onclick="addBefore()">新增方法</button>
-									<!-- <button type="button" class="addnew" style="font-size:14px;dipslay:inline;" onclick="addBefore()">新增方法</button>  -->
+								<c:forEach var="item" items="${serviceInfo }" >
+									<span><strong id="serviceid" style="display:none">${item.service_id }</strong></span>
+									<span><strong>*模块名称：</strong><strong id="servicename">${item.service_name }</strong></span>
+									<span><strong id="servicedes" style="display:none">${item.service_des }</strong></span>
+								</c:forEach>
+								</li>
+								<li>
+									<button type="button" class="addnew" onclick="addBefore2()">新增用例集</button>
 								</li>
 							</ul>
 						</form>
 						</div>
-
+						
 						<div class="table-responsive" id="table_list">
 							<jsp:include page="list.jsp" />
 						</div>
@@ -220,20 +266,25 @@
 		<div class="modal-dialog xinzm">
 			<div class="modal-content">
 				<div class="xzmain">
-					<h3>测试方法-编辑</h3>
+					<h3>测试用例集-编辑</h3>
 					<div class="bwarp">
 							<ul>
 							<li class="clearfix bgwhite">
 								<div class="fp">
-									<span><strong>*</strong>服务名称:</span> <select id="allService"></select>
+									<!-- <span><strong>*</strong>模块名称:</span> <select id="allService"></select>  -->
+									<span><strong>*</strong>模块Id:</span><input type="text" id="serviceid1"  disabled="disabled"/>
 								</div>
 								<div class="fp">
-									<span><strong>*</strong>方法名称:</span> <input type="text" id="method_name" onblur="chBlur('method_name','method_name','方法名称不能为空')"/><span id="method_name_span" style="color: red;font-size:13px"></span>
+									<!-- <span><strong>*</strong>模块名称:</span> <select id="allService"></select>  -->
+									<span><strong>*</strong>模块名称:</span><input type="text" id="servicename1"  disabled="disabled"/>
 								</div>
 							</li>
 							<li class="clearfix bgwhite">
 								<div class="fp">
-									<span><strong>*</strong>方法描述:</span> <input type="text" id="method_des" onblur="chBlur('method_des','method_des','方法描述不能为空')"/><span id="method_des_span" style="color: red;font-size:13px"></span>
+									<span><strong>*</strong>用例集名称:</span> <input type="text" id="method_name" onblur="chBlur('method_name','method_name_span','用例集名称不能为空')"/><span id="method_name_span" style="color: red;font-size:13px"></span>
+								</div>
+								<div class="fp">
+									<span><strong>*</strong>用例集描述:</span> <input type="text" id="method_des" onblur="chBlur('method_des','method_des_span','用例集描述不能为空')"/><span id="method_des_span" style="color: red;font-size:13px"></span>
 								</div>						
 							</li>
 						</ul>
@@ -263,15 +314,19 @@
 							<ul>
 							<li class="clearfix bgwhite">
 								<div class="fp">
-									<span><strong>*</strong>方法id:</span> <input type="text"	 id="method_id_2"  disabled="disabled"/>
+									<!-- <span><strong>*</strong>模块名称:</span> <select id="allService"></select>  -->
+									<span><strong>*</strong>模块Id:</span><input type="text" id="serviceid_2"  disabled="disabled"/>
 								</div>
 								<div class="fp">
-									<span><strong>*</strong>方法名称:</span> <input type="text" id="method_name_2" disabled="disabled"/>
+									<span><strong>*</strong>用例集id:</span> <input type="text"	 id="method_id_2"  disabled="disabled"/>
+								</div>
+								<div class="fp">
+									<span><strong>*</strong>用例集名称:</span> <input type="text" id="method_name_2" disabled="disabled"/>
 								</div>
 							</li>
 							<li class="clearfix bgwhite">
 								<div class="fp">
-									<span><strong>*</strong>方法描述:</span> <input type="text" id="method_des_2" onblur="chBlur('method_des_2','method_des_2','服务描述不能为空')"/><span id="method_des_span_2" style="color: red;font-size:13px"></span>
+									<span><strong>*</strong>用例集描述:</span> <input type="text" id="method_des_2" onblur="chBlur('method_des_2','method_des_span_2','服务描述不能为空')"/><span id="method_des_span_2" style="color: red;font-size:13px"></span>
 								</div>	
 							</li>
 						</ul>
@@ -302,7 +357,7 @@
 					<div class="xints">
 						<h4 id="msg"></h4>
 						<p>
-							<span>测试方法:<strong id="methodname4"></strong></span>
+							<span>测试用例集:<strong id="methodname4"></strong></span>
 						</p>
 					</div>
 				</div>
@@ -327,7 +382,7 @@
 					<div class="xints">
 						<h4>是否删除</h4>
 						<p>
-							<span>测试方法:<strong id="methodname3"></strong></span>
+							<span>测试用例集:<strong id="methodname3"></strong></span>
 						</p>
 					</div>
 				</div>

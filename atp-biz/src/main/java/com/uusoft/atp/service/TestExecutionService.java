@@ -21,4 +21,7 @@ public interface TestExecutionService {
 	
 	List<TestResultInfo> selectResultByExecutionId(int execution_id);
 	
+	List<TestResultInfo> selectFailureResultByExecutionId(int execution_id);
+
+	List<TestResultInfo> selectUnrunResultByExecutionId(int execution_id);
 }

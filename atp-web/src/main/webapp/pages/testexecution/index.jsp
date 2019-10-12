@@ -26,6 +26,20 @@
 <link rel="stylesheet" href="<%=path%>/css/xenon-core.css">
 <link rel="stylesheet" href="<%=path%>/css/animation.css">
 <link rel="stylesheet" href="<%=path%>/css/tou-style.css">
+<style type="text/css">
+	.modal-dialog.xinzm{
+		width:98%;
+	}
+	.modal .modal-dialog .modal-content{
+		width:100%;
+	}
+	.xzmain{
+		width:100%  !important;
+	}
+	.modal .xinzm .xzmain .bwarp{
+		width:100%;
+	}
+</style>
 <script src="<%=path%>/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="<%=path%>/js/common/page.js"></script>
 <script type="text/javascript">
@@ -40,6 +54,16 @@
 			showSingle(res);
 		});
 	}
+	function hrefResultList(id){
+		window.location.href=path+"/testexecution/selectResultByExecutionId.do?executionId="+id
+	}
+	function hrefFailureResultList(id){
+		window.location.href=path+"/testexecution/selectFailureResultByExecutionId.do?executionId="+id
+	}
+	function hrefUnrunResultList(id){
+		window.location.href=path+"/testexecution/selectUnrunResultByExecutionId.do?executionId="+id
+	}
+	
 	function showSingle(data){
 		$("#table_list2").html(data);
 		//$("#table_list2").val(data);

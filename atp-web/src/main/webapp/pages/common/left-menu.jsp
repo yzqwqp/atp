@@ -10,15 +10,16 @@
 <script>
 	var path='<%=path%>';
 	function openLogout(){
-		$(".logoutdiv").modal("show");
+		/* $(".logoutdiv").modal("show"); */
+		window.location.href=path+'/login.do';
 	}
 	function logoutdo(){
 		window.location.href=path+'/logout.do';
 	}
 </script>
 <div class="sidebar-menu toggle-others fixed">
-	<div class="sidebar-menu-inner">
-		<header class="logo-env">	
+<div class="sidebar-menu-inner">
+<header class="logo-env">	
 			<!--左侧导航栏收缩 -->
 			<div class="hidden-sm hidden-xs logo-expanded nomor">
 				<a href="#" data-toggle="sidebar"><i class="fa-bars"></i>
@@ -39,47 +40,47 @@
 					class="linecons-cog"></i>
 				</a>
 			</div>
-		</header>
+</header>
 		<ul id="main-menu" class="main-menu">
-			<li class="userpic"><a href="javascript:void(0)" onclick="openLogout()"><i class="linecons-cog"><img src="<%=path%>/img/user-tpic.png" /></i><span>${sessionUser.userBasicVo.userName }</span><span class="ext">退出登录</span></a></li>
-								<li>
-									<a href="#"><i class="linecons-cog"><img src="<%=path%>/img/icon01.png" /></i><span class="title">接口测试</span></a>
-									<ul>
-										<li><a href="<%=path%>/testservice/index.do"><span class="title">测试服务</span></a></li>
-										<li><a href="<%=path%>/testmethod/index.do"><span class="title">测试用例集</span></a></li>
-										<li><a href="<%=path%>/testsuite/index.do"><span class="title">测试用例</span></a></li>
-										<li><a href="<%=path%>/testcase/index.do"><span class="title">用例步骤</span></a></li>
-										<li><a href="<%=path%>/jsoneditor/index.do"><span class="title">josn编辑页面</span></a></li>
-									</ul>
-								</li>
-								<!--  
-								<li><a href="#"><i class="linecons-desktop"><img src="<%=path%>/img/icon06.png" /></i><span class="title">测试常量</span></a>
-									<ul>
-										<li><a href="<%=path%>/configmethod/index.do"><span class="title">定位方式</span></a></li>
-										<li><a href="<%=path%>/configmethod/index.do"><span class="title">定位元素</span></a></li>
-										<li><a href="<%=path%>/configway/index.do"><span class="title">测试方法</span></a></li>  
-									</ul>
-								</li>
-								
-								<li><a href="#"><i class="linecons-desktop"><img src="<%=path%>/img/icon10.png" /></i><span class="title">初始化服务</span></a>
-									<ul>
-										<li><a href="<%=path%>/initService/index.do"><span class="title">初始服务</span></a></li>
-										<li><a href="<%=path%>/configmethod/index.do"><span class="title">初始入参</span></a></li>
-										<li><a href="<%=path%>/configway/index.do"><span class="title">初始属性</span></a></li>  
-									</ul>
-								</li>
-								<li><a href="#"><i class="linecons-note"><img src="<%=path%>/img/icon06.png" /></i><span class="title">系统管理</span></a>
-									<ul>
-									<li class="active"> <a href="<%=path%>/toPwd.do"> <span class="title">修改密码</span> </a> </li>
-									</ul>
-								</li>
-								-->
-								<li><a href="#"><i class="linecons-desktop"><img src="<%=path%>/img/icon07.png" /></i><span class="title">测试报告</span></a>
-									<ul>
-										<li><a href="<%=path%>/testexecution/index.do"><span class="title">用例执行报告</span></a></li>
-									</ul>
-								</li>
+			<li class="userpic"><a href="javascript:void(0)" onclick="openLogout()"><i class="linecons-cog"><img src="<%=path%>/img/user-tpic.png" /></i><span>${sessionUser.userBasicVo.userName }</span><span class="ext">退出登录</span></a>
+			</li>
 			
+			<!-- <li><a href="#"><i class="linecons-cog"><img src="<%=path%>/img/icon01.png" /></i><span class="title">接口测试</span></a>  -->
+			<li><a href="#"><i class="linecons-cog"><img src="<%=path%>/img/icon01.png" /></i><span class="title">接口测试</span></a>
+				<ul>
+					<li><a href="<%=path%>/testservice/index.do"><span class="title">测试服务</span></a></li>
+					<li><a href="<%=path%>/testmethod/index.do"><span class="title">测试用例集</span></a></li>
+					<li><a href="<%=path%>/testsuite/index.do"><span class="title">测试用例</span></a></li>
+					<li><a href="<%=path%>/testcase/index.do"><span class="title">用例步骤</span></a></li>
+					<li><a href="<%=path%>/jsoneditor/index.do"><span class="title">josn编辑页面</span></a></li>
+				</ul>
+			</li>
+			
+			<li><a href="#"><i class="linecons-desktop"><img src="<%=path%>/img/icon06.png" /></i><span class="title">测试数据</span></a>
+				<ul>
+					<li><a href="<%=path%>/testconstant/index.do"><span class="title">常量变量</span></a></li>
+				</ul>
+			</li>
+			
+			<!--  
+			<li><a href="#"><i class="linecons-desktop"><img src="<%=path%>/img/icon10.png" /></i><span class="title">初始化服务</span></a>
+				<ul>
+					<li><a href="<%=path%>/initService/index.do"><span class="title">初始服务</span></a></li>
+					<li><a href="<%=path%>/configmethod/index.do"><span class="title">初始入参</span></a></li>
+					<li><a href="<%=path%>/configway/index.do"><span class="title">初始属性</span></a></li>  
+				</ul>
+			</li>
+			<li><a href="#"><i class="linecons-note"><img src="<%=path%>/img/icon06.png" /></i><span class="title">系统管理</span></a>
+				<ul>
+				<li class="active"> <a href="<%=path%>/toPwd.do"> <span class="title">修改密码</span> </a> </li>
+				</ul>
+			</li>
+			-->
+			<li><a href="#"><i class="linecons-desktop"><img src="<%=path%>/img/icon07.png" /></i><span class="title">测试报告</span></a>
+				<ul>
+					<li><a href="<%=path%>/testexecution/index.do"><span class="title">用例执行报告</span></a></li>
+				</ul>
+			</li>
 		</ul>
 	</div>
 </div>

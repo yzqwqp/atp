@@ -19,6 +19,7 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.JsonElement;
@@ -136,5 +137,36 @@ public  final class JsonUtil {
 		return  (Map)jsonobj;
 	}
 	
-
+	
+	/**
+	 * 处理ATP项目，在断言处理中，对返回值json中的数据查找
+	 * 可能1、数据在第一层就能找到
+	 * 可能2、数据在第二层才能找到
+	 * 如果都找不到，那就返回寻找错误
+	 * @return 
+	 */
+	@SuppressWarnings("unchecked")
+	public static ResultTool<Map<String, Object>> findJsonValueByKey(JSONObject jsonObj, String keyStr){
+		Map<String, Object> paramsMap = new HashMap<String, Object>();
+		String valueStr = null;
+		if(jsonObj.containsKey(keyStr)) {
+			valueStr = jsonObj.getString(keyStr);//找到了
+			paramsMap.put(keyStr, valueStr);
+			return ResultTool.setResult("0000", "替换成功，"+keyStr+"的值现为："+valueStr, paramsMap);
+		} else {
+			paramsMap =  (Map<String, Object>) jsonObj.get("data");
+			if(paramsMap.isEmpty()){
+				return ResultTool.setResult("9999", "jsonObj中data数组为空", null);
+			}
+			if(!paramsMap.containsKey(keyStr)){
+				return ResultTool.setResult("9999", "jsonObj中data数组为找不到"+keyStr, null);
+			}
+			valueStr = (String) paramsMap.get(keyStr);
+			if (StringUtils.isEmpty(valueStr)){
+				// token找不到, 抛错返回
+				return ResultTool.setResult("9999", "jsonObj中找不到"+keyStr+"的值", null);
+			}
+			return ResultTool.setResult("0000", "jsonObj中"+keyStr+"的值为："+valueStr, paramsMap);
+		}
+	}
 }

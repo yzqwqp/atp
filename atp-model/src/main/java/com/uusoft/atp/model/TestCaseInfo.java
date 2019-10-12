@@ -13,6 +13,10 @@ public class TestCaseInfo {
      */
 	private String suite_des;
 	/**
+     * 用例类型0-正常步骤 1-执行SQL
+     */
+	private int case_type;
+	/**
      * 方法地址
      */
 	private String method_address;
@@ -41,9 +45,17 @@ public class TestCaseInfo {
      */
 	private Integer before_run;
 	/**
+     * 执行前处理
+     */
+	private Integer before_run_type;
+	/**
      * 执行后处理
      */
 	private Integer after_run;
+	/**
+     * 执行后处理
+     */
+	private Integer after_run_type;
 	/**
      * 执行顺序 从  [before_run开始]-0-1-3-4
      */
@@ -63,7 +75,7 @@ public class TestCaseInfo {
 	
 	@Override
 	public String toString() {
-		return "TestCaseInfo : {case_id=" + case_id +", suite_id=" + suite_id +", method_address=" + method_address + ", case_des=" + case_des + ", case_data=" + case_data + ", case_assert_type=" + case_assert_type + ", case_assert_value=" + case_assert_value + ", before_run=" + before_run + ", after_run=" + after_run+ ", case_run_num=" + case_run_num+ ", is_del=" + is_del  +",create_date=" +create_date+ ",update_date=" +update_date+  "}";
+		return "TestCaseInfo : {case_id=" + case_id +", case_type=" + case_type +", suite_id=" + suite_id +", method_address=" + method_address + ", case_des=" + case_des + ", case_data=" + case_data + ", case_assert_type=" + case_assert_type + ", case_assert_value=" + case_assert_value + ", before_run=" + before_run +", before_run_type=" + before_run_type + ", after_run=" + after_run+  ", after_run_type=" + after_run_type+ ", case_run_num=" + case_run_num+ ", is_del=" + is_del  +",create_date=" +create_date+ ",update_date=" +update_date+  "}";
 	}
 	
 	public int getSuite_id() {
@@ -153,5 +165,29 @@ public class TestCaseInfo {
 
 	public void setUpdate_date(Date update_date) {
 		this.update_date = update_date;
+	}
+
+	public Integer getBefore_run_type() {
+		return before_run_type;
+	}
+
+	public void setBefore_run_type(Integer before_run_type) {
+		this.before_run_type = before_run_type;
+	}
+
+	public Integer getAfter_run_type() {
+		return after_run_type;
+	}
+
+	public void setAfter_run_type(Integer after_run_type) {
+		this.after_run_type = after_run_type;
+	}
+
+	public int getCase_type() {
+		return case_type;
+	}
+
+	public void setCase_type(int case_type) {
+		this.case_type = case_type;
 	}
 }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace="com.uusoft.atp.dao.TestConstantMapper">
+	<resultMap id="BaseResultMap" type="com.uusoft.atp.model.TestConstantInfo" >
+	    <result column="CONSTANT_ID" property="constant_id" jdbcType="INTEGER" />
+	    <result column="CONSTANT_NAME" property="constant_name" jdbcType="VARCHAR" />
+	    <result column="CONSTANT_VALUE" property="constant_value" jdbcType="VARCHAR" />
+	    <result column="CONSTANT_VALUE_TYPE" property="constant_value_type" jdbcType="INTEGER" />
+	    <result column="CONSTANT_DES" property="constant_des" jdbcType="VARCHAR" />
+	    <result column="CONSTANT_TYPE" property="constant_type" jdbcType="INTEGER" />
+	    <result column="CREATE_DATE" property="create_date" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<sql id="Base_Column_List" >
+    	CONSTANT_ID, CONSTANT_NAME, CONSTANT_VALUE, CONSTANT_VALUE_TYPE, CONSTANT_DES, CONSTANT_TYPE, CREATE_DATE
+  	</sql>
+	
+	<insert id="insert" parameterType="com.uusoft.atp.model.TestConstantInfo" useGeneratedKeys="true" keyProperty="constant_id">
+		insert into TEST_CONSTANT (CONSTANT_NAME, CONSTANT_VALUE, CONSTANT_VALUE_TYPE, CONSTANT_DES, CONSTANT_TYPE, CREATE_DATE)
+			 values (#{constant_name}, #{constant_value}, #{constant_value_type}, #{constant_des}, #{constant_type}, now())
+	</insert>
+	
+	<update id="update" parameterType="com.uusoft.atp.model.TestConstantInfo">
+		update TEST_CONSTANT
+        set CONSTANT_NAME = #{constant_name,jdbcType=VARCHAR},
+        	CONSTANT_VALUE = #{constant_value,jdbcType=VARCHAR},
+        	CONSTANT_VALUE_TYPE = #{constant_value_type,jdbcType=INTEGER},
+        	CONSTANT_DES = #{constant_des,jdbcType=VARCHAR},
+        	CONSTANT_TYPE = #{constant_type,jdbcType=INTEGER}
+        where CONSTANT_ID = #{constant_id,jdbcType=INTEGER}
+	</update>
+	
+	<select id="selectAll" resultMap="BaseResultMap">
+		select 
+    	<include refid="Base_Column_List" />
+   		from TEST_CONSTANT
+   		order by constant_id desc
+	</select>
+	
+	<select id="selectByConstantName" resultMap="BaseResultMap">
+		select 
+    	<include refid="Base_Column_List" />
+   		from TEST_CONSTANT
+   		<where>
+   		CONSTANT_NAME = #{constant_name,jdbcType=VARCHAR}
+   		</where>
+	</select>
+	
+	<select id="selectByConstantId" resultMap="BaseResultMap">
+		select 
+    	<include refid="Base_Column_List" />
+   		from TEST_CONSTANT
+   		<where>
+   		CONSTANT_ID = #{constant_id,jdbcType=INTEGER}
+   		</where>
+	</select>
+</mapper>

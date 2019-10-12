@@ -15,4 +15,9 @@ public interface TestResultMapper {
 	int insert(TestResultInfo testResultInfo);
 	
 	List<TestResultInfo> selectByExecutionId(@Param("execution_id") int execution_id);
+
+	List<TestResultInfo> selectFailureResultByExecutionId(@Param("execution_id") int execution_id);
+	
+	List<TestResultInfo> selectUnrunResultByExecutionId(@Param("execution_id") int execution_id);
+	
 }

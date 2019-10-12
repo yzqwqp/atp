@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace="com.uusoft.atp.dao.UserMapper">
+	<resultMap id="BaseResultMap" type="com.uusoft.atp.model.UserInfo" >
+	    <result column="USER_ID" property="userId" jdbcType="INTEGER" />
+	    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+	    <result column="LOGIN_NAME" property="loginName" jdbcType="VARCHAR" />
+	    <result column="LOGIN_PASSWD" property="loginPasswd" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="Base_Column_List" >
+    	USER_ID, USER_NAME, LOGIN_NAME, LOGIN_PASSWD, STATUS
+  	</sql>
+	
+	<insert id="insert" parameterType="com.uusoft.atp.model.UserInfo">
+		insert into TEST_LOGIN (USER_NAME, LOGIN_NAME, LOGIN_PASSWD, STATUS)  
+		values (#{user_name}, #{login_name}, #{LOGIN_PASSWD}, #{status})
+	</insert>
+	
+	<select id="selectByUserId" resultMap="BaseResultMap">
+		SELECT A.USER_ID,A.USER_NAME,A.LOGIN_NAME,A.LOGIN_PASSWD,A.STATUS 
+		FROM TEST_LOGIN A
+			<where> 
+				<if test="case_id != null">
+					A.USER_ID = #{user_id,jdbcType=INTEGER}
+				</if>
+			</where>
+	</select>
+	
+	<select id="selectByLoginName" resultMap="BaseResultMap">
+		SELECT A.USER_ID,A.USER_NAME,A.LOGIN_NAME,A.LOGIN_PASSWD,A.STATUS
+		FROM TEST_LOGIN A
+			<where> 
+				<if test="login_name != null">
+					A.LOGIN_NAME = #{login_name,jdbcType=VARCHAR}
+				</if>
+			</where>
+	</select>
+	
+	<select id="selectAll" resultMap="BaseResultMap">
+		SELECT A.USER_ID,A.USER_NAME,A.LOGIN_NAME,A.LOGIN_PASSWD,A.STATUS
+		FROM TEST_LOGIN A
+		
+	</select>
+	
+	<update id="update" parameterType="com.uusoft.atp.model.UserInfo">
+		update TEST_LOGIN
+        set 
+        	USER_NAME = #{user_name,jdbcType=VARCHAR},
+        	LOGIN_NAME = #{login_name,jdbcType=VARCHAR},
+        	LOGIN_PASSWD = #{LOGIN_PASSWD,jdbcType=VARCHAR},
+        	STATUS= #{status,jdbcType=VARCHAR}
+        where USER_ID = #{user_id,jdbcType=INTEGER}
+	</update>
+	
+	<update id="deleteById">
+		update TEST_LOGIN
+        set STATUS = "00"
+        where USER_ID = #{user_id,jdbcType=INTEGER}
+	</update>
+	
+</mapper>

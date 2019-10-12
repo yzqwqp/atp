@@ -59,4 +59,24 @@
    		</where>
 	</select>
 	
+	<select id="selectFailureResultByExecutionId" resultMap="BaseResultMap">
+		select 
+    	<include refid="Base_Column_List" />
+   		from TEST_RESULT 
+   		<where>
+   			ASSERT_STATUS not in (10,0) 
+   			AND EXECUTION_ID = #{execution_id,jdbcType=INTEGER}
+   		</where>
+	</select>
+	
+	<select id="selectUnrunResultByExecutionId" resultMap="BaseResultMap">
+		select 
+    	<include refid="Base_Column_List" />
+   		from TEST_RESULT 
+   		<where>
+   			ASSERT_STATUS = 0
+   			AND EXECUTION_ID = #{execution_id,jdbcType=INTEGER}
+   		</where>
+	</select>
+	
 </mapper>

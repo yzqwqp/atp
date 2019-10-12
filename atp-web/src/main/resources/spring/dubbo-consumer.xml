@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+    
+	  <dubbo:consumer check="false"/>
+	
+	  <!-- <dubbo:reference id="meepoService" interface="com.uusoft.meepo.service.IFofTransService" version="${meepo.version}" generic="true"/>
+	  	
+      <dubbo:reference id="trsAppService" interface="com.uusoft.trs.service.TrsAppService" version="${trs.version}" generic="true"/> 
+	  <dubbo:reference id="riskAssessmentService"
+                     interface="com.uusoft.cfg.service.RiskAssessmentService" version="${cif.version}" generic="true"/>  -->
+	
+	<!--   <dubbo:reference id="fundAccoService" interface="com.uusoft.cif.service.FundAccoService" version="${cif.version}" generic="true"/> 
+
+       <dubbo:reference id="custService" interface="com.uusoft.cif.service.CustService" version="${cif.version}" generic="true"/>  
+                     
+       <dubbo:reference id="taService" interface="com.uusoft.cfg.service.TaService" version="${cfg.version}" generic="true"/> 
+     
+       <dubbo:reference id="fundNavService" interface="com.uusoft.prd.service.FundNavService" version="${prd.version}" generic="true"/> 
+
+       <dubbo:reference id="reedomBranchService" interface="com.uusoft.cfg.service.ReedomBranchService" version="${cfg.version}" generic="true"/> 
+
+       <dubbo:reference id="fundSearchService" interface="com.uusoft.prd.service.FundSearchService" version="${prd.version}" generic="true"/> 
+	  <dubbo:reference id="fundCheckService" interface="com.uusoft.prd.service.FundCheckService" version="${prd.version}" generic="true"/> 
+
+
+	   <dubbo:reference id="taFeeRateService" interface="com.uusoft.prd.service.TaFeeRateService" version="${prd.version}" generic="true"/> 
+	
+	   <dubbo:reference id="dailyRuleService" interface="com.uusoft.prd.service.DailyRuleService" version="${prd.version}" generic="true"/>
+    
+       <dubbo:reference id="merchantGroupService" interface="com.uusoft.cfg.service.MerchantGroupService" version="${cfg.version}" generic="true"/> 
+                     
+       <dubbo:reference id="merchantService" interface="com.uusoft.cfg.service.MerchantService" version="${cfg.version}" generic="true"/> 
+       <dubbo:reference id="consumerService" interface="com.uusoft.cfg.service.ConsumerService" version="${cfg.version}" generic="true"/> 
+        <dubbo:reference id="payBranchService" interface="com.uusoft.cfg.service.PayBranchService" version="${cfg.version}" generic="true"/> 
+                          
+       <dubbo:reference id="custCheckService" interface="com.uusoft.cif.service.CustCheckService" version="${cif.version}" generic="true"/> 
+                               
+      <dubbo:reference id="specialTradeService" interface="com.uusoft.trs.service.SpecialTradeService" version="${trs.version}" generic="true"/>
+       <dubbo:reference id="fctradeService" interface="com.uusoft.trs.service.speedy.FCTradeService" version="${trs.version}" generic="true"/>  
+	
+	   <dubbo:reference id="userService" interface="com.uusoft.simlate.service.IUserService" version="${simlate.version}" generic="true" owner="simlate"/>
+     
+       <dubbo:reference id="itradeservice" interface="com.uusoft.fundbase.service.trade.ITradeService" version="${fundbase.version}" generic="true"/>
+      
+        <dubbo:reference id="nonstandardTradeService" interface="com.uu.split.service.ITradeApiService" version="1.0.0" generic="true"/> -->
+</beans>

@@ -80,6 +80,14 @@
 		$(".xinz").modal("show");
 	}
 	function add() {
+		if ($("#servicename").val() == "") {
+			alert("测试模块不能为空");
+			return;
+		}
+		if ($("#servicedes").val() == "") {
+			alert("测试模块描述不能为空");
+			return;
+		}
 		var data = {};
 		data.service_name = $("#servicename").val();
 		data.service_des = $("#servicedes").val();
@@ -127,36 +135,37 @@
 		<%@include file="../common/left-menu.jsp"%>
 		<div class="main-content">
 			<div class="topv">
-				<h3>测试服务</h3>
+				<h3>测试模块</h3>
 			</div>
 			<div class="row" style="padding-top: 50px;">
 				<div class="col-md-12">
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<!--<div class="panel-options"> <a href="#"> <i class="linecons-cog"></i> </a> <a href="#" data-toggle="panel"> <span class="collapse-icon">–</span> <span class="expand-icon">+</span> </a> <a href="#" data-toggle="reload"> <i class="fa-rotate-right"></i> </a> <a href="#" data-toggle="remove"> × </a> </div>-->
 						</div>
 						<div class="screen">
 						<form action="<%=path %>/testservice/index.do" id="payForm" method="post">
 							<ul class="shaix clearfix">
-								<li><span>服务名称：</span> <select name="initserviceselect" id="initserviceselect" onchange="selectChangeService(this)">
-										<option value="">全部服务</option>
+							<!-- 
+								<li><span>模块名称：</span> <select name="initserviceselect" id="initserviceselect" onchange="selectChangeService(this)">
+										<option value="">全部模块</option>
 										<c:forEach items="${initServiceList }" var="item" >
 											<option value="${item.service_id }" <c:if test="${param.initserviceselect == item.service_id }">selected</c:if> >${item.service_name }</option>
 										</c:forEach>
 								</select></li>
+							 -->
 								<li>
-									<button type="button" class="addnew" onclick="addBefore()">新增</button>
+									<button type="button" class="addnew" onclick="addBefore()">新增测试模块</button>
 								</li>
 							</ul>
 						</form>
 						</div>
-
+						
 						<div class="table-responsive">
 							<table class="table table-bordered">
 								<tr>
-									<th>服务id</th>
-									<th>服务名称</th>
-									<th>服务描述</th>
+									<th>模块Id</th>
+									<th>模块名称</th>
+									<th>模块描述</th>
 									<th>操作</th>
 								</tr>
 								<c:forEach var="item" items="${serviceList }">
@@ -187,15 +196,15 @@
 		<div class="modal-dialog xinzm">
 			<div class="modal-content">
 				<div class="xzmain">
-					<h3>测试服务-新增</h3>
+					<h3>测试模块-新增</h3>
 					<div class="bwarp">
 						<ul>
 							<li class="clearfix bgwhite">
 								<div class="fp">
-									<span><strong>*</strong>服务名称:</span>  <input type="text" id="servicename" onblur="chBlur('servicename','servicedes1','服务描述不能为空')"/><span id="servicename_span" style="color: red;font-size:13px"></span>
+									<span><strong>*</strong>模块名称:</span>  <input type="text" id="servicename" onblur="chBlur('servicename','servicename_span','模块名称不能为空')"/><span id="servicename_span" style="color: red;font-size:13px"></span>
 								</div>
 								<div class="fp">
-									<span><strong>*</strong>服务描述:</span> <input type="text" id="servicedes" onblur="chBlur('servicedes','servicedes1','服务描述不能为空')"/><span id="servicedes_span" style="color: red;font-size:13px"></span>
+									<span><strong>*</strong>模块描述:</span> <input type="text" id="servicedes" onblur="chBlur('servicedes','servicedes_span','模块描述不能为空')"/><span id="servicedes_span" style="color: red;font-size:13px"></span>
 								</div>	
 							</li>
 						</ul>
@@ -221,21 +230,21 @@
 		<div class="modal-dialog xinzm">
 			<div class="modal-content">
 				<div class="xzmain">
-					<h3>测试服务-编辑</h3>
+					<h3>测试模块-编辑</h3>
 					<div class="bwarp">
 							<ul>
 							<li class="clearfix bgwhite">
 								
 								<div class="fp">
-									<span><strong>*</strong>服务id:</span> <input type="text"	id="serviceid2"  disabled="disabled"/>
+									<span><strong>*</strong>模块Id:</span> <input type="text"	id="serviceid2"  disabled="disabled"/>
 								</div>
 							</li>
 							<li class="clearfix bgwhite">
 								<div class="fp">
-									<span><strong>*</strong>服务名称:</span> <input type="text"	id="servicename2"  disabled="disabled"/>
+									<span><strong>*</strong>模块名称:</span> <input type="text"	id="servicename2"  disabled="disabled"/>
 								</div>
 								<div class="fp">
-									<span><strong>*</strong>服务描述:</span> <input type="text" id="servicedes2" onblur="chBlur('servicedes2','servicedes2','服务描述不能为空')"/><span id="servicedes1" style="color: red;font-size:13px"></span>
+									<span><strong>*</strong>模块描述:</span> <input type="text" id="servicedes2" onblur="chBlur('servicedes2','servicedes2_span','模块描述不能为空')"/><span id="servicedes2_span" style="color: red;font-size:13px"></span>
 								</div>						
 							</li>
 						</ul>
@@ -266,7 +275,7 @@
 					<div class="xints">
 						<h4 id="msg"></h4>
 						<p>
-							<span>测试服务:<strong id="servicename3"></strong></span>
+							<span>测试模块:<strong id="servicename3"></strong></span>
 						</p>
 					</div>
 				</div>
@@ -291,7 +300,7 @@
 					<div class="xints">
 						<h4>是否删除</h4>
 						<p>
-							<span>测试服务:<strong id="servicename3"></strong></span>
+							<span>测试模块:<strong id="servicename3"></strong></span>
 						</p>
 					</div>
 				</div>

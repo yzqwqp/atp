@@ -212,9 +212,13 @@ public class TestMethodController {
 		// 【测试用例集】页面直接跳转到【测试用例】页面
 		List<TestServiceInfo> initServiceList = testServiceService.selectAll();
 		List<TestMethodInfo> initMethodList = testMethodService.selectByServiceId(sid);
+		List<TestServiceInfo> serviceInfoList = new ArrayList<TestServiceInfo>();
+		TestServiceInfo serviceInfo = testServiceService.selectByServiceId(sid);
+		serviceInfoList.add(serviceInfo);
 		request.setAttribute("initServiceList", initServiceList);//筛选列的[服务名称]数据
 		request.setAttribute("initMethodList", initMethodList);//筛选列的[方法名称]数据
 		request.setAttribute("methodList", initMethodList);//筛选列的[方法名称]数据
+		request.setAttribute("serviceInfo", serviceInfoList);//筛选列的[方法名称]数据
 		return "testmethod/index";
 	}
 }

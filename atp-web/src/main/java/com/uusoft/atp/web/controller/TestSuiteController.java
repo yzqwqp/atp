@@ -156,11 +156,22 @@ public class TestSuiteController {
 		// 【测试用例集】页面直接跳转到【测试用例】页面
 		List<TestServiceInfo> initServiceList = testServiceService.selectAll();
 		List<TestMethodInfo> initMethodList = new ArrayList<TestMethodInfo>();
-		List<TestSuiteInfo> testSuiteInfoList = testSuiteService.selectByMethodId(sid);
+		List<TestSuiteInfo> testSuiteInfoList = new ArrayList<TestSuiteInfo>();
+		if (StringUtil.isBlank(String.valueOf(sid))){
+			initMethodList = testMethodService.selectAll();
+			testSuiteInfoList = testSuiteService.selectAll();
+			request.setAttribute("initServiceList", initServiceList);//筛选列的[服务名称]数据
+			request.setAttribute("initMethodList", initMethodList);//筛选列的[方法名称]数据
+			request.setAttribute("methodInfo", initMethodList);//筛选列的[方法名称]数据
+			request.setAttribute("suiteList", testSuiteInfoList);
+			return "testsuite/index";
+		}
+		testSuiteInfoList = testSuiteService.selectByMethodId(sid);
 		TestMethodInfo minfo = testMethodService.selectByMethodId(sid);
 		initMethodList.add(minfo);// 1
 		request.setAttribute("initServiceList", initServiceList);//筛选列的[服务名称]数据
 		request.setAttribute("initMethodList", initMethodList);//筛选列的[方法名称]数据
+		request.setAttribute("methodInfo", initMethodList);//筛选列的[方法名称]数据
 		request.setAttribute("suiteList", testSuiteInfoList);
 		return "testsuite/index";
 	}

@@ -2,9 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <table class="table table-bordered" id="methodid" >
 	<tr>
-		<th>方法id</th>
-		<th>方法名称</th>
-		<th>方法描述</th>
+		<th>用例集id</th>
+		<th>用例集名称</th>
+		<th>用例集描述</th>
 		<th>操作</th>
 	</tr>
 	<c:forEach var="item" items="${methodList }" >
